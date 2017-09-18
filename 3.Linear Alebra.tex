@@ -1,0 +1,887 @@
+% Document Type Management
+    \documentclass{book}
+    \usepackage[utf8]{inputenc}
+    \usepackage[english]{babel}
+     
+ 
+%  Packages for Bibiography Management
+    \usepackage{biblatex}
+    \usepackage{csquotes}
+    \addbibresource{references.bib}
+
+
+% AMS Packages
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{amsmath}
+    \usepackage{amsthm}
+    \usepackage{esvect}
+    \usepackage{blindtext}
+
+
+% Images Management Packages
+    \usepackage{graphicx}
+    \graphicspath{ {images/} }
+
+
+% Packages to Draw Images
+    \usepackage{float}
+    \usepackage{tikz}
+    \usetikzlibrary{shapes,backgrounds}
+    \usetikzlibrary{positioning}
+
+
+% Custom Section Labels   
+        \newtheorem{theorem}{Theorem}[section]
+        \newtheorem{conjecture}[theorem]{Conjecture}
+        \newtheorem{corollary}{Corollary}[theorem]
+        \newtheorem{lemma}[theorem]{Lemma}
+
+    \theoremstyle{definition}
+        \newtheorem{definition}{Definition}[section]
+        \newtheorem{example}{Example}[definition]
+        \newtheorem{entry}{Entry}[definition]
+ 
+    \theoremstyle{remark}
+        \newtheorem{remark}{Remark}
+
+% Working Environment
+    \newenvironment{working}{\textit{Workings. }}
+
+
+% Custom Chapters and Sections
+    \usepackage[explicit]{titlesec}
+    
+    \usepackage[many]{tcolorbox}
+    \tcbset{colback=green!10!white}
+    \tcbsetforeverylayer{colframe=green!10!white}
+    
+    \usepackage{fancyhdr}
+    \usepackage{lmodern}
+    \usepackage{lipsum}
+    
+    \definecolor{titlebgdark}{RGB}{0,163,243}
+    \definecolor{titlebglight}{RGB}{191,233,251}
+    
+    \newlength{\chaptertopspacing}
+    \setlength{\chaptertopspacing}{130pt}
+    
+    
+    \titleformat{\chapter}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm,
+          overlay={
+            \node[
+              fill=titlebgdark,
+              draw=titlebglight,
+              line width=0.15cm,
+              inner sep=0pt,
+              text width=1.7cm,
+              minimum height=1.7cm,
+              align=center,
+              font=\color{white}\sffamily\bfseries\fontsize{30}{36}\selectfont
+            ] 
+            (chapname)
+            at ([xshift=-4cm]frame.north east)
+            {\thechapter};
+            \node[font=\small,anchor=south,inner sep=2pt] at (chapname.north)
+            {\MakeUppercase\chaptertitlename};  
+          } 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titleformat{name=\chapter,numberless}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          remember as=title,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm, 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titlespacing*{\chapter}
+      {0pt}{0pt}{40pt}
+    \makeatother
+
+
+% Custom Commands '
+    \newcommand{\bb}[1]{\mathbb{#1}}
+    \newcommand{\cc}[1]{\mathcal{#1}}
+    \newcommand{\ovec}{\big \langle}
+    \newcommand{\cvec}{\big \rangle}
+    \newcommand{\m}{\cdot}
+
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \textbf{MATHEMATICAL PROOF STRUCTURES}
+        
+        \vspace{0.5cm}
+        Module 1: Finite Dimensional Linear Algebra
+        
+        \vspace{1.5cm}
+        
+        \textbf{Vernon V. Lallman}
+        
+        \vfill
+        
+%        A thesis presented for the degree of\\
+%        Doctor of Philosophy
+        
+        \vspace{0.8cm}
+        
+        \includegraphics[width=0.4\textwidth]{university}
+        
+        Mathematics Department\\
+        State University of New York \\
+        Geneseo\\
+        \date{\today}
+        
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+\chapter{TOPICS IN FINITE LINEAR ALGEBRA}
+\section{Fields and Vector Spaces}
+\subsection{Real and Complex Vector Spaces}
+
+
+\subsubsection{Fields}
+\begin{definition}
+Fields \\
+    
+    Let $\cc{F}$ be a nonempty set on which are defined two operations, called \textit{addition} and \textit{multiplication}: 
+        \begin{equation*}
+            \cc{F} = \{ 0, 1, \alpha, \beta, a, b, c \in \cc{F} ,  \text{ where } \alpha \neq 0 \: | \: (a + b \in F),(\alpha \m c \in \cc{F}) \}
+        \end{equation*}
+
+    We say that $\cc{F}$ is a \textbf{field} if and only if there operations satisfy the following properties: 
+        \begin{enumerate}
+            \item $a + b = b + a$, \textit{Commutative Property of Addition}
+            \item $(a + b) + c = a + (b + c)$, \textit{Associative Property of Addition}
+            \item $a + 0 = a$, \textit{Existence of Additive Identity}
+            \item $a + (- a) = 0$. \textit{Existence of Additive Inverse}
+            \item $\alpha b = b \alpha$, \textit{Commutative Property of Multiplication}
+            \item $(\alpha \beta) b = \alpha (\beta b)$, \textit{Associative Property of Multiplication}
+            \item $\alpha \m 1 = \alpha$, \textit{Existence of a Multiplicative Identity}
+            \item $a \m {a}^{-1} = \frac{a}{a} = 1$, \textit{Existence of Multiplicative Inverse}
+            \item $\alpha(b + c) = \alpha \m b + \alpha \m c$, \textit{Distributive Property of Multiplication over Addition} \footnotemark 
+        \end{enumerate}
+    
+    \footnotetext{We use the usual convention that multiplication has a higher precedence than addition, thus, in the distribution property, $\alpha(b + c) = \alpha \m b + \alpha \m c$ means $\alpha(b + c) = (\alpha \m b) + (\alpha \m c)$}
+    
+\end{definition}
+
+
+
+\begin{tcolorbox}
+    \begin{theorem}
+    Basic Properties of Fields I \\
+    
+        For any field $\cc{F}$, the operations of subtraction and division are defined by $a - b = a + (- b)$ and $\frac{a}{b} = a \m {b}^{-1}$, where $b \neq 0$, respectively. Similarly, we can define ${a}^k$, for some arbitrary $k$ by repeated multiplication.
+            \begin{center}
+                For example, $a^3 = a \m a \m a$ and $a^{-3} = a^{-1} \m a^{-1} \m a^{-1}$
+            \end{center}
+        
+        The following theorem collects some basic properties that we will use frequently in our development of this mathematical system. \\ 
+        
+        Let $\cc{F}$ be a nonempty set on which are defined two operations, called addition and multiplication, then, 
+            \begin{enumerate}
+                \item The additive and multiplicative identifies of $\cc{F}$ are unique. That is 
+                    \begin{itemize}
+                        \item $a + 0 = a$, \textit{Existence of Additive Identity}
+                        \item $\alpha \m 1 = \alpha$, \textit{Existence of a Multiplicative Identity}
+                    \end{itemize}
+                \item The additive inverse $-a$ is unique for each $a \in \cc{F}$
+                
+                \item The multiplicative inverse $a^{-1}$ is unique for each $a \neq 0 \in \cc{F}$
+                
+                \item The cancellation property of addition. For all $a,b,c \in \cc{F}$, If $a + b = b + c$, then $a = c$ 
+            
+                \item The cancellation property of multiplication. For all $\alpha , \beta , b \in \cc{F}$. $\alpha \m b = \alpha \m b$ and $b \neq 0$, then $alpha = \beta$
+                
+                \item For each $a \in \cc{F}$, $0 \m a$ and $-1 \m a = -a$
+            \end{enumerate}
+
+        \begin{remark}
+            Write a proof for each property. 
+        \end{remark}
+        
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    \begin{theorem}
+    Basic Properties of Fields II \\
+    
+        Some further properties of a field\\ 
+        
+        Let $\cc{F}$ be a nonempty set on which are defined two operations, called addition and multiplication, then, 
+            \begin{enumerate}    
+                \item $-(- a) = a$
+                \item $-(a + b) = - a + (- b) = - a - b$
+                \item $- a + b = b + (-a) = b - a$
+                \item $\alpha( - b) = - (\alpha \m b)$         
+                \item $(- \alpha)b = -(\alpha \m b)$
+                \item $(-\alpha)(- b) = \alpha \m b$
+                \item $(- a)^{-1} = -({a}^{-1})$
+                \item $(\alpha \m b)^{-1} = {\alpha}^{-1} \m {b}^{-1}$
+                \item $\alpha (b - c) = \alpha \m b - \alpha \m c$
+                \item $(b - c)\alpha = b \m \alpha - c \m \alpha$
+            \end{enumerate}    
+        
+        \begin{remark}
+            Write a proof for each property. 
+        \end{remark}
+        
+    \end{theorem}
+\end{tcolorbox}
+
+
+
+
+\begin{definition}
+Subfield \\
+
+    A \textbf{Subfield} of field $\cc{F}$ is a nonempty subset of $\cc{F}$ that is a field in its own right (under the operations of addtition and multiplication defined on $\cc{F}$). Since the properties of commutativity and associativity of both addition and multiplication, as well as the distributive property, are inherited by $S$, one can verify that $S$ is a subfield by verifying that $\alpha, a, b \in S$ and that the following properites are satisfied.
+        \begin{enumerate}
+            \item $a + b \in S$
+            \item $\alpha \m b \in S$
+            \item $- a \in S$
+            \item ${a}^{-1}$
+        \end{enumerate}
+    
+    \begin{remark}
+        Further develop this section with requisite theorems and proofs
+    \end{remark}
+
+\end{definition}
+
+
+\newpage
+\subsubsection{The Vector Space}
+Mathematics derive its power largely from its ability to find the common features of various problems and study them abstractly. There are many problems that involve the related concepts of addition, scalar multiplication, and linearity. To study these properties abstractly, we introduce the notion of a \textbf{Vector Space}. 
+
+\begin{definition}
+Vector Space \\
+
+    Let $\cc{F}$ be a field and let $\mathcal{V}$ be a nonempty set. \\
+    Suppose two operations are defined with respect to these sets, addition and scalar multiplication: 
+        \begin{itemize}
+            \item If $\vec{u}, \vec{v} \in \mathcal{V}$ then $\vec{u} + \vec{v} \in V$
+            \item If $\alpha \in F, \vec{v} \in \mathcal{V}$ then $\alpha \m \vec{v} \in V$
+        \end{itemize}
+    We say that $\mathcal{V}$ is a \textbf{Vector Space} over $\cc{F}$ if and only if the following properties are satisfied:
+        \begin{itemize}
+            \item $\vec{u} + \vec{v} = \vec{v} + \vec{u}$, \textit{Commutative Property of Addition}        
+            \item $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$, \textit{Associative Property of Addition}          
+            \item $\vec{u} + 0 = \vec{u} $, \textit{Existence of Additive Identity}         
+            \item $\vec{u} + (-\vec{u}) = 0$, \textit{Existence of Additive Inverse}
+            \item $\alpha (\beta \m \vec{u}) = (\alpha \m \beta)\vec{u}$, \textit{Associative Property of Scalar Multiplication} 
+            \item $\alpha(\vec{u} + \vec{v}) = \alpha \m \vec{u} + \alpha \m \vec{v}$, \textit{Distributive Property}
+            \item $ (\alpha + \beta)\vec{u} = \alpha \m \vec{u} + \beta \m \vec{u} $, \textit{Distributive Property}    
+            \item $ 1 \m \vec{u} = \vec{u}$, \textit{Multiplicative Identity of $F$}  
+         \end{itemize}
+    The elements of the Vector Space \footnotemark $\mathcal{V}$ are called \textbf{vectors}, and the elements of the corresponding field $\cc{F}$ are called \textbf{scalars}
+    
+        \footnotetext{Keep in mind, that a Vector Space is merely a collection of objects for which an additon and multiplication by real numbers are so defined that the properties we discussed holds. It is important to realize that a vector space consists of four entities: 
+            \begin{enumerate}
+                \item a set of vectors
+                \item a set of scalars
+                \item addition operation
+                \item scalar multiplication operation
+            \end{enumerate}}
+\end{definition}
+
+\begin{tcolorbox}
+    \begin{theorem}
+    Properties of Vector Space $V$ \\
+    
+        Let $V$ be a vector space over a field $F$, then: 
+            \begin{itemize}
+                \item The additive identity $0$ of $V$ is unique
+                \item $\forall \vec{u} \in V$, the additive inverse $-\vec{u}$ is unique
+                \item If $\vec{u},\vec{v} \in V$, then $-(\vec{u} + \vec{v}) = -\vec{u} + (-\vec{v})$
+                \item If $\vec{u}, \vec{v}, \vec{w} \in V$ and $\vec{u} + \vec{v} = \vec{u} + \vec{w}$, then $\vec{v} = \vec{w}$, \textit{cancellation property}
+                \item If $\alpha \in F$ and $\vec{0} \in V$, then $\alpha \m 0 = 0$
+                \item If $\alpha \in F$ and $\alpha \m \vec{u} = 0$, then either $\alpha = 0$ or $\vec{u} = 0$ 
+                \item $\{ \forall \vec{u} \in V | (0 \m \vec{u} = 0) \wedge ((-1) \m \vec{u} = -\vec{u}) \}$ 
+            \end{itemize}
+    
+        \begin{remark}
+            Write a proof for each property
+        \end{remark}
+    \end{theorem}
+\end{tcolorbox}
+
+\newpage
+\subsubsection{Important Vector Space}
+\begin{definition}
+Real and Complex Euclidean n-Vector Spaces \\
+
+    Real Euclidean n-space, $\bb{R}^n$, is defined to be the collection of all n-tuples \footnotemark of real numbers: 
+    
+    \footnotetext{The set of all n-tuples is called n-space and denoted $\bb{R}^n$, such that 
+        \begin{itemize}
+            \item $\bb{R}^1 = 1-\text{Space} = $Set of all real numbers
+            \item $\bb{R}^2 = 2-\text{Space} = $Set of all ordered pairs of real numbers
+            \item $\bb{R}^3 = 3-\text{Space} = $Set of all ordred triples of real numbers
+            \item $\cdots \cdots \cdots \cdots $
+            \item $\bb{R}^n = n-\text{Space} = $Set of all ordered n-tuples of real numbers
+        \end{itemize}
+    We can define ordered n-tuples of complex numbers similarly.}
+    
+        \begin{equation*}
+            \bb{R}^n = \left \{ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \middle | \vec{x} \in \bb{R} \right \}
+        \end{equation*}
+    Given $x \in \bb{R}^n$, the numbers $x_1, x_2, \cdots, x_n$ are called the \textbf{components} of $x$. Scalar multiplication and addition are defined component-wise. \\
+    
+    For scalar multiplication: 
+        \begin{equation*}
+            \left \{ \alpha \in \bb{R}, \vec{x} \in \bb{R}^n \middle | \alpha \vec{x} = \alpha \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} = \begin{bmatrix} \alpha x_1 \\ \alpha x_2 \\ \vdots \\ \alpha x_n \end{bmatrix}  \right \}
+        \end{equation*}
+    
+    For addition, 
+        \begin{equation*}
+            \left \{ \alpha \in \bb{R}, \vec{x} \in \bb{R}^n \middle | \vec{x} + \vec{y} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} + \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} = \begin{bmatrix} x_1 + y_1 \\ x_2 + y_2 \\ \vdots \\ x_n + y_n \end{bmatrix} \right \}
+        \end{equation*}
+    
+    Complex Euclidean n-space, $\bb{C}^n$, is analogous tor $\bb{R}^n$; the only difference is that the scalars and the components of $\vec{x} \in \bb{C}^n$ are n-tuples of complex numbers. Scalar multiplication an addition are defined component-wise, as in the case of $\bb{R}^n$
+    \end{definition}
+
+\newpage
+\begin{definition}
+Generalized n-Vector Space \\
+
+    In general, given ant field $F$, we can define the space $F^n$ as a vector space over $F$:
+    
+        \begin{equation*}
+            F^n = \left \{ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \middle | \vec{x} \in F \right \}
+        \end{equation*}
+    Given $x \in F^n$, the numbers $x_1, x_2, \cdots, x_n$ are called the \textbf{components} of $x$. Scalar multiplication and addition are defined componentwise. 
+    For scalar multiplication: 
+        \begin{equation*}
+            \left \{ \alpha \in F, \vec{x} \in F^n \middle | \alpha \vec{x} = \alpha \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} = \begin{bmatrix} \alpha x_1 \\ \alpha x_2 \\ \vdots \\ \alpha x_n \end{bmatrix}  \right \}
+        \end{equation*}
+    
+    For addition, 
+        \begin{equation*}
+            \left \{ \alpha \in F, \vec{x} \in F^n \middle | \vec{x} + \vec{y} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} + \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} = \begin{bmatrix} x_1 + y_1 \\ x_2 + y_2 \\ \vdots \\ x_n + y_n \end{bmatrix} \right \}
+        \end{equation*}
+    
+    The vector space $\bb{Z}_p^n$ arises in man applications in discrete mathematics. The space $\bb{Z}_2^n$ is especially important, since a vector in $\bb{Z}_2^n$  can be regarded as \textbf{bit string}\footnotemark
+    
+    \footnotetext{A \textbf{bit} is simply a zero or a one; the word "bit" is a contraction of \textit{binary digit}. Bit strings are fundamental to modern digital computers, which are based on binary arithmetic.}
+    
+    Any field $F$ can be regarded as a vector space over itself. Except for notation, this is equivalent to taking $n=1$ in the above definition
+\end{definition}
+
+
+\newpage
+\begin{definition}
+Functional Vector Spaces \\
+
+    Let $a$ and $b$ be real numbers, with $a < b$. There are a variety of spaces of real-valued functions defined on the interval $[a,b]$ that are useful in practical applications. The largest possible space (over the field $\bb{R}$) consists of all real-valued functions $f$ defined on $[a,b]$:
+        \begin{equation*}
+            F[a,b] = \{f|f : [a,b] \to \bb{R}  \}
+        \end{equation*}
+    
+    Scalar multiplication and addition are defined as follows:
+        \begin{align*}
+            \alpha \in \bb{R}, f \in F[a,b] & \to (\alpha f)(x) = \alpha f(x), x \in [a,b] \\
+            f,g \in F[a,b] & \to (f + g)(x) = f(x) + g(x), x \in [a,b] \\
+        \end{align*}
+    
+    Related to functional vector spaces are the spaces $C^k[a,b]$, where $k$ is a postive integer. Elements of $C^k[a,b]$ are real valued functions defined on $[a,b]$ having continuous derivatives up to order $k$. These spaces, or related spaces $C^k[a,b]$, are frequently useful involving differential equations. 
+\end{definition}
+
+\begin{definition}
+n-Degree Polynomial Vector Spaces \\
+
+    $\mathcal{P}$, the space of all polynomial functions of degree $n$ or less. By definition, the zero polynomial belongs to $\mathcal{P}_n$, for all $n$, although (again by definition) the zero polynomial has no degree. Assuming we restrict ourselves to polynomials having real coefficients, $\mathcal{P}_n$ is a vector space over the field $\bb{R}$. Hence, the $\mathcal{P}_n(F)$ is the space of polynomial functions on field $F$, such that $p \in \mathcal{P}_n(F)$, so $p: F \to F$ has the form: 
+        \begin{equation*}
+            p(x) = c_0 + c_1(x) +c_2x^2 + c_3x_3 + \cdots + c_nx_n, \forall x \in F
+        \end{equation*}
+    where $c_0, c_1, c_2, \cdots, c_n$ are fixed elements of $F$.
+\end{definition}
+
+
+\begin{definition}
+Summary of Popular Vector Space \\
+
+    \begin{enumerate}
+        \item $\bb{R}^1$ set of all real numbers
+        \item $\bb{R}^2$ set of ordered pairs of real numbers
+        \item $\bb{R}^3$ set of ordered triples of real numbers
+        \item $\bb{R}^n$ set of all ordered n-tuples of real numbers
+        \item $\mathcal{C}(- \infty, \infty)$ set of all real-valued continuous functions
+        \item $\mathcal{C}[a,b]$ set of all continuous function defined on a closed interval
+        \item $\mathcal{P}$ set of all polynomials
+        \item $\mathcal{P}_n$ set of all polynomials of degree $\leqq n$
+        \item $M_{m,n}$ set of all $m \times n$ matrices 
+        \item $M_{n,n}$ set of all $n \times n$ square matrices
+    \end{enumerate}
+\end{definition}
+
+
+
+
+\newpage
+\subsection{Subspaces}
+
+Many of the vector spaces that arise in practice are subsets of another vector spaces. For instance, 
+    \begin{itemize}
+        \item $\mathcal{C}^k[a,b] \subseteq \mathcal{C}[a,b]$, for any $k \geqq 1$
+        \item $\mathcal{P}_n \subseteq \mathcal{C}[a,b]$
+    \end{itemize}
+
+\begin{definition}
+Subspace \\
+
+    Let $\cc{V}$ be a vector space over a field $\cc{F}$ where $\cc{S}$ is a subset of $\cc{V}$, i.e. $\cc{S} \subseteq \cc{V}$. Then, $\cc{S}$ is a \textbf{subspace of $\cc{V}$} if and only if the following properties hold: 
+        \begin{enumerate}
+            \item $0 \in \cc{S}$
+            \item If $\alpha \in \cc{F}$ and $u \in \cc{S}$, then $\alpha u \in \cc{S}$ (that is, $\cc{S}$ is closed under scalar multiplication)
+            \item If $u, v \in \cc{S}$, then $u+v \in \cc{S}$ (that is, $\cc{S}$ is closed under addition.)
+        \end{enumerate}
+\end{definition}
+
+\begin{tcolorbox}
+    \begin{theorem}
+        Let $\cc{V}$ be a vector space over a field $\cc{F}$ where $\cc{S}$ is a subset of $\cc{V}$, i.e. $\cc{S} \subseteq \cc{V}$. Then, $\cc{S}$ is a \textbf{subspace of $\cc{V}$}, where the standard operations on $\cc{S}$ are the same as the operations on $\cc{V}$
+        
+        \begin{remark}
+            Write a formal proof of this theorem that includes a discussion showing that both the addition and scalar multiplication proprieties for the vector space also holds for the subspace.   
+        \end{remark}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{definition}
+Trivial, Nontrivial and Proper Subspaces
+
+    Given any vector space $\cc{V}$, the set containing only the zero vector, $\cc{S} = \{ \vec{0} \}$ is a subspace of $\cc{V}$. This subspace is called the \textbf{trivial subspace} of $\cc{V}$; a subspace containing nonzero vectors is called a \textbf{nontrivial subspace}. \\
+    
+    The entire subspace of $\cc{V}$ is a subspace of itself, as it can be shown to satisfy the three properties of a subspace. Any subspace of $\cc{V}$ that is neither the trivial subspace nor all of $\cc{V}$ is called a \textbf{Proper subspace}  of $\cc{V}$. 
+\end{definition}
+
+
+
+
+\newpage
+\subsubsection{Examples of Subspaces}
+
+We will now present two examples of proper subspaces. 
+
+\begin{example}
+Is Plane in $\bb{R}^3$ a Subspace ? 
+
+    \begin{tcolorbox}
+        Let us suppose that constants $a,b,c,d$ are given and that $\cc{P}$ is the plane in the vector space $\bb{R}^3$, then determine whether
+        \begin{equation*}
+            P = \{ (x_1,x_2,x_3) \in \bb{R}^3 | ax_1 + bx_2 + cx_3 = d \}
+        \end{equation*}
+        is a subspace of $\bb{R}^3$ ? \\
+    \end{tcolorbox}
+     
+    \begin{proof}   
+        $\cc{P}$ is a subspace of $\bb{R}^3$ if and only if $\cc{P}$ adheres to the three properties of a subspace. We will proceed to test the subset $\cc{P}$ for conformity with the three properties of a subspace: \\
+        
+        \begin{flushleft} \textbf{Test 1: $\vec{0} \subseteq \cc{P}$} \end{flushleft} 
+            For every $(x_1,x_2,x_3) \in \bb{R}^3$, let us assume that $d=0$, then it follows that 
+                \begin{equation*}
+                    \text{If } ax_1 + bx_2 + cx_3 = \vec{0} \text{, then } d = a+b+c = \vec{0}
+                \end{equation*}
+            Hence, $ \vec{0} \in \cc{P}$. This satisfies the $\vec{0} \subseteq \cc{P}$ property of a subspaces. \\
+        
+        \begin{flushleft} \textbf{Test 2: Closed Under Scalar Multiplication} \end{flushleft}
+            If $a,b,c,d \in \cc{P}$ and $\forall \alpha \in \bb{R}$, then 
+                \begin{align*}
+                    d & = \alpha(ax_1 + bx_2 + cx_3) \\
+                        & = (\alpha \m a)x_1 + (\alpha \m b)x_2 + (\alpha \m c)x_3 \\
+                \end{align*}
+            
+            Since $(\alpha \m a), (\alpha \m b), (\alpha \m c) \in \bb{R}$, it follows that $\alpha x \in \cc{P}$. Consequently, $\cc{P}$ satisfies the closure under scalar multiplication property of a subspace. \\
+        
+        \begin{flushleft} \textbf{Test 3: Closed Under Addition} \end{flushleft}
+            If the vectors $\vec{x}, \vec{y} \in \cc{P}$ such that $\vec{x} = ax_1 + bx_2 + cx_3$ and $\vec{y} = ay_1 + by_2 + cy_3$, then
+                \begin{align*}
+                    \vec{x} + \vec{y} & = (ax_1 + bx_2 + cy_3) + (ay_1 + by_2 + cy_3) \\
+                        & = a(x_1 + y_1) + b(x_2 + y_2) + c(x_3 + y_3) \\
+                \end{align*}
+            Since $\vec{x} + \vec{y} = \ovec x_1 + y_1, x_2 + y_2, x_3 + y_3 \cvec$, this shows that $(\vec{x} + \vec{y}) \in \cc{P}$, and therefore $\cc{P}$ satisfies the closure under addition property of a subspace. \\
+        
+        Since $\cc{P}$ satisfies all three properties of a subspace, we conclude \footnotemark that $\cc{P} $ a proper subspace of $\bb{R}^3$. 
+            
+            \footnotetext{The conclusion of this example is not that every plane is a subspace of $\bb{R}^3$, but only those that pass through the origin. Becuase the subspace must contain the zero vector}
+    \end{proof}
+\end{example}
+
+
+
+
+\newpage
+\begin{example}
+Polynomial Vector Spaces Example \\
+
+    \begin{tcolorbox}
+        Consider the vector space $\cc{C}[a,b]$, the space of continuous real-valued functions depends on the interval $[a,b]$. \\
+        Let us consider two subsets of $\cc{C}[a,b]$: \\
+            \begin{align*}
+                \cc{S}_3 & = \{ p \in \cc{C}[a,b] | p \text{ is a polynomial function of degree exactly $3$} \} \\
+                \cc{P}_3 & = \{ p \in \cc{C}[a,b] | p \text{ is a polynomial function of degree at most $3$} \} \\
+            \end{align*}
+    \end{tcolorbox}
+        
+    \begin{proof}    
+        The subsets $\cc{S}_3$ and $\cc{P}_3$ are subspaces of $\cc{3}[a,b]$ if and only if $\cc{S}_3$ and $\cc{P}_3$ adheres to the three properties of a subspace. We will firstly, proceed to test the subset $\cc{S}_3$ for conformity with the three properites: \\
+        
+        \begin{flushleft} \textbf{Test 1: $\vec{0} \subseteq \cc{C}[a,b]$} \end{flushleft}
+            $\cc{S}_3$ does not contain the zero function because the zero polynomial doe snot have degree three. Thus $\vec{0} \notin \cc{C}[a,b]$ 
+    
+        \begin{flushleft} \textbf{Test 2: Closed Under Scalar Multiplication} \end{flushleft}
+            Consider the arbitrary polynomial of exactly degree three, $p_1 = ax^3 + bx^2 + cx + d$, with $a,b,c,d \in p$ and $\forall \alpha \in \bb{R}$, then 
+                \begin{align*}
+                    \alpha \m p_1 & = \alpha(ax^3 + bx^2 + cx + d) \\
+                        & = (\alpha \m a)x^3 + (\alpha \m b)x^2 + (\alpha \m c)x + (\alpha \m d) \\
+                \end{align*}
+            
+            Since $(\alpha \m a), (\alpha \m b), (\alpha \m c), (\alpha \m d) \in \bb{R}$, it follows that $\alpha \m p_1 \in \cc{S}_3$. Consequently, $\cc{S}_3$ satisfies the closure under scalar multiplication property of a subspace. \\
+        
+            
+        \begin{flushleft} \textbf{Test 3: Closed Under Addition} \end{flushleft}
+            Consider the following two polynomials of exactly degree three degree, $p_2 = ax^3 + bx^2 + cx + d$ and $p_3 = -ax^3 + bx^2 + cx + d$, respectively, then
+                \begin{align*}
+                    p_2 + p_3 & = (ax^3 + bx^2 + cx + d) + (-ax^3 + bx^2 + cx + d) \\
+                        & = (a - a)x^3 + (b+b)x^2 + (c+c)x + (d+d) \\
+                        & = (2b)x^2 + (2c)x + 2d \\
+                \end{align*}
+
+            $p_2 + p_3$ yields a polynomial of degree two. Since $\cc{S}_3$ only contains polynomials of exactly degree three, we conclude that $\cc{S}_3$ is not closed under addition \\
+            
+        Since $\cc{S}_3$ fails to satisfies all three properties of a subspace, we conclude that $\cc{S}_3$ is not subspace of $\cc{C}[a,b]$. \\ 
+    
+    Moreover, since we have established that $\cc{S}_3$ is not a subspace of $\cc{C}[a,b]$, we will proceed to test if $\cc{P}_3$ is a subspace of $\cc{C}[a,b]$ \\
+        
+        \begin{flushleft} \textbf{Test 1: $\vec{0} \subseteq \cc{S}_3$} \end{flushleft}
+            By definition of subset $\cc{P}_3$, the zero polynomial is an element of $\cc{P}_3$, then $ \vec{0} \in \cc{P}_3$. This satisfies the $\vec{0} \subseteq \cc{S}_3$ property of a subspace. \\
+        
+        \begin{flushleft} \textbf{Test 2: Closed Under Scalar Multiplication} \end{flushleft}        
+            Consider the arbitrary polynomial of at most degree three, $p_4 = ax^3 + bx^2 + cx + d$, with $a,b,c,d \in p$, then $\forall \alpha \in \bb{R}$,
+                \begin{align*}
+                    \alpha \m p_4 & = \alpha(ax^3 + bx^2 + cx + d) \\
+                        & = (\alpha \m a)x^3 + (\alpha \m b)x^2 + (\alpha \m c)x + (\alpha \m d) \\
+                \end{align*}
+            
+            Since $(\alpha \m a), (\alpha \m b), (\alpha \m c), (\alpha \m d) \in \bb{R}$, it follows that $\alpha \m p_4 \in \cc{P}_3$. Consequently, $\cc{P}_3$ satisfies the closure under scalar multiplication property of a subspace. \\
+        
+        
+        
+        \begin{flushleft} \textbf{Test 3: Closed Under Addition} \end{flushleft}
+            Consider the following two polynomials of at most degree three degree, $p_5 = ax^3 + bx^2 + cx + d$ and $p_6 = -ax^3 + bx^2 + cx + d$, respectively, then
+                \begin{align*}
+                    p_5 + p_6 & = (ax^3 + bx^2 + cx + d) + (-ax^3 + bx^2 + cx + d) \\
+                        & = (a - a)x^3 + (b+b)x^2 + (c+c)x + (d+d) \\
+                        & = (2b)x^2 + (2c)x + 2d \\
+                \end{align*}
+
+            $p_5 + p_6$ yields a polynomial of at degree two. Since $\cc{P}_3$ contains polynomials of at most degree three, we conclude that $\cc{S}_3$ is closed under addition \\
+        
+        Therefore, $\cc{P}_3$ satisfies all three properties of a subspace, we conclude that $\cc{P}_3$ a proper subspace of $\cc{C}[a,b]$.
+    \end{proof}
+\end{example}
+
+
+
+
+\newpage
+\subsubsection{All Subsets are not Subspaces}
+It is important to recognize the difference between a subset of a vector space and a subspace. A subspace is a special kind of subset; every subspace is a subset, but not every subset is a subspace. See the next example to clarify this concept.
+
+\begin{example}
+Set of Integer Subspace
+
+    \begin{tcolorbox}
+        Consider the subset $S = \{ (0,0), (1,0), (1,1) \}$ of $\bb{Z}_2^2$
+    \end{tcolorbox}
+    
+    \begin{proof}
+        The subsets $S$ is a subspace of $\bb{Z}_2^2$ if and only if $S$ adheres to the three properties of a subspace. We will proceed to test the subset $S$ for conformity with the three properites: \\
+    
+        \textbf{Test 1: $\vec{0} \subseteq S$} \\
+            Since $(0,0) \in S$, this satisfies the $\vec{0} \subseteq \cc{S}_3$ property of a subspace. \\
+            
+        \textbf{Test 2: Closed Under Scalar Multiplication} \\
+            If $\forall \alpha \in \bb{Z}$, then  
+                \begin{align*}
+                    \alpha \m S & = \{ \alpha \m (0,0), \alpha \m (1,0), \alpha \m (1,1) \} \\
+                        & = \{ (0,0), (\alpha, 0), (\alpha, \alpha) \} \\
+                \end{align*}
+            It follows that $\alpha \m S \in S$ satisfies the closure under scalar multiplication property of a subspace. \\
+        
+        \textbf{Test 3: Closed Under Addition} \\
+            Notice that $(1,0)$ and $(1,1)$ are elements fof $S$, adding these elements yield: \\
+                \begin{align*}
+                    (1,0) + (1,1) & = (2,1) \\
+                \end{align*}
+            Since $(2,1) \notin S$, $S$ is not closed under addition property of a subspace. \\
+        
+        Therefore, $S$ fails to satisfies all three properties of a subspace, we conclude that $S \subseteq \bb{Z}_2^2$ but not a subspace of $\bb{Z}_2^2$.
+    \end{proof}
+\end{example}
+
+
+
+
+\newpage
+\subsection{Linear Combinations}
+
+When we combine vectors using the operations of addition and scalar multiplication, the result is called a \textbf{linear combination}:
+
+\begin{definition}
+Linear Combination \\
+
+    Let $\cc{V}$ be a vector space over a field $\cc{F}$, let $u_1, u_2, u_3, \cdots u_k$ be vectors in $\cc{V}$, and let $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_k$ be scalars in $\cc{F}$. Then, 
+        \begin{equation*}
+            \alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots \alpha_k u_k
+        \end{equation*}
+    is called a \textbf{linear combination} of the vectors $u_1, u_2, u_3, \cdots u_k$. The scalars $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_k$ are called the \textbf{weights} in the linear combination.  
+\end{definition}
+
+
+\begin{tcolorbox}
+    \begin{theorem}
+    Linear Combination as a Subspace I \\
+        Let $\cc{V}$ be a vector space over a field $\cc{F}$ and let $\cc{S}$ be a subspace of $\cc{V}$. Then for any vectors  $u_1, u_2, \cdots, u_k \in \cc{S}$ and scalars $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_k \in \cc{F}$, the linear combination 
+            \begin{equation*}
+                \alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots \alpha_k u_k
+            \end{equation*}
+        belongs to $\cc{S}$
+    \end{theorem}
+    
+    \begin{remark}
+        Prove this theorem using principle of induction
+    \end{remark}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    \begin{theorem}
+    Linear Combinations as a Subspace II \\
+    
+        Let $\cc{V}$ be a vector space over a field $\cc{F}$, let $u_1, u_2, \cdots, u_n$ be vectors in $\cc{V}$, where $n \in \bb{N}$ and let $\cc{S}$ be the set of linear combinations of $u_1, u_2, u_3, \cdots, u_n$, such that:
+            \begin{equation*}
+                S = \{ \alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots + \alpha_n u_n \; | \; \alpha_1, \alpha_2, \alpha_3, \cdots \alpha_n \in \cc{F} \}
+            \end{equation*}
+        Then $\cc{S}$ is a subspace of $\cc{V}$
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    The set of all linear combinations $\cc{S}$ is a subspace of $\cc{V}$ if and only if $\cc{S}$ adheres to the three properties of a subspace. We will proceed to test the subset $\cc{S}$ for conformity with the three properties: \\
+    
+        \begin{flushleft} \textbf{Test 1: $\vec{0} \subseteq \cc{S}$} \end{flushleft}
+            If we choose $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_n 0$, then the linear combination
+                \begin{equation*}
+                    0 \m u_1 + 0 \m u_2 + 0 \m u_3 + \cdots 0 \m u_n = 0 
+                \end{equation*}
+            belongs to $\cc{S}$, which satisfies the $\vec{0} \subseteq \cc{S}$ property of a subspace. \\
+        
+        \begin{flushleft} \textbf{Test 2: Closed Under Scalar Multiplication} \end{flushleft}        
+            Supose $v \in \cc{S}$ and $\beta \in \cc{F}$. Since $v$ belongs to $S$, it must be a linear combination of the vectors $u_1, u_2, \cdots, u_n$; this is, 
+                \begin{equation*}
+                    v = \alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots + \alpha_n u_n
+                \end{equation*}
+            for some choice of weights $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_n \in \cc{F}$. Then, 
+                \begin{align*}
+                    \beta v & = \beta (\alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots \alpha_n u_n) \\
+                        & = \beta (\alpha_1 u_1) + \beta (\alpha_2 u_2) + \beta (\alpha_3 u_3) + \cdots + \beta (\alpha_n u_n) \\
+                        & = (\beta \alpha_1) u_1 + (\beta \alpha_2) u_2 + (\beta \alpha_3) u_3 + \cdots + (\beta \alpha_n) u_n \\                        
+                \end{align*}
+            This shows that $\beta v$ is also a linear combination of the vectors $u_1, u_2, \cdots, u_n$ and hence $\beta v$ belongs to $\cc{S}$. Consequently, $\cc{S}$ satisfies the closure under scalar multiplication property of a subspace. \\
+        
+        \begin{flushleft} \textbf{Test 3: Closed Under Addition} \end{flushleft}
+            Suppose $v, w \in \cc{S}$, such that 
+                \begin{align*}
+                    v & = \alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots + \alpha_n u_n
+                    w & = \beta_1 u_1 + \beta_2 u_2 + \beta_3 u_3 + \cdots + \beta_n u_n
+                \end{align*}
+            for some choice of weights $\alpha_1, \alpha_2, \alpha_3, \cdots \alpha_n \in \cc{F}$ and $\beta_1, \beta_2, \beta_3, \cdots \beta_n \in \cc{F}$, and so
+                \begin{align*}
+                    v + w & = (\alpha_1 u_1 + \alpha_2 u_2 + \alpha_3 u_3 + \cdots + \alpha_n u_n) + (\beta_1 u_1 + \beta_2 u_2 + \beta_3 u_3 + \cdots + \beta_n u_n) \\
+                        & = (\alpha_1 u_1 + \beta_1 u_1) + (\alpha_2 u_2 + \beta_2 u_2) + (\alpha_3 u_3 + \beta_3 u_3) + \cdots + (\alpha_n u_n + \beta_n u_n) \\
+                        & = (\alpha_1 + \beta_1) u_1 + (\alpha_2 + \beta_2) u_2 + (\alpha_3 + \beta_3) u_3 + \cdots + (\alpha_n + \beta_n) u_n \\
+                \end{align*}
+            Since $v + w \in \cc{S}$, we conclude that $\cc{S}$ is closed under addition \\
+        
+        Therefore, $\cc{S}$ satisfies all three properties of a subspace, we conclude that $\cc{S}$ a proper subspace of $\cc{C}[a,b]$.
+\end{proof}
+
+
+\newpage
+\subsection{Spanning Sets}
+
+\begin{definition}
+Spanning Set \\
+
+Let $\cc{V}$ be a vector space over a field $\cc{F}$, let  $\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n}$ be the vectors in $\cc{V}$, where $n \in \bb{N}$. The set of all linear combinations  of  $\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n}$ is called \textbf{span of  $\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n}$}, and is denoted by $sp\{\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n} \}$. \\
+
+We say that  $\{\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n}\}$ is a spanning set for $\cc{S} = sp\{ \vec{u_1}, \vec{u_2}, \cdots, \vec{u_n} \}$ and that  $\vec{u_1}, \vec{u_2}, \cdots, \vec{u_n}$ span $\cc{S}$
+\end{definition}
+
+When the subspace $\cc{S}$ is defined by a spanning set, determining if an vector $v \in \cc{V}$ also belongs to $\cc{S}$, can easily be solved manipulating a system of linear equations. 
+
+\begin{example}
+Does $\vec{v}$ belong to $\cc{S}$? \\
+    
+    \begin{tcolorbox}
+        Let $\cc{S}$ be the subspace of $\bb{R}^3$ defined by $\cc{S} = sp\{\vec{u_1}, \vec{u_2} \}$, where 
+            \begin{equation*}
+                \vec{u_1} = \begin{bmatrix} 1 \\ 1 \\ -3 \end{bmatrix},  \vec{u_2} = \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix}
+            \end{equation*}
+        and let $\vec{v} \in \bb{R}^3$ be the vector
+            \begin{equation*}
+                \vec{v} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}
+            \end{equation*}
+        Does $\vec{v}$ belong to $\cc{S}$ ?
+    \end{tcolorbox}
+    
+    
+    \begin{working}
+    Since $\cc{S}$ is the set of all linear combinations of $u_1$, $u_2$. the question is whether we can write $\vec{v}$ as a linear combination of $\vec{u_1}, \vec{u_2}$. That is, do there exists scalars $\alpha_1, \alpha_2$ satisfying $\vec{v} = \alpha_1 \vec{u_1} + \alpha_2 \vec{u_2}$. This equation takes the form
+        \begin{equation*}
+            \alpha_1 {\begin{bmatrix} 1 \\ 1  \\ -3 \end{bmatrix}} + \alpha_2 {\begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix}} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix} 
+        \end{equation*}
+    The corresponding system of linear equations is,
+        \begin{align*}
+            \alpha_1 + 2 \alpha_2       & = 1 \\
+            \alpha_1 + 3 \alpha_2       & = 2 \\
+            -3 \alpha_1 + 2 \alpha_2    & = 3 \\
+        \end{align*}
+    Gaussian Elimination yields the equivalent system
+        \begin{align*}
+            \alpha_1 + 2 \alpha_2       & = 1 \\
+            \alpha_2                    & = 1 \\
+            0                           & = -2 \\
+        \end{align*}
+    The last equation could be written as $0 \m \alpha_1 + 0 \m \alpha_2 = -2$ which is not satisfied by any $\alpha_1, \alpha_2$. It follows that the orginal system has no solution, and therefore $\vec{v}$ does not belong to $\cc{S}$. 
+    \end{working}
+
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\subsection{Linear Independence}
+\subsection{Basis and Dimension}
+\subsection{Properties of Basis}
+
+\newpage
+\section{Linear Operators}
+\subsection{Linear Operators}
+\subsection{Properties of Linear Operators}
+\subsection{Isomorphic Vector Spaces}
+\subsection{Existence and Uniqueness of Solutions}
+\subsection{The Fundamental Theorem; Inverse Operators}
+\subsection{Gaussian Elimination}
+
+\newpage
+\section{Determinants and Eigenvalues}
+\subsection{The Determinant Function}
+\subsection{Properties of the Determinant}
+\subsection{Practical Computation of $\text{det}(A)$}
+\subsection{A Note about Polynomials}
+\subsection{Eigenvalues and the Characteristic Function}
+\subsection{Diagonalization}
+\subsection{Eigenalues of Linear Operators}
+
+\newpage
+\section{Orthogonal and Best Approximations}
+\subsection{Norm and Inner Product}
+\subsection{The adjoint of a Linear Operator}
+\subsection{Orthogonal Vectors and Bases}
+\subsection{The Projection Theorem}
+\subsection{Gram-Schmidt Theorem}
+\subsection{Orthogonal Complements}
+
+\newpage
+\section{The Singular Value Decomposition}
+\subsection{Intro to SVD}
+\subsection{The SVD for General Matrices}
+\subsection{Solving Least Squares Problems using the SVD}
+\subsection{The SVD and Linear Inverse Problems}
+\subsection{The Smith Normal Form of a Matrix}
+
+\newpage
+\section{Matrix Factorization and Numerical Linear Algebra}
+\subsection{The LU Factorization}
+\subsection{Partial Pivoting}
+
+
+
+
+
+\newpage
+\chapter{Bibiography}
+\printbibliography
+
+
+
+
+\end{document}

@@ -1,0 +1,467 @@
+% Document Type Management
+    \documentclass{book}
+    \usepackage[utf8]{inputenc}
+    \usepackage[english]{babel}
+     
+ 
+%  Packages for Bibiography Management
+    \usepackage{biblatex}
+    \usepackage{csquotes}
+    \addbibresource{references.bib}
+
+
+% AMS Packages
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{amsmath}
+    \usepackage{amsthm}
+    \usepackage{esvect}
+    \usepackage{blindtext}
+
+
+% Images Management Packages
+    \usepackage{graphicx}
+    \graphicspath{ {images/} }
+
+
+% Packages to Draw Images
+    \usepackage{float}
+    \usepackage{tikz}
+    \usetikzlibrary{shapes,backgrounds}
+    \usetikzlibrary{positioning}
+
+
+% Custom Section Labels   
+        \newtheorem{theorem}{Theorem}[section]
+        \newtheorem{conjecture}[theorem]{Conjecture}
+        \newtheorem{corollary}{Corollary}[theorem]
+        \newtheorem{lemma}[theorem]{Lemma}
+
+    \theoremstyle{definition}
+        \newtheorem{definition}{Definition}[section]
+        \newtheorem{example}{Example}[definition]
+        \newtheorem{entry}{Entry}[definition]
+ 
+    \theoremstyle{remark}
+        \newtheorem{remark}{Remark}
+
+% Working Environment
+    \newenvironment{working}{\textit{Workings. }}
+
+
+% Custom Chapters and Sections
+    \usepackage[explicit]{titlesec}
+    
+    \usepackage[many]{tcolorbox}
+    \tcbset{colback=green!10!white}
+    \tcbsetforeverylayer{colframe=green!10!white}
+    
+    \usepackage{fancyhdr}
+    \usepackage{lmodern}
+    \usepackage{lipsum}
+    
+    \definecolor{titlebgdark}{RGB}{0,163,243}
+    \definecolor{titlebglight}{RGB}{191,233,251}
+    
+    \newlength{\chaptertopspacing}
+    \setlength{\chaptertopspacing}{130pt}
+    
+    
+    \titleformat{\chapter}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm,
+          overlay={
+            \node[
+              fill=titlebgdark,
+              draw=titlebglight,
+              line width=0.15cm,
+              inner sep=0pt,
+              text width=1.7cm,
+              minimum height=1.7cm,
+              align=center,
+              font=\color{white}\sffamily\bfseries\fontsize{30}{36}\selectfont
+            ] 
+            (chapname)
+            at ([xshift=-4cm]frame.north east)
+            {\thechapter};
+            \node[font=\small,anchor=south,inner sep=2pt] at (chapname.north)
+            {\MakeUppercase\chaptertitlename};  
+          } 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titleformat{name=\chapter,numberless}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          remember as=title,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm, 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titlespacing*{\chapter}
+      {0pt}{0pt}{40pt}
+    \makeatother
+
+
+% Custom Commands '
+    \newcommand{\bb}[1]{\mathbb{#1}}
+    \newcommand{\cc}[1]{\mathcal{#1}}
+    \newcommand{\ovec}{\big \langle}
+    \newcommand{\cvec}{\big \rangle}
+    \newcommand{\m}{\cdot}
+
+
+% \binomialb macro from https://tex.stackexchange.com/a/161863/4686
+% expandably computes binomial coefficients with \numexpr
+
+% START OF CODE
+    \catcode`_ 11
+    
+    \def\binomialb #1#2{\romannumeral0\expandafter
+        \binomialb_a\the\numexpr #1\expandafter.\the\numexpr #2.}
+    
+    \def\binomialb_a #1.#2.{\expandafter\binomialb_b\the\numexpr #1-#2.#2.}
+    
+    \def\binomialb_b #1.#2.{\ifnum #1<#2 \expandafter\binomialb_ca
+                                \else   \expandafter\binomialb_cb
+                                \fi {#1}{#2}}
+    
+    \def\binomialb_ca #1{\ifnum#1=0 \expandafter \binomialb_one\else 
+                        \expandafter \binomialb_d\fi {#1}}
+    
+    \def\binomialb_cb #1#2{\ifnum #2=0 \expandafter\binomialb_one\else
+                          \expandafter\binomialb_d\fi {#2}{#1}}
+    
+    \def\binomialb_one #1#2{ 1}
+    
+    \def\binomialb_d #1#2{\expandafter\binomialb_e \the\numexpr #2+1.#1!}
+    
+    % n-k+1.k! -> u=n-k+2.v=2.w=n-k+1.k!
+    \def\binomialb_e #1.{\expandafter\binomialb_f \the\numexpr #1+1.2.#1.}
+    
+    % u.v.w.k!
+    \def\binomialb_f #1.#2.#3.#4!%
+    {\ifnum #2>#4 \binomialb_end\fi
+     \expandafter\binomialb_f
+     \the\numexpr #1+1\expandafter.%
+     \the\numexpr #2+1\expandafter.%
+     \the\numexpr #1*#3/#2.#4!}
+    
+    \def\binomialb_end #1*#2/#3!{\fi\space #2}
+    \catcode`_ 8
+% END OR \binomialb code
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \textbf{MATHEMATICAL PROOF STRUCTURES}
+        
+        \vspace{0.5cm}
+        Module 2: Number Theory
+        
+        \vspace{1.5cm}
+        
+        \textbf{Vernon V. Lallman}
+        
+        \vfill
+        
+        A thesis presented for the degree of Mathematics\\
+        Doctor of Philosophy
+        
+        \vspace{0.8cm}
+        
+        \includegraphics[width=0.4\textwidth]{university}
+        
+        Mathematics Department\\
+        State University of New York \\
+        Geneseo\\
+        \date{\today}
+        
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+\chapter{TOPICS IN PRICING THEORY}
+\newpage
+
+\section{INSURANCE HEDGING AND SIMIPLE STRATEGES}
+\subsection{Introduction to Futures and Options}
+\subsubsection{Derivative Markets and Instruments}
+    \begin{definition}{\textbf{Derivatives}}
+    These are financial instruments whose returns are derived from those of other financial instruments. Derivatives serves a valuable purpose in providing a means of managing financial risk. By using derivatives, counterparties can transfer, for a price, any undesired risk to other partiesn who either have risks that offset ir want to assume that risk
+    \end{definition}
+    
+    The main types of derivative contracts are: Options, Forward Contracts, Futures Contracts, and Swaps and hybrid derivatives
+    
+    \begin{definition} {\textbf{Options Contracts}}
+        An Option is a contract between two parties - a buyer and a seller - that gives the buyer the right, but not the obligation, to purchase or sell something at a later date at a price agreeded upon today. 
+        
+        The Option buyer pays the seller a sum of money called the \textbf{premium}. The option seller stands ready to sell or buy according to the contract terms if and when the buyer so desired. An option to buy some thing is called a \textbf{call}; an option to sell something is called a \textbf{put}.
+        \end{definition}
+        
+        \begin{definition}{\textbf{Forward Contracts}}
+        A \textbf{forward contract} is a contract between two parties - a buyer and a seller - to purchase or sell something at a later date at a price aggreed upon today.
+    \end{definition}
+    
+    \begin{definition} {\textbf{Futures Contracts}}
+        A \textbf{futures contract} is also a contract between two parties - a buyer and a seller - to but or sell something at a future date at a price agreed upon today. Futures contracts eveoled out of forwards contracts and posses many of the same characteristics. Unlike forward contracts, futures contracts trade on organized exchanges.  
+        
+        The buyer of a futures contract, who has the obligation to buy the good at a later date, can sell the contract in the futures market, which relieves her of the obligation to purchase the good. Otherwise the seller of a contract, who is obligated to sell the good at the later date, can buy the contract back in the futures market, relieving him of the obligation to sell the good.  
+        
+        
+        \textbf{Options on futures}, somtimes called \texttt{commodity options} or \texttt{futures options}, are an important synthesis of futures and options markets. An opiton on futures contract gives the buyer the right to buy or sell a futures contract at a later date at a price agreed upon today. 
+    \end{definition}
+    
+    \begin{definition}{\textbf{Swaps and hybrid Derivatives}}
+        A \textbf{swap} is a contract thich two parties agree to exchange cash flows. For example, one party is currently receiving cash from one investment but would pefer antoher type of investment in whcih the cash flows are different. The party contact a swap dealer, a firm operating in the over-the-counter market, who takes the opposite side of the trransaction. The firm and the dealer, in effect, swap cash flow streams. Depending on what happens to prices or interest rates , one party might elect to tie the payments it makes on the swap contract to the price of a commodity, called a \textbf{swaption}.
+        
+        Some of these types of contracts are referred to as \textbf{hybrid derivatives} because they combine the elements of several other types of contracts. 
+    \end{definition}
+
+\subsubsection{Important Concepts in Financial and Derivative Markets}
+    \begin{definition}{Market Efficiency and Theoretical Fair Value}
+        
+        \textbf{Market Efficiency} is a characteristic of a market in which the prices of the instruments trading therein reflect their true economic value to investors. In an efficent marketplace, prices fluctuate famdonmly and investors cannot consistently earn returns above those that would compensate them for the level of risk they assume.
+        
+        An efficient market is one in which the price of an asset equals its true economic value, whihc is called the \textbf{theoretical fair value}. Spot and derivative markets are normally quite efficient. 
+    \end{definition}
+    
+    \begin{definition}{Risk and Return and Arbitrage}
+        
+        \textbf{Expected Return} is the return one expects to earn. A portion of the expected return must compensate for the \textit{opportunity cost}, as represented by the risk-free rate. The excess of the expected return over the risk-free rate is called the \textbf{risk premium}. In general, we say that 
+            \begin{equation}
+                E(r_s)= r + E(\alpha)
+            \end{equation}
+        where $E(r_s)$ is the expected return from some investment identified as "$s$", "$r$" is the risk-free rate, and $E(f)$ is expected risk premium. By the Capital Asset Pricing Model (CAPM), the expected risk premium can be articulated more clearly as: 
+            \begin{equation}
+                E(r_s) = r + [E(r_m)]\beta_s
+            \end{equation}
+        where $E(r_m)$ is the expected return on the market portfolio, which is the combination of all risky assets, and $b_s$ is called the asset's beta. The \textbf{beta} is a measure of the risk that an investor cannot avoid, which is the risk that the asset contributes to the porfolio. The CAPM assumes that individual diversify away as much risk as possible amd hold the market portfolio. Thus, the only risk that matters is the risk that a given asset contributes to a diversfed portfolio.
+        
+        We use derivatives to reduce or eliminate the risk out of a portfolio. with risk out of the picture, all one really needs to understand is aribtrage. \textbf{Aribtrage} is a condition resulting from the fact that two identical combination of assets are selling for different prices. An investor who spots such an opportunity will buy the lower-priced combination and sell the higher priced combination. Becuase the combination of assets perform identically, the performance of one combibnation hedges the performance of the other so that the risk is eliminated. 
+    \end{definition}
+
+
+
+\subsubsection{Fubndamental Linckages between Spot and Derivative Markets}
+    \begin{definition}{Aribtrage \& Law of One Price}
+        
+        \textbf{Arbitrage} is a type of transaction in which an investor seek to profit when the same good sells for two different prices. The individual engages in arbitrage, called the arbitrageur, buys the good at the lower price and immediately sells it at the higher price. The lower price will be drived up and the high price driven down until the two prices are equal. 
+        
+        \textbf{The law of one price} requires that equivalent combinatiron of assets, meaning those that offer the same outcome, must sell for a single price or else there would be an opportunity for porfitable arbitrage that woulld quicly elimate the price differential. Markets ruled by the Law of one price have the following four characteristics: 
+            \begin{enumerate}
+                \item Investors always prefer more wealth to less
+                \item Given two investments opportunities, investors will prefer one that performs at least as well as the other in all states and better in at least one state
+                \item If two investment opportunities offer equivalent outcomes, they must have equivalent prices. 
+                \item An investment opportunity that produces the samne return in all states is risk-free abd nust earn the risk-free rate. 
+            \end{enumerate}
+        Occasionally prices get out of line. Arbitrage is the mechanism that keeps prices in line.
+    \end{definition}
+    
+    \begin{definition}{The Storage Mechanism: Spreading Consumption across Time}
+    
+        Storage is an important linkage between the spot and derivatives markets. Many types of assets can be purchased and stored. Holding a stock or bond is a form of storage. Even making a loan is a form of storage. Storage is a form of investment in which one defers selling the item today in anticupation of selling it at a later date. Storage spreads consumption across time. 
+        
+        Because price constantly fluctuate, storage entails tisk. Derivatives can be used to reduce the risk by providing a means of establishing today the item's future sale price. This suggests that the risk entails in storing the item can be removed. In that case, the overall investment should offer the risk-free rate. Therefore, it is not suprising that the prices of the storable item, the derivative contract, and the risk-free rate will all be related. 
+    \end{definition}
+
+    \begin{definition}{Delivery \& Settlement}
+    
+    \end{definition}
+\newpage
+\section{Insurance, Collar and Other Strategies}
+\section{Introduction to Risk Management}
+\section{Principles of Options Pricing}
+
+In this chapter, we do not derive the exact price of an option, rather, we confine the discussion to identifying upper and lower limits and factors that influence an option's price. In later chapters we will explain how the exact options price is determined.  
+   
+    \subsection{Basic Notation \& Terminology}
+        The following are the symbols used thoughout this module:
+            \begin{itemize}
+                \item $S_0 =$ stock price today (time 0 = today)
+                \item $X =$ exercise price
+                \item $T =$ time to expiration as defined below
+                \item $r =$ risk-free rate as defined below
+                \item $S_T =$ stock price at option's expiration, that is after the passage of a time of $T$
+                \item $C(S_o, T, X) =$ price of a call option in which the stock price is $S_0$, the time to expiration is $T$, and the exercise price is $X$
+                \item $P(S_o, T, X) =$ price of a call option in which the stock price is $S_0$, the time to expiration is $T$, and the exercise price is $X$
+            \end{itemize}
+        In some situations, we need to distingusih an American Call from a European Call. If so, the call price will be denoted as either $C_a(S_o, T, X)$ or $C_e(S_o, T, X)$ for the American and European Calls, respectively. If there is no $a$ or $e$ subscript, the call can be either an American or European Call. In the case where two options differ only by exerise price, the notations $C(S_o, T, X_1)$ and $C(S_o, T, X_2)$ will identify the prices of the calls with $X_1$ less than $X_2$, so $X_1 < X_2$. Similarly, in the case two options differ only by time to expiration, the times to expiration will be $T_1$ and $T_2$ where $T_1<T_2$. The options' prices will be $C(S_o, T_1, X)$ and $C(S_o, T_2, X)$. Identical adjustments will be made for put option prices
+        
+        For most of the examples, we shall assume that the stock pays no dividends. If, during the life of the option, the stock pays dividends of $D_1, D_2, ... $, and so forth, then  we can make a simple adjustment and obtain similar results. To do so, simply subtract the present value of the dividends
+            \begin{equation}
+                \sum_{j=1}^{N} D_j( = 1+r)^t_j
+            \end{equation}
+        Where $N$ is the dividends, $t_j$ is the time to each dividends day, from the stock price, and $r$ is the risk-free rate eaerned on a riskless investment
+        
+        To illustrate the principles of options pricing, we shall be using prices for options on DCRB, a fictional technology company traded on NASDAQ. These prices were assumed to be observed on May 14 and presented in table \ref{montage}. The May options expire on May 21, the June options expire on June 18, and the July options expire on July 16.
+
+            \begin{table}[]
+            \centering
+            \caption{DCRB Option Data, May 14}
+            \label{montage}
+                \begin{tabular}{|l|l|l|l|l|l|l|}
+                    \multicolumn{1}{c}{\textbf{}} & \multicolumn{3}{c}{\textbf{Calls}} & \multicolumn{3}{c}{\textbf{Puts}} \\
+                    \multicolumn{1}{c}{\textbf{Exercise Price}} & \multicolumn{1}{c}{\textbf{May}} & \multicolumn{1}{c}{\textbf{June}} & \multicolumn{1}{c}{\textbf{July}} & \multicolumn{1}{c}{\textbf{May}} & \multicolumn{1}{c}{\textbf{June}} & \multicolumn{1}{c}{\textbf{July}} \\
+                    120 & 8.75 & 15.40 & 20.90 & 2.75 & 9.25 & 13.65 \\
+                    125 & 5.75 & 13.5 & 18.60 & 4.60 & 11.50 & 16.60 \\
+                    130 & 3.60 & 11.35 & 16.40 & 7.35 & 14.25 & 19.65 \\
+                    \multicolumn{7}{l}{Current Stock Price: 125.94} \\
+                    \multicolumn{7}{l}{Expirations: May 21, June 18, July 16}
+                \end{tabular}
+            \end{table}
+    
+    \subsection{Principles of Call Opition Pricing}
+        \subsubsection{Minimum Value of a Call}
+            A call option is an instrument with limited liability. If the call holder see that it is advantageous to exercise it, the call will be exercised. If exercising it will decrease the call holder's wealth, the holder will not exercise it. The call options cannot have negative value, becuase the holder cannot be forced to exercise it. Therefore, 
+                \begin{equation}
+                    C(S_0, T, X) \geqq 0
+                \end{equation}
+            For an American Call, the statement that a call option has a minimum value of zero is dominated by a much stronger statement: 
+                \begin{equation}
+                    C_a(S_0, T, X) \geqq Max(, S_0 - X)
+                \end{equation}
+            The minimum value of an option is called its \textbf{intrinsic value}, sometimes referred to as \textbf{parity value}, \textbf{parity}, or \textbf{exercise value}. Intrinsic value, which is postive for in-the-money calls and zero for out-of-the-money calls, is the value the call holdr receives from exercising the option and the value the call writer gives up when the option is exercised. 
+                                
+                \begin{table}[]
+                \centering
+                \caption{Intrinsic Values \& Time Values of DCRB Calls}
+                \label{Call-time}
+                    \begin{tabular}{lllll}
+                        \multicolumn{2}{c}{} & \multicolumn{3}{c}{Time Value} \\
+                        \multicolumn{1}{c}{Exercise Price} & \multicolumn{1}{c}{Intrinsic Value} & \multicolumn{1}{c}{May} & \multicolumn{1}{c}{June} & \multicolumn{1}{c}{July} \\
+                        120 & 5.94 & 2.81 & 9.46 & 14.96 \\
+                        125 & 0.94 & 4.81 & 12.56 & \begin{tabular}[c]{@{}l@{}}17.\\ 66\end{tabular} \\
+                        130 & 0.00 & 3.60 & 11.35 & 16.40
+                    \end{tabular}
+                \end{table}
+            
+            To prove that $C_a(S_0, T, X) \geqq Max(, S_0 - X)$, consider the DCRN June 120 call. The stock price is $\$125.94$, and the exercise price is $\S120.00$. Evaluating the expression gives:
+                \begin{align*}
+                    C_a(S_0, T, X) & \geqq Max(0, S_0 - X) \\ 
+                    C_a(\$125.94, 35, \$120.00) & \geqq Max(0, 125.94-120.00) \\
+                    C_a(\$125.94, 35, \$120.00) & \geqq \$5.94
+                \end{align*}
+            Now, consider what would happen if the call were priced at less than $\$5.94$ -say, $\S3.00$. An option trader could buy the call for $\$3.00$, exercise it - which would entai purchasing the stock for $\$120.00$ -and then sell the stock for $\$125.94$. This arbitrage transaction would net an immediate riskless profit of $\$2.94$ on each share. arbitrageur exploiting this riskless oportunity would push the mispriced call option price back to at least $\$5.94$. Thus, $\$5.94$ is the minimum price of the call. 
+            
+            What if the exercise price exceeds the stock price, as do the options with an exercise price of $\$130.00$. Then $Max(0, \$125.94 - \$130.00) = \$0.00$, and the minimum value will be zero. 
+            
+            Now look at all of DCRB calls. Those with an exercise price of $\$120.00$ have a minimum value of $Max(0, \$125.94 - \$120.00) = \$5.94 $. All three calls with an exercise price of $\$120.00$ have a minimum have prices no less than $\$5.94$. The calls with an exercise price of $\$125.00$ have a minimum value of $max(0, \$125.94 -\$125.00) = \$0.94$ and are priced at no less than $\$0.94$. The calls with an exercise price of $\$130.00$ have minimum values of $Max(0, \$125.94 - \$130.00) = 0$. All those options with strike prices below $\$125.94$ obviously have nonnegative values. Thus, all the DCRB call options conform quite closely to the rule. 
+            
+            The price of an american call normally exceeds its intrinsic value. The difference between the call price and its intrinsic value is called the \textbf{Time Value} or \textbf{Speculative Value} of the call, which is defined as $C_a(S_0, T, X) - Max(0, S_0 -X)$. Time value reflects what tradres are willing to pay for the uncertainty of the underlying stock
+        \subsubsection{Maximum Value of a Call}
+        \subsubsection{Value of a Call at Expiration}
+        \subsubsection{Effect of Time to Expiration}
+        \subsubsection{Effects of Exercise Price}
+        \subsubsection{Lower Bound od a European Call}
+        \subsubsection{American Call vs. European Call}
+        \subsubsection{Early Exercise of American Calls on Dividend-Paying Stocks}
+        \subsubsection{Effect of Interest Rates}
+        \subsubsection{Effect of Stock Volatility}
+    
+    \subsection{Principles of Put Options Pricing}
+        \subsubsection{Minimum value of a Put}
+        \subsubsection{Maximum Value of a Put}
+        \subsubsection{Value of a Put at Expiration}
+        \subsubsection{Effect of Time to Expiration}
+        \subsubsection{Effect of Exercise Price}
+        \subsubsection{Lower Bound of a European Put}
+        \subsubsection{American Put vs. European Put}
+        \subsubsection{Early Exerise of American Puts}
+        \subsubsection{Put-Call Parity}
+        \subsubsection{Effect of Interest Rates}
+        \subsubsection{Effect of Stock Volatility+}
+        
+
+\newpage
+\chapter{FORWARDS, FUTURES AND SWAPS}
+\section{Structure of Forwards and Futures Market}
+\section{Principles of Pricing Forwards, Futures and Option Market}
+\section{Forwads and Futures Hedging, Spreads and Other Strategies}
+\section{Swaps}
+
+\newpage
+\chapter{OPTIONS PRICING THEORY: I}
+\section{Put-Call Parity and Other Options Relationships}
+\section{Binomial Options Pricing: Basic Concepts}
+\section{Binomial Options Pricing: Selected Topics}
+\section{Black-Scholes Formula}
+\section{Market Making and Delta Hedging}
+\section{Exotic Options: 1}
+
+\newpage
+\chapter{FINANCIAL ENGINEERING AND APPLICATIONS}
+\section{Financial Engineering and Security Design}
+\section{Corporate Applications}
+\section{Real Options}
+
+\newpage
+\chapter{OPTIONS PRICING THEORY: II}
+\section{Lognormal Distribution}
+\section{Monte Carlo Valuation}
+\section{Brownian Motion and Ito Lemma}
+\section{Black-Scholes Equation}
+\section{Risk Neutral and Martingale Pricing}
+\section{Exotic Options: II}
+\section{Volatility}
+\section{Interest Rates and Bond Derivatives}
+\section{Value Added Risk}
+\section{Credit Risk}
+
+
+
+\newpage
+\chapter{Bibiography}
+\printbibliography
+
+
+
+
+\end{document}

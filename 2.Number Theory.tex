@@ -1,0 +1,3221 @@
+% Document Type Management
+    \documentclass{book}
+    \usepackage[utf8]{inputenc}
+    \usepackage[english]{babel}
+     
+ 
+%  Packages for Bibiography Management
+    \usepackage{biblatex}
+    \usepackage{csquotes}
+    \addbibresource{references.bib}
+
+
+% AMS Packages
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{amsmath}
+    \usepackage{amsthm}
+    \usepackage{esvect}
+    \usepackage{blindtext}
+
+
+% Images Management Packages
+    \usepackage{graphicx}
+    \graphicspath{ {images/} }
+
+
+% Packages to Draw Images
+    \usepackage{float}
+    \usepackage{tikz}
+    \usetikzlibrary{shapes,backgrounds}
+    \usetikzlibrary{positioning}
+
+
+% Custom Section Labels   
+        \newtheorem{theorem}{Theorem}[section]
+        \newtheorem{conjecture}[theorem]{Conjecture}
+        \newtheorem{corollary}{Corollary}[theorem]
+        \newtheorem{lemma}[theorem]{Lemma}
+
+    \theoremstyle{definition}
+        \newtheorem{definition}{Definition}[section]
+        \newtheorem{example}{Example}[definition]
+        \newtheorem{entry}{Entry}[definition]
+ 
+    \theoremstyle{remark}
+        \newtheorem{remark}{Remark}
+
+% Working Environment
+    \newenvironment{working}{\textit{Workings. }}
+
+
+% Custom Chapters and Sections
+    \usepackage[explicit]{titlesec}
+    
+    \usepackage[many]{tcolorbox}
+    \tcbset{colback=green!10!white}
+    \tcbsetforeverylayer{colframe=green!10!white}
+    
+    \usepackage{fancyhdr}
+    \usepackage{lmodern}
+    \usepackage{lipsum}
+    
+    \definecolor{titlebgdark}{RGB}{0,163,243}
+    \definecolor{titlebglight}{RGB}{191,233,251}
+    
+    \newlength{\chaptertopspacing}
+    \setlength{\chaptertopspacing}{130pt}
+    
+    
+    \titleformat{\chapter}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm,
+          overlay={
+            \node[
+              fill=titlebgdark,
+              draw=titlebglight,
+              line width=0.15cm,
+              inner sep=0pt,
+              text width=1.7cm,
+              minimum height=1.7cm,
+              align=center,
+              font=\color{white}\sffamily\bfseries\fontsize{30}{36}\selectfont
+            ] 
+            (chapname)
+            at ([xshift=-4cm]frame.north east)
+            {\thechapter};
+            \node[font=\small,anchor=south,inner sep=2pt] at (chapname.north)
+            {\MakeUppercase\chaptertitlename};  
+          } 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titleformat{name=\chapter,numberless}[display]
+      {\normalfont\huge\bfseries}
+      {}
+      {-\chaptertopspacing}
+      {%
+        \begin{tcolorbox}[
+          enhanced,
+          colback=titlebgdark,
+          boxrule=0.25cm,
+          colframe=titlebglight,
+          arc=0pt,
+          outer arc=0pt,
+          remember as=title,
+          leftrule=0pt,
+          rightrule=0pt,
+          fontupper=\color{white}\sffamily\bfseries\huge,
+          enlarge left by=-1in-\hoffset-\oddsidemargin, 
+          enlarge right by=-\paperwidth+1in+\hoffset+\oddsidemargin+\textwidth,
+          width=\paperwidth, 
+          left=1in+\hoffset+\oddsidemargin, 
+          right=\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth,
+          top=0.6cm, 
+          bottom=0.6cm, 
+        ]
+        #1
+        \end{tcolorbox}%
+      }
+    \titlespacing*{\chapter}
+      {0pt}{0pt}{40pt}
+    \makeatother
+
+
+% Custom Commands '
+    \newcommand{\bb}[1]{\mathbb{#1}}
+    \newcommand{\cc}[1]{\mathcal{#1}}
+    \newcommand{\ovec}{\big \langle}
+    \newcommand{\cvec}{\big \rangle}
+    \newcommand{\m}{\cdot}
+
+
+% \binomialb macro from https://tex.stackexchange.com/a/161863/4686
+% expandably computes binomial coefficients with \numexpr
+
+% START OF CODE
+    \catcode`_ 11
+    
+    \def\binomialb #1#2{\romannumeral0\expandafter
+        \binomialb_a\the\numexpr #1\expandafter.\the\numexpr #2.}
+    
+    \def\binomialb_a #1.#2.{\expandafter\binomialb_b\the\numexpr #1-#2.#2.}
+    
+    \def\binomialb_b #1.#2.{\ifnum #1<#2 \expandafter\binomialb_ca
+                                \else   \expandafter\binomialb_cb
+                                \fi {#1}{#2}}
+    
+    \def\binomialb_ca #1{\ifnum#1=0 \expandafter \binomialb_one\else 
+                        \expandafter \binomialb_d\fi {#1}}
+    
+    \def\binomialb_cb #1#2{\ifnum #2=0 \expandafter\binomialb_one\else
+                          \expandafter\binomialb_d\fi {#2}{#1}}
+    
+    \def\binomialb_one #1#2{ 1}
+    
+    \def\binomialb_d #1#2{\expandafter\binomialb_e \the\numexpr #2+1.#1!}
+    
+    % n-k+1.k! -> u=n-k+2.v=2.w=n-k+1.k!
+    \def\binomialb_e #1.{\expandafter\binomialb_f \the\numexpr #1+1.2.#1.}
+    
+    % u.v.w.k!
+    \def\binomialb_f #1.#2.#3.#4!%
+    {\ifnum #2>#4 \binomialb_end\fi
+     \expandafter\binomialb_f
+     \the\numexpr #1+1\expandafter.%
+     \the\numexpr #2+1\expandafter.%
+     \the\numexpr #1*#3/#2.#4!}
+    
+    \def\binomialb_end #1*#2/#3!{\fi\space #2}
+    \catcode`_ 8
+% END OR \binomialb code
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \textbf{MATHEMATICAL PROOF STRUCTURES}
+        
+        \vspace{0.5cm}
+        Module 2: Number Theory
+        
+        \vspace{1.5cm}
+        
+        \textbf{Vernon V. Lallman}
+        
+        \vfill
+        
+%        A thesis presented for the degree of\\
+%        Doctor of Philosophy
+        
+        \vspace{0.8cm}
+        
+        \includegraphics[width=0.4\textwidth]{university}
+        
+        Mathematics Department\\
+        State University of New York \\
+        Geneseo\\
+        \date{\today}
+        
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+\chapter{TOPICS IN ARITHMETIC}
+
+\section{The Natural Numbers}
+\subsection{Definition and Properties of the Natural Numbers}
+\subsection{Ordering of the Natural Numbers}
+\subsection{Counting}
+\subsection{Finite Sets}
+\subsection{Addition and Multiplication}
+\subsection{Relations between Order, Addition and Multiplication}
+\subsection{Sequences}
+\subsection{Recursive Definitions}
+
+\newpage
+\section{The Integers and Rational Numbers}
+
+\subsection{Definition and Properties of Integers}
+\newpage
+\subsection{Proof Repository: Definition and Properties of Integers} 
+
+
+\begin{example}
+Let $a$, $b$, $k$, and $n$ be integers where $n \geqq 2$. Prove that if $a \equiv b (\text{mod n})$, then $ka \equiv kb (\text{mod n})$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$, then $ka \equiv kb (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume $a$, $b$, $k$, and $n$ be integers where $n \geqq 2$ We also assume that $a \equiv b (\text{mod n})$. And, we will show via a direct proof that $ka \equiv kb (\text{mod n})$. Because we know that $a \equiv b (\text{mod n})$, it follows, from the definition, that   $n | (a-b)$ , which implies that $a-b = nq$, for some integer $q$. Therefore, multiplying the expression by $k$ yields \[ k(a-b) = k(nq) \] such that \[ka - kb = n(kq) \]
+Since $kq$ is an integer and integers are closed under multiplication, $n | (ka - kb)$, we conclude that $ka \equiv kb (\text{mod n})$ \\
+\end{proof}
+\end{example}
+
+
+
+\begin{example}
+Let $a$, $b$, $c$, $d$, and $n$ be integers where $n \geqq 2$. Prove that if $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $ (a + c) \equiv (b + d) (\text{mod n})$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $(a + c) \equiv (b + d) (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume $a$, $b$, $c$, $d$, and $n$ be integers where $n \geqq 2$ We also assume that $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$. And, we will show via a direct proof that $(a + c) \equiv (b + d) (\text{mod n})$. Because we know that $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, it follows, from the definition, that   $n | (a-b)$ and $n | (c-d)$, which implies that $a-b = nq$ and $c-d = nr$, for some integers $q$ and $r$. Adding these two equations, we obtain \[ (a-b) + (c-d) = nq + nr \]such that \[ (a+c) - (b+d) = n(q + r) \] 
+Since $(q + r)$ is an integer and integers are closed under addition, $n | (a+c) - (b+d)$, we conclude that $(a-b) \equiv (c-d) (\text{mod n})$ \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+Let $a$, $b$, $c$, $d$, and $n$ be integers where $n \geqq 2$. Prove that if $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $ ac \equiv bd (\text{mod n})$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		 If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $ ac \equiv bd (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume $a$, $b$, $c$, $d$, and $n$ be integers where $n \geqq 2$.  We also assume that $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$. And, we will show via a direct proof that $ac \equiv bd (\text{mod n})$. Because we know that $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, it follows, from the definition, that   $n | (a-b)$ and $n | (c-d)$, which implies that $a-b = nq$ and $c-d = nr$, for some integers $q$ and $r$. Thus, $a = nq + b$ and $c = nr + d$. Multiplying these two equations, we obtain \[ ac = (nq + b)(nr + d) \] such that \[ ac - bd = n(nqr + qd + br) \] 
+Since $(nqr + qd + br)$ is an integer and integers are closed under addition, $n | ac - bd$, we conclude that $ac \equiv bd (\text{mod n})$ \\
+\end{proof}
+\end{example}
+
+
+
+\newpage
+\begin{example}
+Prove the proposition that for all integers $a$ and $b$, if $a \equiv 5 (\text{mod }) 8$ and $b \equiv 5 (\text{mod }) 8$, then $(a+b) \equiv 2 (\text{mod }) 8$ \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$, then $(a + b) \equiv 2 (\text{mod })8$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume $a$ and $b$ be integers. We also assume that $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$. And, we will show via a direct proof that $(a + b) \equiv 2 (\text{mod })8$. Because we know that $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$, it follows, from the definition, that   $8 | (a-5)$ and $n | (8-5)$, which implies that $a-5 = 8q$ and $b-5 = 8r$, for some integers $q$ and $r$. Adding these two equations, we obtain \[ (a-5) + (b-5) = 8q + 8r \]such that
+	\begin{eqnarray}
+	(a+b)& = & 8q + 8r + 10 \nonumber \\
+	& = & 8q + 8r + 8 + 2 \nonumber \\
+	& = & 8(q + r + 1) + 2 \nonumber \\
+	\end{eqnarray}	 
+such that \[ (a+b) - 2 = 8(q + r + 1) \] 
+Since $q + r + 1$ is an integer and integers are closed under addition, $8 | (a+b) - 2$, we conclude that $(a+b) \equiv 2 (\text{mod })8$ \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+Closure Property of Integers \cite[Chap.1, P.C.1.7, Q.1]{ted} \\
+
+1. Is the set of rational numbers closed under addition? Explain. \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $x$ and $y$ are rational integers, then $x + y$ is a rational number
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ and $y$ are rational numbers and will show via a direct proof that $x + y$ is a rational number. Since $x$ and $y$ are rational, there exists the following real numbers and conditions $a$, $b$, $c$, $d$,  $b \neq 0$, and $d \neq 0$ such that $x = \frac{a}{b}$ and $y = \frac{c}{d}$. Substituting these expressions into $x + y$ yields:
+    
+    \begin{eqnarray*}
+        x + y & = & \frac{a}{b} + \frac{c}{d} \nonumber \\
+        & = & \frac{ad + bc}{bd} \nonumber \\
+    \end{eqnarray*}
+    
+    Where $ad + bc$ and $bd$ are real numbers because reals are closed under addition and multiplication. Since $x + y = \frac{p}{q}$, for some integers $p = ad + bc$ and $q = bd$, we conclude $x + y$ is an odd integer. \\
+    Consequently, it has been proven that if $x$ and $y$ are rational numbers, then $x + y$ is a rational number \\
+\end{proof}
+\end{example}
+
+
+
+\begin{example}
+Closure Property of Integers \cite[Chap.1, P.C.1.7, Q.2]{ted} \\
+
+1. Is the set of rational numbers closed under addition? Explain. \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $x$ and $y$ are rational integers, then $x + y$ is a rational number
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ and $y$ are rational numbers and will show via a direct proof that $x - y$ is a rational number. Since $x$ and $y$ are rational, there exists the following real numbers and conditions $a$, $b$, $c$, $d$,  $b \neq 0$, and $d \neq 0$ such that $x = \frac{a}{b}$ and $y = \frac{c}{d}$. Substituting these expressions into $x + y$ yields:
+    
+    \begin{eqnarray*}
+        x - y & = & \frac{a}{b} + \frac{c}{d} \nonumber \\
+        & = & \frac{ad + bc}{bd} \nonumber \\
+    \end{eqnarray*}
+    
+    Where $ad - bc$ and $bd$ are real numbers because reals are closed under addition and multiplication. Since $x - y = \frac{p}{q}$, for some integers $p = ad - bc$ and $q = bd$, we conclude $x + y$ is an odd integer. \\
+    Consequently, it has been proven that if $x$ and $y$ are rational numbers, then $x - y$ is a rational number \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+Closure Property of Integers \cite[Chap.1, P.C.1.7, Q.3]{ted} \\
+
+3. Is the set of integers closed under division? Explain \\
+
+ANSWER: In order for the set of integers to be closed under division, the following conditional statement would have to be true: {\bf If $x$ and $y$ are integers, then $x/y$ and $y/x$ is an integer}. However, since $\dfrac{x}{y}$ and $\dfrac{y}{x}$ are rational numbers (so $x$ and $y$ are integers and  $x \neq 0$ and $y \neq 0$). \\
+
+Since the set of all integers contains zero, integers are not closed under division. \\
+\end{example}
+
+
+\begin{example}
+\cite[Chap.1, P.C.1.9, Q.1]{ted} \\
+Construct a formal proof for the proposition that {\bf If $x$ is even integer and $y$ is even integer, then $x + y$ is an even integer} \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $x$ is even integer and $y$ is even integers, then $x + y$ is an even integer
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ and $y$ are even integers and will show via a direct proof that $x + y$ is an even integer. Since $x$ and $y$ are even, there exists integers $m$ and $n$ such that $x = 2m$ and $y = 2n$. Substituting these expressions into $x + y$ yields:
+    
+    \begin{eqnarray*}
+        x + y & = & 2m + 2n \nonumber \\
+        & = & 2(m + n) \nonumber \\
+    \end{eqnarray*}
+    
+    Where $m + n$ is an integer because integers are closed under addition. Since $x + y = 2q$ for some integer $q = m + n$, we conclude $x + y$ is an even integer. Consequently, it has been proven that if $x$ and $y$ are even integers, then $x + y$ is an even integer \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+\cite[Chap.1, P.C.1.9, Q.2]{ted} \\
+
+Construct a formal proof for the proposition that {\bf If $x$ is even integer and $y$ is an odd integer, then $x + y$ is an odd integer}
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $x$ is even integer and $y$ is an odd integer, then $x + y$ is an odd integer
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ is an even and $y$ is an odd integer and will show via a direct proof that $x + y$ is an odd integer. Since $x$ is even and $y$ is odd, there exists integers $m$ and $n$ such that $x = 2m$ and $y = 2n + 1$. Substituting these expressions into $x + y$ yields:
+    
+    \begin{eqnarray*}
+        x + y & = & 2m + 2n + 1 \nonumber \\
+        & = & 2(m + n) + 1 \nonumber \\
+    \end{eqnarray*}
+    
+    Where $m + n$ is an integer because integers are closed under addition. Since $x + y = 2q + 1$ for some integer $q = m + n$, we conclude $x + y$ is an odd integer. Consequently, it has been proven that if $x$ is an even and $y$ is an odd integer, then $x + y$ is an odd integer \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+\cite[Chap.1, P.C.1.9, Q.3]{ted} \\
+
+Construct a formal proof for the proposition that {\bf If $x$ is an odd integer and $y$ is an odd integer, then $x + y$ is an even integer}
+
+\begin{tcolorbox}
+    \begin{theorem}
+         If $x$ and $y$ are odd integer, then $x + y$ is an even integer
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ and $y$ are odd integers and will show via a direct proof that $x + y$ is an even integer. Since $x$ and $y$ are odd, there exists integers $m$ and $n$ such that $x = 2m + 1$ and $y = 2n + 1$. Substituting these expressions into $x + y$ yields:
+    
+    \begin{eqnarray*}
+        x + y & = & 2m + 1 + 2n + 1 \nonumber \\
+        & = & 2m + 2n + 2 \nonumber \\
+        & = & 2(m + n + 1) \nonumber \\
+    \end{eqnarray*}
+    
+    Where $m + n + 1$ is an integer because integers are closed under addition. Since $x + y = 2q$ for some integer $q = m + n + 1$, we conclude $x + y$ is an even integer. Consequently, it has been proven that if $x$ and $y$ are odd integers, then $x + y$ is an even integer \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+\cite[Chap.1, P.C.1.9, Q.4]{ted} \\
+
+Construct a formal proof for the proposition that {\bf If $x$ is an odd integer, then $x^2$ is an odd integer}
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $x$ is an odd integer, then $x^2$ is an odd integer
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $x$ is an odd integer and will show via a direct proof that $x^2$ is an odd integer. Since $x$ is odd, there exists an integer $m$ such that $x = 2m + 1$. Substituting these expressions into $x^2$ yields:
+    
+    \begin{eqnarray*}
+        x^2 & = & (2m + 1)^2 \nonumber \\
+        & = & (2m + 1)(2m + 1) \nonumber \\
+        & = & 4m^2 + 4m + 1 \nonumber \\
+        & = & 2(2m^2 + 2m) + 1 \nonumber \\
+    \end{eqnarray*}
+    
+    Where $2m^2 + 2m$ is an integer because integers are closed under addition and multiplication. Since $x^2 = 2q + 1$ for some integer $q = 2m^2 + 2m$, we conclude $x^2$ is an odd integer. Consequently, it has been proven that if $x$ is an odd integers, then $x^2$ is an odd integer \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+\cite[Chap.1, P.C.1.10]{ted} \\
+
+Construct a table of values for $3m^2 + 4m + 6$ using at least six different integers for $m$. Make one-half of the values for $m$ even integers and the other half odd integers. Is the folloeing proposition true or false? \\
+
+\begin{center}
+    If $m$ is an odd integer, then $3m^2 + 4m + 6$ is an odd integer
+\end{center}
+
+Justify your conclusion. This means that if the proposition is true, then you should write a proof of the proposition. If the proposition is false, you need to provide an example of an odd integer for which $3m^2 + 4m + 6$ is an even integer. \\
+
+
+Table of values for $3m^2 + 4m + 6$ \\
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline 
+        Num & $3m^2 + 4m + 6$ & Value & Parity \\ 
+        \hline 
+        $-4$ & $3(-4)^2 + 4(-4) + 6$ & $38$ & even \\ 
+        \hline 
+        $-3$ & $3(-3)^2 + 4(-3) + 6$ & $21$ & odd \\ 
+        \hline 
+        $-2$ & $3(-2)^2 + 4(-2) + 6$ & $10$ & even \\ 
+        \hline 
+        $2$ & $3(2)^2 + 4(2) + 6$ & $26$ & even \\ 
+        \hline 
+        $3$ & $3(3)^2 + 4(3) + 6$ & $45$ & odd \\ 
+        \hline 
+        $4$ & $3(4)^2 + 4(4) + 6$ & $70$ & even \\ 
+        \hline 
+    \end{tabular} 
+\end{center}
+
+Now, we will formally prove the proposition: \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $m$ is an odd integer, then $3m^2 + 4m + 6$ is an odd integer
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $m$ is an odd integer and will show via a direct proof that $3m^2 + 4m + 6$ is an odd integer. Since $m$ is odd, there exists an integer $n$ such that $m = 2n + 1$. Substituting these expressions into $3m^2 + 4m + 6$ yields:
+    
+    \begin{eqnarray*}
+        3m^2 + 4m + 6 & = & 3(2n + 1)^2 + 4(2n + 1) + 6 \nonumber \\
+        & = & 3(2n + 1)(2n + 1) + 8n + 10 \nonumber \\
+        & = & 3(4n^2 + 4n + 1) + 8n + 10 \nonumber \\
+        & = & 12n^2 + 20n + 12 + 1 \nonumber \\
+        & = & 2(6n^2 + 10n + 6) + 1 \nonumber \\
+    \end{eqnarray*}
+    
+    Where $6n^2 + 10n + 6$ is an integer because integers are closed under addition and multiplication. Since $3m^2 + 4m + 6 = 2q + 1$ for some integer $q = 6n^2 + 10n + 6$, we conclude $3m^2 + 4m + 6$ is an odd integer. Consequently, it has been proven that if $m$ is an odd integers, then $3m^2 + 4m + 6$ is an odd integer \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+Congruence Modulo 8 \cite[Chap.3, P.C.3.4, Q.1-2]{ted} \\
+
+Determine at least eight different integers that are congruent to $5$ modulo $8$ \\
+
+\begin{enumerate}
+    \item For $a = 5$: $5 \equiv 5(\text{mod } 8)$, if $8 | (5 - 5)$, s.t. $(5-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 13$: $13 \equiv 5(\text{mod } 8)$, if $8 | (13 - 5)$, s.t. $(13-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 21$: $21 \equiv 5(\text{mod } 8)$, if $8 | (21 - 5)$, s.t. $(21-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 29$: $29 \equiv 5(\text{mod } 8)$, if $8 | (29 - 5)$, s.t. $(29-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 37$: $37 \equiv 5(\text{mod } 8)$, if $8 | (37 - 5)$, s.t. $(37-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 45$: $45 \equiv 5(\text{mod } 8)$, if $8 | (45 - 5)$, s.t. $(45-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 53$: $53 \equiv 5(\text{mod } 8)$, if $8 | (53 - 5)$, s.t. $(53-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 61$: $61 \equiv 5(\text{mod } 8)$, if $8 | (61 - 5)$, s.t. $(61-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 69$: $69 \equiv 5(\text{mod } 8)$, if $8 | (69 - 5)$, s.t. $(69-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 77$: $77 \equiv 5(\text{mod } 8)$, if $8 | (77 - 5)$, s.t. $(77-5) = 8q$, for some $q \in \bb{Z}$ \\
+    \item For $a = 85$: $85 \equiv 5(\text{mod } 8)$, if $8 | (85 - 5)$, s.t. $(85-5) = 8q$, for some $q \in \bb{Z}$ \\
+\end{enumerate}
+
+Now, use set builder notation and the rooster method to specify the set of all integers that are congruent to $5$ modulo $8$ \\
+
+Using the rooster method and set builder notation, we can specify the set of all integers that are congruent to $5$ modulo $8$ as: \\
+	\begin{center}
+		$A = \{ 5, 13, 21, 29, 37, 45, 53, 61, 69, 85, \cdots \} \equiv \{n \in \bb{N}| 8n - 3  \}$
+	\end{center}
+
+\end{example}
+
+
+\begin{example}
+Congruence Modulo 8 \cite[Chap.3, P.C.3.4, Q.3]{ted} \\
+
+Choose two integers that are congruent to $5$ modulo $8$ and add them. Then repeat this for at least  five other pairs of integers that are in Set $A$ \\
+
+\begin{enumerate}
+    \item Since $5$ and $13$ are congruent to $5$ modulo $8$, their sum is: $18$
+    \item Since $13$ and $21$ are congruent to $5$ modulo $8$, their sum is: $34$
+    \item Since $21$ and $29$ are congruent to $5$ modulo $8$, their sum is: $50$
+    \item Since $29$ and $37$ are congruent to $5$ modulo $8$, their sum is: $66$
+    \item Since $37$ and $45$ are congruent to $5$ modulo $8$, their sum is: $82$
+    \item Since $45$ and $53$ are congruent to $5$ modulo $8$, their sum is: $98$
+    \item Since $53$ and $61$ are congruent to $5$ modulo $8$, their sum is: $114$
+    \item Since $61$ and $69$ are congruent to $5$ modulo $8$, their sum is: $130$
+\end{enumerate}
+\end{example}
+
+\begin{example}
+Congruence Modulo 8 \cite[Chap.3, P.C.3.4, Q.4]{ted} \\
+
+Prove the proposition that for all integers $a$ and $b$, if $a \equiv 5 (\text{mod }) 8$ and $b \equiv 5 (\text{mod }) 8$, then $(a+b) \equiv 2 (\text{mod }) 8$ \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$, then $(a + b) \equiv 2 (\text{mod })8$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume $a$ and $b$ be integers. We also assume that $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$. And, we will show via a direct proof that $(a + b) \equiv 2 (\text{mod })8$. Because we know that $a \equiv 5 (\text{mod })8$ and $b \equiv 5 (\text{mod })8$, it follows, from the definition, that   $8 | (a-5)$ and $n | (8-5)$, which implies that $a-5 = 8q$ and $b-5 = 8r$, for some integers $q$ and $r$. Adding these two equations, we obtain \[ (a-5) + (b-5) = 8q + 8r \]such that
+    	\begin{eqnarray}
+    	(a+b)& = & 8q + 8r + 10 \nonumber \\
+    	& = & 8q + 8r + 8 + 2 \nonumber \\
+    	& = & 8(q + r + 1) + 2 \nonumber \\
+    	\end{eqnarray}	 
+    such that \[ (a+b) - 2 = 8(q + r + 1) \] 
+    Since $q + r + 1$ is an integer and integers are closed under addition, $8 | (a+b) - 2$, we conclude that $(a+b) \equiv 2 (\text{mod })8$ \\
+\end{proof}
+\end{example}
+
+
+\begin{example}
+Properties of Divisors\cite[Chap.3, P.C.3.2]{ted} \\
+
+PART A: \\
+
+Give examples of integers, $a$, $b$ and $c$ with $a \neq 0$ such that $a | b$ and $a | c$ \\ 
+
+\begin{enumerate}
+    \item Example 1: Suppose $a = 2$, $b = 24$ and $c = 32$, then $2 | 24$ and $2 | 32$
+    \item Example 2: Suppose $a = 3$, $b = 21$ and $c = 49$, then $3 | 21$ and $3 | 49$
+    \item Example 3: Suppose $a = 4$, $b = 48$ and $c = 24$, then $4 | 48$ and $4 | 24$
+    \item Example 4: Suppose $a = 5$, $b = 65$ and $c = 30$, then $5 | 65$ and $5 | 30$    
+\end{enumerate}
+
+
+PART B: \\
+Calculate the sum $b + c$. Does the integer $a | (b+c)$ ? \\
+
+\begin{enumerate}
+    \item Example 1: Suppose $a = 2$, $b = 24$ and $c = 32$, then $b + c = 56$, such that $2 | 56$
+    \item Example 2: Suppose $a = 3$, $b = 21$ and $c = 49$, then $b + c = 70$, such that $3 | 70$
+    \item Example 3: Suppose $a = 4$, $b = 48$ and $c = 24$, then $b + c = 72$, such that $4 | 72$
+    \item Example 4: Suppose $a = 5$, $b = 65$ and $c = 30$, then $b + c = 95$, such that $5 | 95$
+\end{enumerate}
+
+PART C: \\
+Prove that for all integers $a$, $b$, and $c$ with $a \neq 0$, if $a$ divides $b$, and $a$ divides $c$ then $a$ divides $(b+c)$. \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a | b$ and $a | c$, then $a | (b + c)$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume $a$, $b$, $c$ be integers with $a \neq 0$. We further assume that $a | b$ and $a | c$. We will show via a direct proof that $a | (b + c)$. 
+    
+    Since $a | b$ and $a | c$, there exists integers $b = ax$ and $c = ay$, where $x, y \in \bb{Z}$. Substituting these expressions into $b + c$ yields:
+    
+    \begin{eqnarray*}
+    	b + c & = & ax + by \nonumber \\	
+    	& = & a(x + y) \nonumber \\
+    \end{eqnarray*}
+    
+    Since $x + y$ is an integer because integers are closed under addition, we know that $x + y \in \bb{Z}$. Therefore, we conclude that $a | (b + c)$ \\
+\end{proof}
+\end{example}
+
+
+\newpage
+\subsection{Generalized Operations}
+\subsection{The Rational Numbers}
+\begin{definition}
+A real number $x$ is defined to be a {\bf rational number} provided that there exists integers $m$m and $n$ with $n \neg 0$ such that $x = \frac{m}{n}$. A Real number that is not a rational number is called an {\bf Irrational Number}. The set of Rational numbers $\mathbb{Q}$ is closed under addition, substraction, multiplication, and division by a nonzero rational number. However, irrational numbers are not closed under these operations. 
+\end{definition}
+
+
+
+
+\subsection{Arithmetic of Rational Numbers}
+\subsection{Integral Domains and Quotient Fields}
+
+\newpage
+\section{The Real Numbers}
+
+\subsection{The Mysterious $\sqrt{2}$}
+\subsection{The Arithmetic of Sequences}
+\subsection{Cantor Sequences}
+\subsection{Null Sequences}
+\subsection{The Real Numbers}
+\subsection{Ordered Fields}
+\subsection{Relations between Ordered Fields and $\bb{R}$, the Field og Rational Numbers}
+\subsection{The Completeness of Real Numbers}
+\subsection{Roots of Real Numbers}
+\subsection{Theorems on Ordered, and Complete, Ordered Fields}
+\subsection{Isomorphism of Complete, Ordered Fields}
+\subsection{Complex Numbers}
+
+\newpage
+\chapter{TOPICS IN NUMBER THEORY}
+
+\section{The Principle of Induction}
+\subsection{Inductive Properties of Natural Numbers}
+
+In order to develop the Principle of Mathematical Induction we will make no attempt to construct the integer numbering system axiomatically. Instead, we will highlight two important properties of the the set of natural numbers,
+    \begin{itemize}
+        \item natural number are bounded below
+        \item natural number are unbounded above
+    \end{itemize}
+We will begin with the axiom of the Well-Ordering Principle to show that set of natural numbers is bounded below, as follows:    
+
+\begin{definition}
+Well-Ordering Principle Axiom of $\bb{N}$ \\
+
+\begin{tcolorbox}
+    Every nonempty set $S$ of natural number contains a least element; that is, there exists some natural numbers $a$ in $S$ such that $a \leqq b$ for all $b$ belonging to $S$
+        \begin{equation*}
+            \{ (\exists a \in S) | (\forall b \in S)(a \leqq b) \}
+        \end{equation*}
+\end{tcolorbox}
+\end{definition}
+
+
+Given that we have established that the set of natural number have a least element, we will proceed to show that it does not have a greatest element. We will utilize the Archimedean property of real numbers to show that that the set of natural numbers is unbounded above, as follows
+
+\newpage
+\begin{definition}
+Archimedean Property of $\bb{N}$ \\ 
+
+\begin{tcolorbox}
+	\begin{theorem}		
+		If $a$ and $b$ are any natural numbers, then there exists a natural number $n$ such that $na \geqq b$.
+		    \begin{equation*}
+		        \{ (\forall a, b \in \bb{N}) | (\exists n \in \bb{N})(na \geqq b) \}
+		    \end{equation*}
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+   
+    We will use a proof by contradiction. So we assume that the proposition is false,
+    
+        \begin{align*}
+            \neg \{ (\forall a, b \in \bb{N})| (\exists n \in \bb{N})(na \geqq b) \} & \equiv \{ (\exists a, b \in \bb{N})| \neg (\exists n \in \bb{N})(na \geqq b) \} \nonumber\\
+                   & \equiv \{ (\exists a, b \in \bb{N})| (\forall n \in \bb{N}) \neg (na \geqq b) \} \nonumber\\
+                   & \equiv \{ (\exists a, b \in \bb{N})| (\forall n \in \bb{N})(na < b) \} \nonumber\\
+        \end{align*}
+    
+    or that there exists natural number $a$ and $b$ such that, $an < b$ for any natural number $n$. We will begin by letting $S$ represent the set of all natural numbers, such  that  $S = \{(b-na)| n \in \bb{N} \}$. The Well-Ordering Principle assures us that the set $S$ is bounded below by, say $b-ma$, where $m$ is some natural number. \\
+    
+    Since $b-a(m+1)$ is an element of of the set $S$, we notice the following: 
+        \begin{equation*}
+            b-a(m+1) =  b - ma - a = (b-ma) - a < b - ma
+        \end{equation*}
+    Since $(b -ma) - a < b - ma$ is contrary to the choice of $b-ma$ as the smallest possible natiural number in the set $S$. This contradiction arose out of our original assumption that Archimedean Property did not hold. Consequently, if $a$ and $b$ are any natural numbers, then there exists a natural number $n$ such that $na \geqq b$.
+ 
+\end{proof}
+\end{definition}
+
+
+\newpage
+The Well-Ordering Principle and Archimedean Property provides us the necessary building blocks to develop the Principle of Mathematical Induction. This principle asserts that if a set adheres to both properties, then this particular set must be a subset of the set of natural numbers. More formally, 
+
+\begin{definition}
+First Principle of Mathematical Induction \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $S$ be a subset of natural numbers, $S \subseteq \bb{N}$, with the following properites: 
+            \begin{enumerate}
+                \item $1$ belong to $S$, that is  $1 \in S$
+                \item For every $k \in \bb{N}$. If $K \in S$, then $(k+1) \in S$
+            \end{enumerate}
+        Then, $S$ is the set of all natural numbers $S = \bb{N}$. Formally speaking,
+            \begin{equation*}
+                (S \subseteq \bb{N}) \wedge(1 \in S) \wedge \{\forall k \in \bb{N} | k \in S \to (k+1) \in S \} \to S=\bb{N}
+            \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by contradiction. So we assume the proposition is false, which is
+        \begin{equation*}
+            (S \subseteq \bb{N}) \wedge(1 \in S) \wedge \{\forall k \in \bb{N} | k \in S \to (k+1) \in S \} \wedge S \neq \bb{N}
+        \end{equation*}
+    or that if $S$ is a subset of the natural numbers with the following properties, 
+        \begin{enumerate}
+            \item $1$ belong to $S$, that is  $1 \in S$
+            \item For every $k \in \bb{N}$. If $K \in S$, then $(k+1) \in S$
+            \item $S \neq \bb{N}$
+        \end{enumerate}
+    We will begin by assuming that $S \neq \bb{N}$, then $\bb{N} \nsubseteq S$. Thus, there exists $n \in \bb{N}$ such that $n \notin S$. \\
+    
+    Let $T$ be the set of all natural number not in the set $S$, so $T = \bb{N} \setminus S = \bb{N} \wedge S^c$, then $T \subseteq \bb{N}$ and $n \in T$. Thus $T$ is nonempty subset of the the set of natural numbers, which by the Well-Ordering Principle, contains a smallest element, say $a$. Now since $a$ must be greater than  unity because $1 \in S$. Thus $a > 1$, so that $a -1 \in \bb{N}$. \\
+    
+    Furthermore, since $a$ is  the smallest element of $T$, it must be that $a-1 \notin T$. Thus, $a-1 \in S$. But, using the second feature of the set $S$ that $\{ (\forall k \in \bb{Z}) | k+1 \in S \}$, it logically follows that $(a-1) + 1 = a \in S$. \\
+    
+    Hence, we have a contradiction because the smallest element $a$ cannot be in both sets $S$ and $T$. Thus, there is no smallest element of $T$, which mean that $T$ is an empty set. Consequently, the proposition is true, $S = \bb{N}$
+\end{proof}
+\end{definition}
+
+
+
+\newpage
+\begin{definition}
+First Principle of Mathematical Induction \\
+
+Mathematical induction provides a standard technique for attempting to prove a statement about the positive integers, one disadvantage is that it gives no aid in formulating such statements. Of course, it can make an "educated guess" at a property which we believe might hold in general, then its validity can often be tested by the induction principle. \\
+
+We must be careful when establishing the conditions of Well-Ordering Principle and Archimedean Property of a given set before drawing any inductive conclusions; neither is sufficient alone. The primary use of the First Principle of Mathematical Induction is to prove statements of the form:
+    \begin{equation*}
+        (\forall n \in \bb{N})[P(n)]
+    \end{equation*}
+where $P(n)$ is some open sentence. Recall, that a universal quantified statement like the preceding one if and only the truth set of $S$ of the open sentence $P(n)$ is the set $\bb{N}$. So our goal is to prove that $S = \bb{N}$, which is the conclusion of the First Prinicple of Mathematical Induction. To verify the hypothesis od the First Principle of Mathematical Induction, we must follow the following steps:
+    \begin{enumerate}
+        \item BASIS STEP: Prove that  $1 \in S$. That is prove that $P(1)$ is true.
+        \item INDUCTIVE STEP: Prove that if $k \in S$, then $(k+1) \in S$. That is is if $P(k)$ is true, then $P(k+1)$ is true.
+    \end{enumerate}
+Then we can conclude that $P(n)$ is true for all $n \in \bb{N}$. \\
+
+Notice that the assumptions made in carrying out the induction step are known as \textit{inductive hypothesis}. The induction situation has been likened to an infinite row of dominoes all standing on edge and arranged in such a way that when one falls it knocks down the next in line. If either no domino is pushed (that is, there is no basis for induction) or if the spacing is too large (that is, the induction set fails) then the composite line will not fall. \\   
+
+For instance, here is a typical formula that can be established by mathematical induction: 
+    \begin{equation}
+    \label{skrd}
+        1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(2n+1)(n+1)}{6} 
+    \end{equation}
+for $n = 1, 2, 3 , \cdots$. In anticipation of using the Well-Ordering Principle, Archimedean Property and First Principle of Mathematical induction, let $S$ denote the set of all natural numbers $n$ for which the three principles holds true. We observe that when $n=1$, the formula become: 
+    \begin{equation*}
+        1^2 = \frac{1(2+1)(1+1}{6}=1 \nonumber
+    \end{equation*}
+this means that $1 \in S$. \\
+
+Next, assume that $k$ belongs to $S$ (where $k$ is a fixed but unspecified natural number) so that
+    \begin{equation*}
+        1^2 + 2^2 + 3^2 + \cdots + k^2 = \frac{k(2k+1)(k+1)}{6} \nonumber
+    \end{equation*}
+
+To obtain the sum of the first $k+1$ squares, we merely add the next one, $(k+1)^2$, to both sides of the last equation. This gives
+    \begin{equation*}
+        1^2 + 2^2 + 3^2 + \cdots + k^2 + (k+1)^2 = \frac{k(2k+1)(k+1)}{6} + (k+1)^2 \nonumber
+    \end{equation*}
+
+By algebra, the right side of the last equation becomes
+    \begin{align*}
+        1^2 + 2^2 + 3^2 + \cdots + k^2 + (k+1)^2 & = \frac{k(2k+1)(k+1)}{6} + (k+1)^2 \\
+            & = \frac{k(2k+1)(k+1) + 6(k+1)^2}{6} \\
+            & = \frac{(k+1)[k(2k+1)+6(k+1)]}{6} \\
+            & = \frac{(k+1)(2k^2 + 7k + 6)}{6} \\
+            & = \frac{(k+1)[2(k+1)+1][(k+1)+1]}{6} \\
+    \end{align*}
+
+which is precisely the right hand the equation (\ref{skrd}) when $n=k+1$. Our reasoning show that the set $S$ contains the integer $k+1$ whenever it contains the integer $k$. By the First Principle of Mathematical Induction, $S$ must be all natural numbers; that is, the given formula is true for $n = 1,2,3, \cdots$. In the next article we will prove this proposition formally. 
+\end{definition}
+
+
+\newpage
+\begin{example}
+Proof Example Using the First Principle of Mathematical Induction \\
+
+Prove that for each natural number $n$ that $1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(2n+1)(n+1)}{6}$. 
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{[i^2]} = \frac{n(2n+1)(n+1)}{6} 
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. \\
+        
+        \begin{flushleft} \textbf{Basis Step:} \end{flushleft}
+        For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{[i^2]} = \frac{n(2n+1)(n+1)}{6} 
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{[k^2]} = 1$. This shows that   
+            \begin{equation*}
+                 1^2 = \frac{1[2(1)+1][1+1]}{6} = 1
+            \end{equation*}
+        which proves that $P(1)$ is true. \\
+        
+        \begin{flushleft} \textbf{Inductive Step:} \end{flushleft}
+        We prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+               \sum_{i=1}^{k}{[i^2]} = \frac{k(2k+1)(k+1)}{6} 
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dnef}
+                \sum_{i=1}^{k+1}{[i^2]}  = \frac{k[2(k+1)+1][(k+1)+1]}{6} 
+            \end{equation}
+        
+        To do this, we add $(k+1)^2$ to both sides of the equation (\ref{dnef}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{[i^2]} & = \sum_{i=1}^{k}{[i^2]} + (k+1)^2 \\
+                    & = \frac{k(2k+1)(k+1)}{6} + (k+1)^2 \\
+                    & = \frac{k(2k+1)(k+1) + 6(k+1)^2}{6} \\
+                    & = \frac{(k+1)[k(2k+1)+6(k+1)]}{6} \\
+                    & = \frac{(k+1)(2k^2 + 7k + 6)}{6} \\
+                    & = \frac{(k+1)[2(k+1)+1][(k+1)+1]}{6} \\
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{[i^2]} = \frac{n(2n+1)(n+1)}{6}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+\newpage
+There is a variant of the induction that is often used when the Well-Ordering Principle, Archimedean Property and First Principle of Mathematical Induction trio principles seems ineffective. As with the first principle, this Second (extended) Principle of Mathematical Induction gives two conditions which guarantee that a certain set of positive integers actually consists of all postive integers. 
+
+
+
+\begin{definition}
+Extended First Principle of Mathematical Induction \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        Let $m$ be integer. If $T$ is a subset of $\bb{Z}$, with the following properties: 
+            \begin{enumerate}
+                \item $m \in T$
+                \item For every $k \in \bb{Z}$ with $k \geqq m$. If $K \in T$, then $(k+1) \in T$
+            \end{enumerate}
+        Then, $T$ is the set of all integers greater than or equal to $m$. That is $\{n \in Z | n \geqq m \} \subseteq T$. Formally speaking,
+            \begin{equation}
+                (m \in \bb{Z}) \wedge (T \subseteq \bb{Z}) \wedge(m \in T) \wedge \{(\forall k \in \bb{Z} \wedge k \geqq m) | k \in T \to (k+1) \in T \} \to \{n \in Z | n \geqq m \} \subseteq T
+            \end{equation}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by contradiction. So we assume the proposition is false, which is
+        \begin{equation*}
+            (m \in \bb{Z}) \wedge (T \subseteq \bb{Z}) \wedge(m \in T) \wedge \{(\forall k \in \bb{Z} \wedge k \geqq m) | k \in T \to (k+1) \in T \} \wedge \{n \in Z | n \geqq m \} \nsubseteq T
+        \end{equation*}
+    
+    or that, again let $m$ be integer. If $T$ is a subset of $\bb{Z}$, with the following properties: 
+        \begin{enumerate}
+            \item $m \in T$
+            \item For every $k \in \bb{Z}$ with $k \geqq m$. If $K \in T$, then $(k+1) \in T$
+            \item $T$ is the set of all integers greater less than $m$. That is $\{n \in Z | n \geqq m \} \nsubseteq T$.
+        \end{enumerate}
+    At this point i am not sure how to proceed with the proof. 
+   
+\end{proof}
+\end{definition}
+
+
+
+\newpage
+\begin{definition}
+Procedures for a Proof by Extended First Principle of Mathematical Induction \\
+
+The primary use of the Extended First Principle of Mathematical Induction is to prove statements of the form: 
+    \begin{equation*}
+        (\forall n \in \bb{Z} \text{, with} n \geqq m)[P(n)]
+    \end{equation*}
+Where $m$ is an integer and $P(n)$ is some open sentence. (In most extended first principle induction proofs, we will use a value of $m$ that is normally greater than or equal to zero.) So our goal is to prove that the truth set $T$ of the predicate $P(n)$ contains all integers greater than or equal to $m$. So to verify the hypothesis of the Extended First Principle of Mathematical Induction, we must follow the following steps:
+
+    \begin{enumerate}
+        \item BASIS STEP: Prove that $m \in T$. That is prove that $P(m)$ is true.
+        \item INDUCTIVE STEP: Prove that for every $k \in Z$ with $k \geqq m$, then $(k+1) \in T$. That is, prove that if $P(k)$ is true, then $P(k+1)$ is true.
+    \end{enumerate}
+Then we can conclude that $P(n)$ is true for all $n \in \bb{Z}$ with $n \geqq m$. \\
+
+The only difference between the first principle and its extended form procedures is that the 
+basis step uses an integer $m$ other than unity. For this reason, when we write a proof that uses the extended first principle, we often simply say that "we are going to use a proof by first principle of mathematical induction." Or simply "we are going to use the a proof by mathematical induction."
+\end{definition}
+
+
+\begin{definition}
+First vs. Extended First Principle of Mathematical Induction Proof Technique \\
+
+The first principle is used more often than the extended, but there are occasions when the extended form is favored. It sometimes happens that in attempting to show that $k+1$ is a member of $S$, one requires the fact that not only $k$, but all positive integers will precede $k$, lie in $S$. \\
+
+Our formulation of these induction principles has been for the case in which the induction begins with unity. Each form can be generalized to start with any positive integer $n_0$. In this circumstance, the conclusion reads, "Then $S$ is the set of all integers $n \geqq n_0$" \\
+
+\end{definition}
+
+
+\begin{definition}
+Inductive Definition Technique \\
+
+Mathematical Induction is often used as a method to define as well as a method proof. For example, a common way of introducing the factorial symbol $n!$ is by the means of the Inductive definition: 
+    \begin{itemize}
+        \item $1! = 1$
+        \item $n! = n(n-1)!$, for $n > 1$
+    \end{itemize}
+This pair of conditions provide a rule whereby the meaning of $n!$ is specified for each positive integer $n$. Thus, by $1! = 1$ and $n! = n(n-1)!$, for $n > 1$ yields
+    \begin{equation*}
+        2! = 2 \m 1 ! = 2 \m 1 = 2
+    \end{equation*}
+whereby by $n! = n(n-1)!$, for $n > 1$ again, 
+    \begin{equation*}
+        3! = 3 \m 2 ! = 3 \m 2 \m 1 = 6
+    \end{equation*}
+Continuting in this manner, using condition $n! = n(n-1)!$, for $n > 1$ repeatedly, the numbers $1!, 2!, 3!,\cdots, n!$ are defined in succession up to any choosen $n$. In fact, 
+    \begin{equation*}
+        n! = n \m (n-1) \cdots 3 \m 2 \m 1
+    \end{equation*}
+Induction enters in showing that $n!$, as a function on the positive integers, exists and is unique, we shall make no attempt however to give the argumative proof. \\
+
+It will be convenient to extend the definition of $n!$ to the case in which $n=0$ by stipulating that $0! = 1$
+\end{definition}
+
+
+
+
+
+
+\newpage
+\subsection{Proofs Repository: First Principle of Math. Induction}
+
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.1.A]{david} \\ 
+
+Establish that $1 + 2 + \cdots + n = \sum_{n=1}^{\infty} n = \frac{n(n+1)}{2}$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                     \sum_{i=1}^{n}{i} = \frac{n(n+1)}{2}
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{[i]} = \frac{n(n+1)}{2} 
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{[k]} = 1$. This shows that   
+            \begin{equation*}
+                 1 = \frac{1[1+1]}{2}
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+               \sum_{i=1}^{k}{i} = \frac{k(k+1)}{2} 
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne1}
+                \sum_{i=1}^{k+1}{i} = \frac{(k+1)[(k+1)+1]}{2} 
+            \end{equation}
+        
+        To do this, we add $(k+1)$ to both sides of the equation (\ref{dne1}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{i} & = \sum_{i=1}^{k}{i} + (k+1)^2 \\
+                    & = \frac{k(k+1)}{2} + (k+1) 
+                    & = \frac{k(k+1) + 2(k+1)}{2} \\
+                    & = \frac{(k+1)(k+2)}{2} \\
+                    & = \frac{(k+1)[(k+1)+1]}{2} \\
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{i} = \frac{n(n+1)}{2}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.1.B]{david} \\ 
+
+Establish  that $1 + 3 + 5  +\cdots + (2n - 1) = 2\sum_{n=1}^{\infty}{[n]} - 1 = n^2$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{2i-1} = n^2
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{2i-1} = n^2
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{2(1)-1} = 1$. This shows that   
+            \begin{equation*}
+                 1 = 1^2
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{2i-1} = k^2
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne2}
+                \sum_{i=1}^{k+1}{2i-1} = (k+1)^2                
+            \end{equation}
+        To do this, we add $(2k+1)$ to both sides of the equation (\ref{dne2}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{2i-1} & = \sum_{i=1}^{k}{2i-1} + 2k + 1 \\
+                    & = k^2 + (2k + 1) \\
+                    & = (k+1)^2 \\
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{2i-1} = n^2
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.1.C]{david} \\ 
+
+Establish that ${1 \m 2} + {2 \m 3} + {3 \m 4}  + \cdots + n(n + 1) = \sum_{n=1}^{n}{n(n+1)} = \frac{n(n+1)(n+2)}{3}$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                     \sum_{i=1}^{n}{i(i+1)} = \frac{n(n+1)(n+2)}{3}
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{i(i+1)} = \frac{n(n+1)(n+2)}{3}
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{i(i+1)} = 2$. This shows that   
+            \begin{equation*}
+                 2 = \frac{(1)(1+1)(1+2)}{3}
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{i(i+1)} = \frac{k(k+1)(k+2)}{3}
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne3}
+                \sum_{i=1}^{k+1}{i(i+1)} = \frac{(k+1)[(k+1)+1][(k+1)+2]}{3}                
+            \end{equation}
+        
+        To do this, we add $(k+1)(k+2)$ to both sides of the equation (\ref{dne3}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{i(i+1)} & = \sum_{i=1}^{k}{i(i+1)} + (k+1)(k+2) \\               
+                    & = \frac{k(k+1)(k+2)}{3} + (k+1)(k+2) \\
+                    & = \frac{k(k+1)(k+2) + 3(k+1)(k+2)}{3} \\  
+                    & = \frac{((k+1)(k+2)(k+3)}{3} \\                  
+                    & = \frac{((k+1)[(k+1)+1][(k+1)+2]}{3} \\                 
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{i(i+1)} = \frac{n(n+1)(n+2)}{3}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.1.D]{david} \\ 
+
+Establish that $1^2 + 3^2 + 5^2  + \cdots + (2n - 1)^2 = \sum_{n=1}^{n}{(2n-1)^2} = \frac{n(4n^2 - 1)}{3}$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{(2i-1)^2} = \frac{n(4n^2 - 1)}{3}
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{(2i-1)^2} = \frac{n(4n^2 - 1)}{3}
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{(2i-1)^2} = 2$. This shows that   
+            \begin{equation*}
+                 1^2 = \frac{1(4[1^2) - 1]}{3} = 1
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{(2i-1)^2} = \frac{k(4k^2 - 1)}{3}
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne4}
+                \sum_{i=1}^{k+1}{(2i-1)^2} = \frac{(k+1)[4(k+1)^2 - 1]}{3}              
+            \end{equation}
+        
+        To do this, we add $(2k+1)^2$ to both sides of the equation (\ref{dne4}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{(2i-1)^2} & = \sum_{i=1}^{k}{(2i-1)^2} + (2k+1)^2 \\
+                    & = \frac{k(4k^2 - 1)}{3} + (2k + 1)^2 \\
+                    & = \frac{k(4k^2 - 1)}{3} + \frac{3(2k + 1)^2}{3} \\
+                    & = \frac{(2k+1)(k+1)(2k+3)}{3} \\
+                    & = \frac{(k+1)[(2k+1)(2k+3)]}{3} \\
+                    & = \frac{(k+1)[4(k+1)^2 - 1]}{3} \\
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{(2i-1)^2} = \frac{n(4n^2 - 1)}{3}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+\newpage
+\begin{example}
+\label{sdf1}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.1.E]{david} \\ 
+
+Establish that $1^3 + 2^3 + 3^3  + \cdots + n^3 = \sum_{n=1}^{n}{n^3} = \left [\frac{n(n+1)}{2} \right ]^2$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{i^3} = \left [\frac{n(n+1)}{2} \right ]^2
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{i^3} = \left [\frac{n(n+1)}{2} \right ]^2
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{n=1}^{1}{n^3} = 1$. This shows that   
+            \begin{equation*}
+                 1^3 = \left [\frac{1(1+1)}{2} \right ]^2
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{i^3} = \left [\frac{k(k+1)}{2} \right ]^2
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne5}
+                \sum_{i=1}^{k+1}{i^3} = \left [\frac{(k+1)[(k+1) + 1]}{2} \right ]^2            
+            \end{equation}
+        
+        To do this, we add $(k+1)^3$ to both sides of the equation (\ref{dne5}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{i^3} & = \sum_{i=1}^{k}{i^3} + (k+1)^3 \\
+                    & = \left [\frac{k(k+1)}{2} \right ]^2 + (k+1)^3 \\
+                    & = \frac{[k(k+1)]^2}{4} + (k+1)^3 \\
+                    & = \frac{[k(k+1)]^2 + 4(k+1)^3}{4} \\
+                    & = \frac{k^2(k+1)^2 + 4(k+1)^3}{4} \\
+                    & = \frac{(k+1)^2[k^2 + 4(k+1)]}{4} \\
+                    & = \frac{(k+1)^2(k^2 + 4k + 4)}{4} \\
+                    & = \frac{(k+1)^2(k + 2)^2]}{4} \\
+                    & = \left \{ \frac{(k+1)[(k+1) + 1]}{2} \right \}^2
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{i^3} = \left [\frac{n(n+1)}{2} \right ]^2
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.2]{david} \\ 
+
+If $r \neq 1$, show that $a + ar + ar^2  + \cdots + ar^n = \sum_{n=1}^{n}{ar^n} = \frac{a(r^{n+1} - 1)}{r - 1}$, for any postive integer $n$ 
+    \begin{tcolorbox}
+        \begin{theorem}
+            If $r \neq 1$, then for every natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{ar^i} = \frac{a(r^{n+1} - 1)}{r - 1}
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{ar^i} = \frac{a(r^{n+1} - 1)}{r - 1}
+            \end{equation*}
+        We first prove that $P(0)$ is true. Notice that $\sum_{i=1}^{0}{ar^i} = a$. This shows that   
+            \begin{equation*}
+                 a = \frac{a(r - 1)}{r - 1}
+            \end{equation*}
+        which proves that $P(0)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 0$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                    \sum_{i=1}^{k}{ar^i} = \frac{a(r^{k+1} - 1)}{r - 1}                
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne6}
+                \sum_{i=1}^{k+1}{ar^i} = \frac{a(r^{(k+1)+1} - 1)}{r - 1}             
+            \end{equation}
+        
+        To do this, we add $ar^{k+1}$ to both sides of the equation (\ref{dne6}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{ar^i} & = \sum_{i=1}^{k}{ar^i} + ar^{k+1} \\
+                    & = \frac{a(r^{k+1} - 1)}{r - 1} + ar^{k+1} \\
+                    & = \frac{a(r^{k+1} - 1) + ar^{k+1}(r-1)}{r - 1} \\
+                    & = \frac{ar^{k+1} - a + ar^{k+2} - ar^{k+1}}{r - 1} \\
+                    & = \frac{ar^{k+2} - a}{r - 1} \\
+                    & = \frac{a[r^{(k+1) + 1} - 1]}{r - 1} \\
+        \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{n=1}^{n}{ar^n} = \frac{a(r^{n+1} - 1)}{r - 1}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.3]{david} \\ 
+
+Use the First Principle of Mathematical Induction to establish that $(a-1)(a^{n-1} + a^{n-2} + a^{n-3} + \cdots + a + 1) = a^n - 1$
+    \begin{tcolorbox}
+        \begin{theorem}
+            If $r \neq 1$, then for every natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{(a-1)a^{i-1}} = a^n - 1
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{(a-1)a^{i-1}} = a^n - 1
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{(a-1)a^{i-1}} = a-1$. This shows that   
+            \begin{equation*}
+                 a-1 = a^1 - 1
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{(a-1)a^{i-1}} = a^k - 1               
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne7}
+                \sum_{i=1}^{k+1}{(a-1)a^{i-1}} = a^{k+1} - 1          
+            \end{equation}
+        
+        To do this, we add $(a-1)a^k$ to both sides of the equation (\ref{dne7}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{(a-1)a^{i-1}} & = \sum_{i=1}^{k}{(a-1)a^{i-1}} + (a-1)a^k \\
+                    & = a^k -1 + (a-1)a^k \\
+                    & = a^k - 1 + a^{k-1} - a^k \\
+                    & = a^{k+1} - 1 \\
+        \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{(a-1)a^{i-1}} = a^n - 1
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.4]{david} \\ 
+
+Prove that the cube of any integer can be written as the difference of two squares. 
+    \begin{tcolorbox}
+        \begin{theorem}
+            Any integer $s$ can be expressed as,
+                \begin{equation*}
+                    s^3 = \sum_{i=1}^{k}{i^3} - \sum_{i=1}^{k-1}{i^3}  
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        In example (\ref{sdf1}) we proved that that closed form of the sum of a postive integer cubed is $\sum_{n=1}^{n}{n^3} = \left [\frac{n(n+1)}{2} \right ]^2$. Using the fact, we can express the cube of any integer say, $s$, in the form
+            \begin{align*}
+                s^3 & = \sum_{i=1}^{k}{i^3} - \sum_{i=1}^{k-1}{i^3} 
+                    & = \left [\frac{n(n+1)}{2} \right ]^2 - \left [\frac{(n-1)[(n-1)+1]}{2} \right ]^2
+                    & = \left [\frac{n(n+1)}{2} \right ]^2 - \left [\frac{n(n-1)}{2} \right ]^2
+            \end{align*}
+    Consequently, the any integer can be expressed as the difference of two squares.
+    
+    \end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.2, Result 6.9]{gray} \\ 
+
+Prove that for every non-negative integer $n$, $2^n > n$ 
+\begin{tcolorbox}
+    \begin{theorem}
+        For every natural number $n$,
+        \begin{equation*}
+            2^n > n              
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+        \begin{equation*}
+            2^n > n
+        \end{equation*}
+    We first prove that $P(1)$ is true. For the case, $P(1)$, notice that $2^1 > 1$. This shows that   
+        \begin{equation*}
+             2 > 1
+        \end{equation*}
+    which proves that $P(1)$ is true. This provides us the basis step for induction. \\ 
+    
+    For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 4$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+        \begin{equation*}
+           2^k > k
+        \end{equation*}
+    
+    The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+        \begin{equation}
+            2^{k+1} > k+1 
+        \end{equation}
+    
+    Since
+        \begin{equation}
+            2^{k+1} = 2 \m 2^k > 2k^2 = k^2 + k^2 > k^2 + 1 > k + 1 
+        \end{equation}
+    
+    Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 1$, we conclude by the extended first principle that
+        \begin{equation*}
+            2^n > n
+        \end{equation*}
+ 
+\end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.2, Result 6.10]{gray} \\ 
+
+Prove that for every integer $n \geqq 5$, $2^n > n^2$ 
+\begin{tcolorbox}
+    \begin{theorem}
+        For every natural number $n$,
+        \begin{equation*}
+            2^n > n^2              
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+        \begin{equation*}
+            2^n > n^2
+        \end{equation*}
+    We first prove that $P(5)$ is true. For the case, $P(5)$, notice that $2^5 > 5^2$. This shows that   
+        \begin{equation*}
+            32 > 25
+        \end{equation*}
+    which proves that $P(5)$ is true. This provides us the basis step for induction. \\ 
+    
+    For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 5$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+        \begin{equation*}
+           2^k > k^2
+        \end{equation*}
+    
+    The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+        \begin{equation*}
+           2^{k+1} > {k+1}^2
+        \end{equation*}
+    
+    Since
+        \begin{align*}
+            2^{k+1} & = 2^k \m 2 > 2k^2 = k^2 + k^2 \geqq k^2 + 5k \\
+                & = k^2 + 2k + 3k \geqq k^2 + 2k + 15 \\
+                & > k^2 + 2k + 1 = (k+1)^2 \\
+        \end{align*}
+    
+    Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 5$, we conclude by the extended first principle that
+        \begin{equation*}
+            2^n > n^2
+        \end{equation*}
+ 
+\end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.2, Result 6.11]{gray} \\ 
+
+Prove that for every non-negative integer $n$, $3$ divides $(2^{2n} - 1)$
+\begin{tcolorbox}
+    \begin{theorem}
+        For every natural number $n$,
+        \begin{equation*}
+            3 | (2^{2n} - 1)
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For each nonnegative number $n$, we let $P(n)$ be
+        \begin{equation*}
+            3 | (2^{2n} - 1)
+        \end{equation*}
+    We first prove that $P(0)$ is true. For the case, $P(0)$, notice that $ 3 | (2^{2 \m 0} - 1)$. This shows that   
+        \begin{equation*}
+            3 | 0
+        \end{equation*}
+    which proves that $P(0)$ is true. This provides us the basis step for induction. \\ 
+    
+    For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 5$, if $P(k)$, then $P(k+1)$. So let $k$ be a non-negative integer and assume that $P(k)$ is true. That is, we assume that 
+        \begin{equation*}
+           3 | (2^{2k} -1)
+        \end{equation*}
+    
+    By congruence of integers, there exists an intger $x$ such that $2^{2k} - 1 = 3x $ and so 
+        \begin{equation}
+        \label{dsf1} 
+            2^{2k} = 3x + 1 
+        \end{equation}
+    
+    Moreover, in order to prove that $P(k+1)$ is true. That is, we must show that $3 | [2^{2(k+1)} - 1]$. Since $2^{2(k+1)} = 4 \m 2^{2k}$, we can write
+        \begin{equation}
+        \label{dsf2}
+            2^{2(k+1)} - 1 = 4 \m 2^{2k} - 1
+        \end{equation}
+    
+    We now substitute the expression for $2^{2k}$ from equation (\ref{dsf1}) into equation (\ref{dsf2}). This yields
+        \begin{align}
+        \label{dsf3}
+            2^{2(k+1)} - 1 & = 4 \m 2^{2k} - 1 \nonumber \\
+                & =  4(3x+1) - 1 \nonumber \\
+                & = 12x + 4 - 1 \nonumber \\
+                & = 12x + 3 \nonumber \\
+                & = 3(4x + 1) \\
+        \end{align}
+    
+    Since $(4x+1)$ is an integer, the equation (\ref{dsf3}) shows that $3 | (2^{2k} -1)$. Therefore, the inductive step has been established. Thus, by the Principle of Mathematical Induction, for every integer $n$, 
+        \begin{equation*}
+            3 | (2^{2n} -1)
+        \end{equation*}
+ 
+\end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[C.10]{Hammack} \\ 
+Prove that if $n \in \bb{Z}$ and $n \geqq 0$, then $\sum_{i=1}^{k}{i \m i!} = (n+1)! - 1$
+
+\begin{tcolorbox}
+    \begin{theorem}
+        If $n \in \bb{Z}$ and $n \geqq 0$, then
+        \begin{equation*}
+             \sum_{i=1}^{n}{i \m i!} = (n+1)! - 1                
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+        We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{i \m i!} = (n+1)! - 1  
+            \end{equation*}
+        We first prove that $P(0)$ is true. Notice that $\sum_{i=1}^{0}{i \m i!} = 1$. This shows that   
+            \begin{equation*}
+                 (1+1)! - 1 = 2! - 1 = 1
+            \end{equation*}
+        which proves that $P(0)$ is true. This establishes the basis for induction. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 0$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{i \m i!} = (k+1)! - 1               
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne7}
+                \sum_{i=1}^{k+1}{i \m i!} = [(k+1)+1]! - 1          
+            \end{equation}
+        
+        To do this, we add $(a-1)a^k$ to both sides of the equation (\ref{dne7}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{i \m i!} & = \sum_{i=1}^{k}{i \m i!} + (k+1)(k+1)! \\
+                    & = (k+1)! - 1 + (k+1)(k+1)! \\
+                    & = (k+1)! + (k+1)(k+1)! - 1 \\
+                    & = [1 + (k+1)](k+1)! - 1 \\
+                    & = (k+2)(k+1)! - 1 \\
+                    & = (k+2)! - 1 \\
+                    & = [(k+1) + 1]! - 1 \\
+        \end{align*}
+        The inductive step has been extablished. Thus, by the Extended Principle of Mathematical Induction, if $n \in \bb{Z}$ and $n \geqq 0$, then
+            \begin{equation*}
+                 \sum_{i=1}^{n}{i \m i!} = (n+1)! - 1                
+            \end{equation*} 
+\end{proof}
+
+\end{example}
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.2, S.2.3, Ex.1]{ross} \\ 
+
+Prove that $n! > n^2$ for every integer $n \geqq 4$
+\begin{tcolorbox}
+    \begin{theorem}
+        For each natural number $n \geqq 4$
+        \begin{align*}
+            2^n > n!                
+        \end{align*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will proceed by proving separately the left and right hand sides of the proposition: \\
+    
+
+        We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                2^n > n!
+            \end{equation*}
+        
+        \begin{flushleft} \textbf{Basis Step:} \end{flushleft}
+            We first prove that $P(4)$ is true. For the case, $P(4)$, notice that $2^4 > 4!$. This shows that   
+                \begin{equation*}
+                     16 < 24
+                \end{equation*}
+            which proves that $P(4)$ is true. This provides us the basis step for induction. \\ 
+        
+        \begin{flushleft} \textbf{Inductive Step:} \end{flushleft}
+            For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 4$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+                \begin{equation*}
+                   2^k > n!
+                \end{equation*}
+            
+            The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+                \begin{equation}
+                    2^(k+1) > (k+1)! 
+                \end{equation}
+            
+           Since
+                \begin{equation}
+                    2^n < 2 \m 2^k = 2^(k+1) < (k+1)! = (k+1)k! < n! 
+                \end{equation}
+            
+        Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 4$, we conclude by the extended first principle that
+            \begin{equation*}
+                2^n < n!
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.1, S.1.1, Prob.1.1, Q.3]{david} \\ 
+
+Prove that $n! > n^2$ for every integer $n \geqq 4$, while $n! > n^3$ for every integer $n \geqq 6$ 
+\begin{tcolorbox}
+    \begin{theorem}
+        \begin{center}
+            $n! > n^2$ for every integer $n \geqq 4$, while $n! > n^3$ for every integer $n \geqq 6$                
+        \end{center}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will proceed by proving separately the left and right hand sides of the proposition: \\
+    
+    \begin{flushleft} \textbf{Proof that $n! > n^2$ for every integer $n \geqq 4$} \end{flushleft}
+            We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+                \begin{equation*}
+                    n! > n^2
+                \end{equation*}
+            We first prove that $P(4)$ is true. For the case, $P(4)$, notice that $4! > (4)^2$. This shows that   
+                \begin{equation*}
+                     24 > 16
+                \end{equation*}
+            which proves that $P(4)$ is true. This provides us the basis step for induction. \\ 
+            
+            For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 4$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+                \begin{equation*}
+                   k! > k^2
+                \end{equation*}
+            
+            The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+                \begin{equation}
+                    (k+1)! > (k+1)^2 
+                \end{equation}
+            
+           Since
+                \begin{equation}
+                    (k+1)k! = (k+1)! > (k+1)^2 
+                \end{equation}
+            
+            Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 4$, we conclude by the extended first principle that
+                \begin{equation*}
+                    n! > n^2
+                \end{equation*}
+    
+    \begin{flushleft} \textbf{Proof that $n! > n^3$ for every integer $n \geqq 6$} \end{flushleft}
+            We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+                \begin{equation*}
+                    n! > n^3
+                \end{equation*}
+            We first prove that $P(6)$ is true. For the case, $P(6)$, notice that $6! > (6)^3$. This shows that   
+                \begin{equation*}
+                    720 > 216
+                \end{equation*}
+            which proves that $P(6)$ is true. This provides us the basis step for induction. \\ 
+            
+            For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 6$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+                \begin{equation*}
+                   k! > k^3
+                \end{equation*}
+            
+            The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+                \begin{equation}
+                    (k+1)! > (k+1)^3 
+                \end{equation}
+            
+           Since
+                \begin{equation}
+                    (k+1)! = k!(k+1) > (k+1)^3 
+                \end{equation}
+            
+            Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 6$, we conclude by the extended first principle that
+                \begin{equation*}
+                    n! > n^3
+                \end{equation*}
+    
+Given, that we have proven that both the right and left hand side of the proposition's logical conjunction is true, we conclude that $n! > n^2$ for every integer $n \geqq 4$, while $n! > n^3$ for every integer $n \geqq 6$. 
+\end{proof}
+\end{example}
+
+
+
+\newpage
+\begin{example}
+\label{sdf1}
+Source: \cite[Chap.6, S.6.1, Result 6.6]{gray} \\ 
+
+Establish that $\frac{1}{2 \m 3} + \frac{1}{3 \m 4} + \cdots + \frac{1}{(n+1)(n+2)} = \sum_{i=1}^{n}{\frac{1}{(n+1)(n+2)}} = \frac{n}{2n +4} $ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each natural number $n$,
+                \begin{equation*}
+                    \sum_{i=1}^{n}{\frac{1}{(n+1)(n+2)}} = \frac{n}{2n + 4}
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                \sum_{i=1}^{n}{\frac{1}{(n+1)(n+2)}} = \frac{n}{2n +4}
+            \end{equation*}
+        We first prove that $P(1)$ is true. Notice that $\sum_{i=1}^{1}{\frac{1}{(n+1)(n+2)}} = \frac{1}{6}$. This shows that   
+            \begin{equation*}
+                 \frac{1}{6} = \frac{1}{2(1) +4}
+            \end{equation*}
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{i=1}^{k}{\frac{1}{(n+1)(n+2)}} = \frac{k}{2k + 4}
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne6}
+                \sum_{i=1}^{k+1}{\frac{1}{(n+1)(n+2)}} = \frac{k+1}{2(k+1) + 4}           
+            \end{equation}
+        
+        To do this, we add $\frac{1}{(k+2)(k+3)}$ to both sides of the equation (\ref{dne6}) and algebraically rewrite the right hand side of the resulting equation. This gives
+            \begin{align*}
+                \sum_{i=1}^{k+1}{\frac{1}{(n+1)(n+2)}} & = \sum_{i=1}^{k}{\frac{1}{(n+1)(n+2)}} + \frac{1}{(k+2)(k+3)} \\
+                    & = \frac{k}{2k + 4} + \frac{1}{(k+2)(k+3)} \\
+                    & = \frac{k(k+2)(k+3) + 2(k+2)}{2(k+2)(k+2)(k+3)} \\
+                    & = \frac{k(k+3)+2}{2(k+2)(k+3)} \\
+                    & = \frac{k^2 +3k + 2}{2(k+2)(k+3)} \\
+                    & = \frac{k+1}{2(k+3)} \\
+                    & = \frac{k+1}{2(k+1) + 4 }\\
+            \end{align*}
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$,
+            \begin{equation*}
+                \sum_{i=1}^{n}{\frac{1}{(n+1)(n+2)}} = \frac{n}{2n +4}
+            \end{equation*}
+    \end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\begin{example}
+
+
+Establish for all natural numbers $n$ if $f(x) = x^n$, then $f'(x) = \frac{d}{dx}(x^n) = nx^{n-1}$ using mathematical induction.
+    \begin{tcolorbox}
+        \begin{theorem}
+        For each natural number $n$, If $f(x) = x^n$, then
+            \begin{equation*}
+                f'(x) = \frac{d}{dx}(x^n) = nx^{n-1}
+            \end{equation*} 
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                f'(x) = \frac{d}{dx}(x^n) = nx^{n-1}
+            \end{equation*} 
+        
+        We first prove that $P(1)$ is true. Notice that,
+            \begin{equation*}
+                f'(1) = (1)x^{1-1} = 1
+            \end{equation*} 
+        which proves that $P(1)$ is true. 
+        
+        For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a natural number and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                f'(x) = \frac{d}{dx}(x^k) = kx^{k-1}
+            \end{equation*} 
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation}
+            \label{dne6}
+                \frac{d}{dx}(x^{k+1}) = {k+1}x^{k}          
+            \end{equation}
+        
+        To obtain the sum $k+1$ element, we merely takehe derivative of $P(k+1)$, which yields: 
+            \begin{align*}
+                \frac{d}{dx}(x^{k+1}) & = \frac{d}{dx}(x^k \m x) \\
+                    & = \frac{d}{dx}(x^k) \m x + x^k \m \frac{d}{dx}(x) \\
+                    & = kx^k-1 + x^k \\
+                    & = kx^k + x^k \\
+                    & = (k + 1)x^k \\
+                    & = (k + 1)x^{(k+1)-1} \\
+            \end{align*}        
+
+        
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each natural number $n$, If $f(x) = x^n$, then
+            \begin{equation*}
+                f'(x) = \frac{d}{dx}(x^n) = nx^{n-1}
+            \end{equation*} 
+    \end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[C.10]{Hammack} \\ 
+
+Prove that for every natural number $n$, it follows that  $2^n \leqq 2^{n+1} - 2^{n-1} - 1$ 
+\begin{tcolorbox}
+    \begin{theorem}
+        For every natural number $n$,
+        \begin{equation*}
+            2^n \leqq 2^{n+1} - 2^{n-1} - 1              
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+        \begin{equation*}
+            2^n \leqq 2^{n+1} - 2^{n-1} - 1 
+        \end{equation*}
+    \begin{flushleft} \textbf{Basis Step:} \end{flushleft}
+        We first prove that $P(1)$ is true. For the case, $P(1)$, notice that $2^1 \leqq 2^{1+1} - 2^{1-1} - 1$. This shows that   
+            \begin{equation*}
+                2 \leqq 4-1-1 \leqq 2
+            \end{equation*}
+        which proves that $P(1)$ is true. This provides us the basis step for induction. \\ 
+    
+    \begin{flushleft} \textbf{Inductive Step:} \end{flushleft}
+        For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 1$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+                2^k \leqq 2^{k+1} - 2^{k-1} - 1 
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation*}
+                2^{k+1} \leqq 2^{[(k+1)+1]} - 2^{[(k+1)-1]} - 1 
+            \end{equation*}
+        
+        Using a direct proof. Suppose $2^k \leqq 2^{k+1} - 2^{k-1} - 1$, and reason as follows
+            \begin{align*}
+                2^k & \leqq 2^{k+1} - 2^{k-1} - 1 \\
+                2(2^k) & \leqq 2(2^{k+1} - 2^{k-1} - 1) && \text{multiply both sides by 2} \\     
+                2^{k+1} & \leqq 2^{k+2} - 2^{k} - 2 \\
+                2^{k+1} & \leqq 2^{[(k+1)+1]} - 2^{[(k+1)-1]} - 2 + 1 && \text{add unity to the bigger side} \\
+                2^{k+1} & \leqq 2^{[(k+1)+1]} - 2^{[(k+1)-1]} - 1 \\
+            \end{align*}
+    
+    Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers $n \geqq 1$, we conclude by the extended first principle that
+        \begin{equation*}
+            2^n \leqq 2^{n+1} - 2^{n-1} - 1  
+        \end{equation*}
+ 
+\end{proof}
+\end{example}
+
+\newpage
+Next, we will prove the \textbf{Bernoulli's Inequality}. That is, if $n \in \bb{N}$, then the inequality $(1+x)^n \geqq 1 + nx$ holds for all $x \in \bb{R}$ with $x > -1$. Thus we will prove the following statement
+    \begin{align*}
+        S_n: \; (1+x)^n \geqq 1 + nx \text{, for every } x \in \bb{R} \text{ with } x > -1
+    \end{align*}
+is true for every natural number $n$. This is (only) slightly different from our other examples, which proved statements of the form $$ \forall n \in \bb{N}, P(n) $$ where $P(n)$ is a statement about the number $n$. This time we are proving something of the form: $$ \forall n \in \bb{N}, P(n,x)$$
+where the statement $P(n,x)$ involves not only $n$, but also a second variable $x$.
+
+\begin{example}
+Source: \cite[C.10]{Hammack} \\ 
+
+Prove that if $n \in \bb{N}$, then the inequality $(1+x)^n \geqq 1 + nx$ holds for all $x \in \bb{R}$ with $x > -1$.
+\begin{tcolorbox}
+    \begin{theorem}
+        For every $n \in \bb{N}$ and $x \in \bb{R}$ with $x > -1$, it follows that 
+        \begin{equation*}
+            (1+x)^n \geqq 1 + nx              
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For every $n \in \bb{N}$ and $x \in \bb{R}$ with $x > -1$, we let $P(n)$ be
+        \begin{equation*}
+            (1+x)^n \geqq 1 + nx  
+        \end{equation*}
+        
+    \begin{flushleft} \textbf{Basis Step:} \end{flushleft}
+        We first prove that $P(1)$ is true. For the case, $P(1)$, notice that,   
+            \begin{align*}
+                (1+x)^1 & \geqq 1 + (1)x
+                1 + x   & \geqq 1 + x
+            \end{align*}
+        which proves that $P(1)$ is true. This provides us the basis step for induction. \\ 
+    
+    \begin{flushleft} \textbf{Inductive Step:} \end{flushleft}
+        For the inductive step, we prove that for all $k \in \bb{Z}$ with $\{k \geqq 1$ and $x \in \bb{R} | x > -1 \}$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+            \begin{equation*}
+            (1+x)^k \geqq 1 + kx 
+            \end{equation*}
+        
+        The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+            \begin{equation*}
+            (1+x)^{k+1} \geqq 1 + (k+1)x 
+            \end{equation*}
+        
+        Using a direct proof, $1 + x$ is positive because $x > -1$, so we can multiply both sides of $$ (1+x)^k \geqq 1 + kx $$ without changing the direction of the inequality. 
+            \begin{align*}
+                (1+x)^k(1+x)    & \geqq (1 + kx)(1+x) \\
+                (1+x)^{1+k}     & \geqq 1 + x + kx + kx^2 \\
+                                & \geqq 1 + (1 + k)x + kx^2 \\   
+            \end{align*}
+        The above term $kx^2$ is positive, so removing it from the right hand side of the inequality will only make that side smaller. Thus we get $$ (1+x)^{1+k} \geqq 1 + (k + 1)x $$. Hence, the inductive step has been established, and by the Extended First Principle of Mathematical Induction, we have proven for every $n \in \bb{N}$ and $x \in \bb{R}$ with $x > -1$, it follows that 
+        \begin{equation*}
+            (1+x)^n \geqq 1 + nx              
+        \end{equation*}
+ 
+\end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\subsection{Binomial Theorem}
+
+Consider the following formulas:
+    \begin{align*}
+        (x + y)^1 & = x + y \\
+        (x + y)^2 & = x^2 + 2xy + y^2 \\
+        (x + y)^3 & = x^3 + 3x^2y + 3xy^2 + y^3 \\
+        (x + y)^4 & = x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4 \\
+    \end{align*}
+They suggest the problem of finding the general expanded version of the power $(x+y)^n$. The question is how to predict the the coefficients. A clue lies in the observation of the coefficients of the first few expansions which suggests the general formual show be of the following form: 
+    \begin{align*}
+        (x + y)^n & = {\binom{n}{0}}x^ny^0 + {\binom{n}{1}}x^{n-1}y^1 + {\binom{n}{2}}x^{n-2}y^2 + \cdots + {\binom{n}{n-1}}x^1y^{n-1} + {\binom{n}{n}}x^0y^n \\
+    \end{align*}
+or, more written more compactly, 
+
+    \begin{align*}
+        (x + y)^n & = \sum_{k=0}^{n} \binom{n}{k}x^{n-k}y^k \\
+    \end{align*}
+where the coefficient $\binom{n}{k}$ of $x^{n-k}y^k$ is some natural number which depends on $k$ and $n$. For example, if $n=4$, then $\binom{4}{1}=4$, $\binom{4}{2}=6$, and $\binom{4}{3}=4$. Mathematical induction now provides us a means of verifying this conjecture. This conjecture is called the \textbf{Binomial Theorem} 
+
+\newpage
+\begin{theorem}
+Proof of Binomial Theorem
+
+    \begin{tcolorbox}
+            Let $x$ any $y$ be real numbers. For any binomial coefficent $\binom{n}{k}$, it follows that
+                \begin{equation*}
+                    \sum_{k=0}^{n} \binom{n}{k}x^{n-k}y^k = (x + y)^n
+                \end{equation*}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by the First Principle of Mathematical Induction. For each natural number $n$ choose $k$, we let $P\binom{n}{k}$ be
+            \begin{align*}
+                \sum_{k=0}^{n} \binom{n}{k}x^{n-k}y^k & = (x + y)^n
+            \end{align*}
+        
+        \begin{flushleft} \textbf{Basis Step:} \end{flushleft}
+        We first prove that $P\binom{1}{k}$ is true. Notice that $$ \sum_{k=0}^{1} \binom{1}{k}x^{1-k}y^k $$. This shows that   
+            \begin{align*}
+                \sum_{k=0}^{1} \binom{1}{k}x^{1-k}y^k &= \binom{1}{0}x^{1-0}y^0 + \binom{1}{1}x^{1-1}y^1 \\
+                    &= \binom{1}{0}x^1 + \binom{1}{1}y^1 \\
+                    &= x + y \\
+                    &= (x + y)^1 \\
+            \end{align*}
+        which proves that $P\binom{1}{k}$ is true. 
+        
+        
+        \begin{flushleft} \textbf{Inductive Step:} \end{flushleft}        
+        For the inductive step, we prove that for all $j \in \bb{N}$ with $k \geqq 1$, if $P\binom{j}{k}$, then $P\binom{j+1}{k}$. So let $j$ be a natural number and assume that $P\binom{j}{k}$ is true. That is, we assume that 
+            \begin{equation*}
+                \sum_{k=0}^{j} \binom{j}{k}x^{j-k}y^k = (x + y)^j
+            \end{equation*}
+        
+        The goal is to prove that $P\binom{j+1}{k}$ is true. That is, it must be proved that  
+            \begin{align*}
+                \sum_{k=0}^{j+1} \binom{j+1}{k}x^{(j+1)-k}y^k = (x + y)^{j+1}
+            \end{align*}
+        The starting point is to notice that 
+            \begin{align*}
+                (x + y)^{j+1} &= (x+y)(x+y)^j \\
+                    &= x(x+y)^j + y(x+y)^j \\
+            \end{align*}
+        Under the inductive hypothesis, 
+            \begin{align*}
+                x(x+y)^j &= x \sum_{k=0}^{j} \binom{j}{k}x^{j-k}y^k \\
+                    &= \sum_{k=0}^{j} \binom{j}{k}x^{(j+1)-k}y^k \\
+                    &= \binom{j}{0}x^{j+1-0}y^0 + \sum_{k=1}^{j} \binom{j}{k}x^{(k+1)-k}y^k \\
+                    &= x^{j+1} + \sum_{k=1}^{j} \binom{j}{k}x^{(j+1)-k}y^k \\
+            \end{align*}
+        and 
+            \begin{align*}
+                y(x+y)^j &= y \sum_{k=0}^{j} \binom{j}{k}x^{j-k}y^k \\
+                    &= \sum_{k=0}^{j} \binom{j}{k}x^{j-k}y^{k+1} \\
+                    & = \sum_{k=1}^{j} \binom{j}{k-1}x^{j-(k-1))}y^{(k-1) + 1} + \binom{j}{j} x^{j-j} y^{j+1} \\
+                    &= \sum_{k=1}^{j} \binom{j}{k-1}x^{(j+1)-k}y^k + y^{j+1} \\
+            \end{align*}
+        Upon, adding these expressions, we obtain
+            \begin{align*}
+                (x+y)^{j+1} &= x^{j+1} + \sum_{k=1}^{j} \binom{j}{k}x^{(j+1)-k}y^k + \sum_{k=1}^{j} \binom{j}{k-1}x^{(j+1)-k}y^k + y^{j+1} \\
+                    &= x^{j+1} + \sum_{k=1}^{j} [\binom{j}{k}x^{(j+1)-k}y^k + \binom{j}{k-1}x^{(j+1)-k}y^k ] + y^{j+1} \\
+                    &= x^{j+1} + \sum_{k=1}^{j} \{ [\binom{j}{k} + \binom{j}{k-1}]x^{(j+1) - k}y^k  \} + y^{j+1} \\
+                    &= \sum_{k=0}^{j+1} \binom{j+1}{k} x^{(j+1)-k}y^k \\
+            \end{align*}
+        Hence, the inductive step has been established, and by the First Principle of Mathematical Induction, we have proven that for each binomial coefficient $\binom{n}{k}$, 
+            \begin{align*}
+                \sum_{k=0}^{n} \binom{n}{k}x^{n-k}y^k & = (x + y)^n
+            \end{align*}            
+    \end{proof}
+\end{theorem}
+
+Notice, the constants of the form $\binom{n}{k}$ in the binomial theorem are called \textbf{Binomial Coefficients} satisfy a simple relationship which makes it possible to obtain their value. For convenience, define
+    \begin{align*}
+        \binom{n}{0} &= \binom{n}{n} = 1 & \text{for all } n \\
+        \binom{n+1}{k} &= \binom{n}{k-1} + \binom{n}{k} = 1 & \text{for } 1 
+        \leqq k \leqq n \\
+    \end{align*}
+
+Consider the diagram (known as pascal triangle):
+
+\begin{center}
+    \begin{tikzpicture}
+    \foreach \n in {0,...,4} {
+      \foreach \k in {0,...,\n} {
+        \node at (2*\k-\n,-\n) {${\n \choose \k} = \binomialb\n\k$};
+      }
+    }
+    \end{tikzpicture}
+\end{center}
+
+The rule of formation should be clear. The edges of the triangle are composed of ones. The postiion of the numbers in successive rows is staggered so that every number not on an edge of the triangle has two numbers above it, one of them to the right and the other to the left. Moeverover, each such number is the sun of the two numbers above it. Hence, the nth row of the pascal triangle are precisely the binomal coefficients for the expession of $(x+y)^n$. \\
+
+A striking characteristic of the Pascal Triangle is the symmetry about the imaginary vertical line through the center of the triangle. This symmetry is expressed in terms of the binomail coefficients by the formula $$ \binom{n}{k} = \binom{n}{n-1} $$
+
+Another less obvious relationship between the binomial coefficient can be discovered from pascal triangle by tracing down a diagonal from left to right. For example, on the third diagonal we get the sequence $$ 1, 3, 6, 10, 15, 21, \cdots $$
+The rule of formation here is not immediately evident. However, consider the successive quotients $$ \frac{3}{1}, \frac{6}{3} = 2 = \frac{4}{2}, \frac{10}{6} = \frac{5}{3}, \frac{15}{10} = \frac{3}{2} = \frac{6}{4}, \frac{21}{15} = \frac{7}{5}, \cdots $$
+Similary, down the next diagonal, $$ 1, 4, 10, 20, 35, \cdots $$
+The quotients are $$ \frac{4}{1}, \frac{10}{4} = \frac{5}{2}, \frac{20}{10} = 2 = \frac{6}{3}, \frac{35}{20} = \frac{7}{4}, \cdots $$
+These observations suggests another identity: 
+    \begin{align*}
+        \frac{\binom{n+1}{k+1}}{\binom{n}{k}} &= \frac{n+1}{k+1} & 1 \leqq i \leqq n
+    \end{align*}
+Now, we can use this identity to to determine a numerical expression for the bionomial coefficient $\binom{n}{k}$, where $\leqq k \leqq n$. By successive cancellation, we obtain
+    \begin{align*}
+        \binom{n}{k} &= \frac{\binom{n}{k}}{\binom{n-1}{k-1}} \m \frac{\binom{n-1}{k-1}}{\binom{n-2}{k-2}} \cdots \frac{\binom{n-k+1}{1}}{\binom{n-k}{0}} \m \binom{n-k}{0} \\
+            &= \frac{n}{k} \m \frac{n-1}{k-1} \cdots \frac{n-k+1}{1} \m 1 \\
+            &= \frac{n(n-1) \cdots (n-k+1)}{k(k-1) \cdots 1} \\
+            &= \frac{n(n-1) \cdots (n-k+1)(n-k)(n-k-1)\cdots 2 \m 1}{[(n-k)(n-k-1)\cdots 2 \m 1][k(k-1)\cdots 2 \m 1]} \\
+            &= \frac{n!}{(n-k)!k!}
+    \end{align*}
+Recalling the convention that $0! = 1$, we see that the expression $\frac{n!}{(n-k)!k!}$ represents $\binom{n}{k}$, even for $k=0$ and $k=n$, we see that $$ \binom{n}{0} = \frac{n!}{(n-0)!0!}=1 $$ and $$ \binom{n}{n} = \frac{n!}{(n-n)!n!} = 1  $$
+
+
+\newpage
+\subsection{Minimum Counter-example}
+
+For each positive integer $n$, let $P(n)$ be a statement. We have seen that induction is a intuitive proof technique to verify the truth of the quantified statement of the form:
+    \begin{equation*}
+        \forall n \in \bb{N}, P(n)
+    \end{equation*}
+There are certain statements, where induction does not work, or do not work elegantly. IF we attempt to prove $\forall n \in \bb{N}, P(n)$ using a \textit{Proof by Contradtiction}, then we would begin such a proof by assumpting that the proposition $\forall n \in \bb{N}, P(n)$ is false. Consequently, there are positive integers $n$ such that $P(n)$ is a false staement. \\
+
+By the Well-Ordering Principle, there exists a smallest integer $n$ such that $P(n)$ is false statement. Denote this integer by $m$. Therefore, $P(m)$ is a false statement and for any integer $k$ with interval $1 \leqq k < m$, the statement $P(k)$ is true. The integer $m$ is referred to as a \textbf{Minimum Counterexample} of the statement $\forall n \in \bb{N}, P(n)$. If a proof (by contradiction) of $\forall n \in \bb{N}, P(n)$ can be given using the fact that $m$ is a minimum counterexample, then such a proof is called a \textbf{Proof by Minimum Counterexample}. \\
+
+We now illustrate a situation in which the standard First Priniple of Mathematical Induction is not ideal proof structure. Suppose we wish to prove the following theorem
+    \begin{theorem}
+        For natural number $n$, $6 | (n^3 - n)$
+    \end{theorem}
+The standard induction would follow this line of reasoning.
+    \begin{itemize}
+        \item BASIS STEP: $P(1)$: If $n=1$, then $6 | 0$. Thus, Basis established
+        \item INDUCTIVE STEP: $P(k+1)$: $(k+1)^3 + (k+1) = 6x + 3k(k+1), \exists x \in \bb{Z}$ Thus, Induction not established.  
+    \end{itemize}
+In order to complete the inductive step, we need to show that $6 | 3k(k+1)$, which have a proof. Thus we need to show that $K(K+1)$ us even for every postive integer $k$. A lemma could be called to verify this claim. This lemma could be proved using a \textit{Proof by Cases} (where the cases are $k$ is even and $k$ is odd) or another mini first priniple induction would suffice. Although such a lemma would not be difficult to prove, it make the proof much longer than it  need to be. Hence, in these situations a \textbf{Proof by Minimum Counterexample} is recommended. 
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.3, Result 6.16]{gray} \\ 
+
+Prove for every positive integer $n$, that $6 | (n^3 - n)$
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each positve integer $n$,
+                \begin{equation*}
+                    6 | (n^3 - n)
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by Minimum Counter-example (contradiction). So we assume that the proposition is false or that 
+        
+        	\begin{center}
+        		there exists a positive integer $n$ such that $6 \nmid (n^3 - n)$
+        	\end{center}
+        
+        Then, by the Well-Ordering Principle, there exists a smallest postive integer $n$ such that $6 \nmid (n^3 - n)$. Let $m$ be this integer. If $n=1$, then $n^3-n = 0$; while if $n=2$, then $n^3 - n = 6$. Since $6|0$ and $6|6$, it follows that $6 | (n^3 - n)$ for $n=1$ and $n=2$. Therefore $m \geqq 3$, So we write $m = k + 2$, where $1 \leqq k < m$. Observe that 
+            \begin{align*}
+                m^3 - m & = (k+2)^3 - (k+2) \\
+                    & = k^3 + 6k^2 + 12k + 8 - k - 2 \\
+                    & = k^3 +6k^2 + 11k + 6 \\
+                    & = k^3 - k +6k^2 + 12k + 6 \\
+                    & = (k^3 - k) + 6(k^2 + 2k + 1) \\
+            \end{align*}
+        Since $k<m$, it follows that $6 | (k^3 - k)$. Hence, by the definition of integers, $k^3 - k = 6x$, for some integer $x$. So we have
+            \begin{align*}
+                m^3 - m & = (k^3 + k) + 6(k^2 + 2k + 1) \\
+                    & = 6x + 6(k^2 + 2k + 1) \\
+                    & = 6(x + k^2 + 2k + 1) \\
+            \end{align*}
+        Since $x + k^2 + 2k + 1$ is an integer, $6 | (m^3 - m)$ This is a contradiction. Consequently we have proved that there exists a positive integer $n$ such that $6 | (n^3 - n)$
+    \end{proof}
+\end{example}
+
+
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.3, Result 6.16]{gray} \\ 
+
+Prove for every positive integer $n$, that $6 | (n^3 - n)$
+
+\begin{tcolorbox}
+    \begin{lemma}
+    \label{dfd1}
+        For any integer $k$, $k(k+1)$ is even
+    \end{lemma}
+\end{tcolorbox}
+
+\begin{proof}
+    We assume that $k$ is an integer and will proceed by cases show that $k(k+1)$ is even. \\
+    
+    \textbf{Case 1: $k$ is even} \\
+        We assume that $k$ is even, and we will show via direct proof that $k(k+1)$ is even. Using the definition of even integers, we see that $k = 2r$ for some integer $r$. Expressing $k(k+1)$ in terms of $2r$, we get
+            \begin{align*}
+                k(k+1) & = 2r(2r + 1) \\
+                    & = 4r^2 + 2r \\
+                    & = 2(2r^2 + r) \\
+            \end{align*}
+        Since $(2r^2 + r)$ is an integer, we conclude that $k(k+1)$ is an even integer.
+    
+    \textbf{Case 2: $k$ is odd} \\
+        We assume that $k$ is odd, and we will show via direct proof that $k(k+1)$ is even. Using the definition of odd integers, we see that $k = 2s+1$ for some integer $s$. Expressing $k(k+1)$ in terms of $2s + 1$, we get
+            \begin{align*}
+                k(k+1) & = (2s+1)[(2s+1) + 1] \\
+                    & = (2s+1)(2s+2) \\
+                    & = 4s^2 + 6s + 2 \\
+                    & = 2(2s^2 + 3s + 1) \\
+            \end{align*}
+        Since $(2s^2 + 3s + 1)$ is an integer, we conclude that $k(k+1)$ is an even integer.
+    Because we proved both cases, we have proven that $k(k+1)$ is even, regardless of the parity ok $k$
+\end{proof}
+
+
+
+
+\begin{tcolorbox}
+    \begin{theorem}
+        For each positive integer $n$,
+            \begin{equation*}
+                6 | (n^3 - n)
+            \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+
+\begin{proof}
+    We will use a proof by the Extended First Principle of Mathematical Induction. For each nonnegative number $n$, we let $P(n)$ be
+        \begin{equation*}
+            6 | (n^3 - n)
+        \end{equation*}
+    We first prove that $P(0)$ is true. For the case, $P(0)$, notice that $ 6 | (0^3 - 0)$. This shows that   
+        \begin{equation*}
+            6 | 0
+        \end{equation*}
+    which proves that $P(0)$ is true. This provides us the basis step for induction. \\ 
+    
+    For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 0$, if $P(k)$, then $P(k+1)$. So let $k$ be a non-negative integer and assume that $P(k)$ is true. That is, we assume that 
+        \begin{equation*}
+           6 | (k^3 - k)
+        \end{equation*}
+    
+    By congruence of integers, there exists an intger $x$ such that $k^3 - k = 6x $ and in order to prove that $P(k+1)$ is true. That is, we must show that $6 | [(k+1)^3 - (k+1)]$, such that
+        \begin{align}
+        \label{kbdf1}
+            (k+1)^3 - (k+1) & = k^3 + 3k^2 + 3k + 1 - (k+1) \nonumber \\
+                    & = k + 3k^2 + 2k \nonumber \\
+                    & = (k^3 - k) + 3k^2 + 3k \nonumber \\
+                    & = (k^3 - k) + 3k(k+1) \nonumber \\
+        \end{align}    
+    
+    Since $6x = k^3 - k$, equation (\ref{kbdf1}) becomes $(k+1)^3 - (k+1) = 6x + 3k(k+1)$. Using lemma (\ref{dfd1}), we known that $k(k+1)$ is an even integer regardless of the parity of $k$. So we rewrite the expression $k(k+1)$ as $k(k+1) = 2t$, for some integer $t$. Thus, equation (\ref{kbdf1}) becomes: 
+        \begin{align}
+        \label{kbdf2}        
+            (k+1)^3 - (k+1) & = 6x + 3(2t) \nonumber \\
+                & = 6x + 6t \nonumber \\
+                & = 6(x + t) \nonumber \\
+        \end{align}     
+    
+    
+    Since $(x+t)$ is an integer, the equation (\ref{kbdf2}) shows that $6 | k^3 - k)$. Therefore, the inductive step has been established. Thus, by the Principle of Mathematical Induction, for every positive integer $n$, that $6 | (n^3 - n)$
+ 
+\end{proof}
+\end{example}
+
+
+
+
+\newpage
+\begin{example}
+Source: \cite[Chap.6, S.6.3, Result 6.17]{gray} \\ 
+
+Prove for every positive integer $n$, that $3 | (2^{2n} - 1)$
+    \begin{tcolorbox}
+        \begin{theorem}
+            For each positive integer $n$,
+                \begin{equation*}
+                    3 | (2^{2n} - 1)
+                \end{equation*}
+        \end{theorem}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We will use a proof by contradiction. So we assume that the proposition is false or that 
+        
+        	\begin{center}
+        		there exists a positive integer $n$ such that $3 \nmid (2^{2n} - 1)$
+        	\end{center}
+        
+        Then, by the Well-Ordering Prinicple, there exists a smallest postive integer $n$ such that $3 \nmid (2^{2n} - 1)$. Let $m$ be this integer. If $n=1$, then $2^{2n}-1 = 3$, it follows that $2 | (2^{2n} - 1)$ for $n=1$. Therefore $m \geqq 1$, So we write $m = k + 1$, where $0 \leqq k < m$. Observe that 
+            \begin{align*}
+                2^{2m} - 1 & = (2)^{2(k+1)} - 1 \\
+                    & = 2^{2k + 2} - 1 \\
+                    & = 4 \m 2^{2k} - 4 + 3 \\
+                    & = 4(2^{2k} - 1) + 3 \\
+            \end{align*}
+        Since $k<m$, it follows that $ 3 | (2^{2k} - 1)$. Hence, by the definition of integers, $2^{2k} - 1 = 3x$, for some integer $x$. So we have
+            \begin{align*}
+                2^{2m} - 1 & = 4(2^{2k + 2} - 1) + 3 \\
+                    & = 4(3x) + 3 \\
+                    & = 3 (4x + 1) \\
+            \end{align*}
+        Since $4x + 1$ is an integer, $3 | (2^{2m} - 1)$ This is a contradiction. Consequently we have proved that there exists a positive integer $n$ such that $3 | (2^{2n} - 1)$
+    \end{proof}
+\end{example}
+
+
+
+
+
+
+
+\newpage
+\subsection{Second (Strong) Principle of Math. Induction}
+
+There is another variant of the induction that is often used when the Well-Ordering Principle, Archimedean Property, First Principle and Extended Principles of Mathematical Induction quartet of principles seems ineffective. Let $P(n)$ be
+    \begin{center}
+        $n$ is a prime number or $n$ is a product of prime numbers
+    \end{center}
+Suppose we would like to use the induction technique to prove that  $P(n)$ is true for all natural numbers greater than unity. We have seen the general idea of the inductive step in a proof by induction is to prove that if one statement in an infinte set is true then the next statement must also be true. The problem here is that we factor a composite number, we do not get the previous case. For example, if we assume that $P(39)$ is true and we want to prove that $P(40)$ is true, we could factor $40$ as $40 = 2 \m 20$. However, the assumption that $P(39)$ is true does not help us to prove that $P(40)$ is true. \\
+
+This example is intended to show that we need for another variant of the prinicple of induction. In the inductive step of a proof by induction, we assume one statement is true and prove the next one is true. The idea of this new principle is to assume that all of the previous statements are true and use this assumption to prove the next statement is true. \\
+
+This is stated formally in terms of subsets of natural numbers in the \textbf{Second Principle of Mathematical Induction}. Rather than stating this principle in two versions, we will the extended version of the second principle only because the first version is just a special case of the extended version. In many cases we will use $m=1$ or $m=0$.
+
+\begin{definition}
+Second Principle of Mathematical Induction \\
+
+\begin{tcolorbox}
+    \begin{theorem}
+        Let $m$ be integer. If $T$ is a subset of $\bb{Z}$, with the following properties: 
+            \begin{enumerate}
+                \item $m \in T$
+                \item For every $k \in \bb{Z}$ with $k \geqq m$. If $\{ m, m+1, \cdots k \} \subseteq T$, then $(k+1) \in T$
+            \end{enumerate}
+        Then, $T$ is the set of all integers greater than or equal to $m$. That is $\{n \in Z | n \geqq m \} \subseteq T$. Formally speaking,
+            \begin{equation}
+                (m \in \bb{Z}) \wedge (T \subseteq \bb{Z}) \wedge(m \in T) \wedge \{(\forall k \in \bb{Z} \wedge k \geqq m) | \{ m, m+1, \cdots k \} \subseteq T \to (k+1) \in T \} \to \{n \in Z | n \geqq m \} \subseteq T
+            \end{equation}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by contradiction. So we assume the proposition is false, which is
+        \begin{equation*}
+                (m \in \bb{Z}) \wedge (T \subseteq \bb{Z}) \wedge(m \in T) \wedge \{(\forall k \in \bb{Z} \wedge k \geqq m) | \{ m, m+1, \cdots k \} \subseteq T \to (k+1) \in T \} \wedge \{n \in Z | n \geqq m \} \nsubseteq T
+        \end{equation*}
+    
+    or that, again let $m$ be integer. If $T$ is a subset of $\bb{Z}$, with the following properties: 
+        \begin{enumerate}
+            \item $m \in T$
+            \item For every $k \in \bb{Z}$ with $k \geqq m$. If $\{ m, m+1, \cdots k \} \subseteq T$, then $(k+1) \in T$
+            \item $T$ is the set of all integers greater less than $m$. That is $\{n \in Z | n \geqq m \} \nsubseteq T$.
+        \end{enumerate}
+    At this point i am not sure how to proceed with the proof. 
+   
+\end{proof}
+\end{definition}
+
+
+\newpage
+\begin{definition}
+Procedures for a Proof by Second Principle of Mathematical Induction \\
+
+The primary use of the Extended First Principle of Mathematical Induction is to prove statements of the form: 
+    \begin{equation*}
+        (\forall n \in \bb{Z}, with n \geqq m)[P(n)]
+    \end{equation*}
+Where $m$ is an integer and $P(n)$ is some predicate. So our goal is to prove that the truth set $T$ of the predicate $P(n)$ contains all integers greater than or equal to $m$. To use the Second Principle of Mathematical Induction, we must follow the following steps:
+
+    \begin{enumerate}
+        \item BASIS STEP: Prove that $m \in T$. That is prove that $P(m)$ is true.
+        \item INDUCTIVE STEP: Prove that for every $k \in N$ with $k \geqq m$ and $ \{m, m+1, \cdots, k \} \subseteq T$, then $(k+1) \in T$. That is, prove that if $P(m)$, $P(m+1)$, $\cdots$, $P(k)$ is true, then $P(k+1)$ is true.
+    \end{enumerate}
+Then we can conclude that $P(n)$ is true for all $n \in \bb{Z}$ with $n \geqq m$. \\
+
+
+\end{definition}
+
+
+\newpage
+\begin{example}
+Proof Example Using the Second Principle of Mathematical Induction \\
+
+Prove that each natural number greater than unity is either a prime number or a product of prime numbers
+\begin{tcolorbox}
+    \begin{theorem}
+        Each natural number greater than unity is either a prime number or a product of prime numbers, that is
+            \begin{equation*}
+                \{ (\forall n \in \bb{N} \text{, where} n > 1) | (n \text{ is prime}) \vee (n \text{ is a product of primes})  \}
+            \end{equation*} 
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+        We will use a proof by the Second Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                (n \text{ is prime}) \vee (n \text{ is a product of primes})
+            \end{equation*}
+        
+        \textbf{Basis Step:} \\
+            We first prove that $P(2)$. Notice that $2$ is a prime number, which proves that $P(2)$ is true. This provides us the basis step for induction. \\ 
+        
+        \textbf{Inductive Step:} \\
+            For the inductive step, we prove that for all $k \in \bb{N}$ with $k \geqq 2$, we assume that $P(2), P(3), \cdots, P(k)$ are true. That is, we assume that each of the natural numbers $2,3,4, \cdots, k$
+                \begin{equation*}
+                   (k \text{ is prime}) \vee (k \text{ is a product of primes})
+                \end{equation*}
+            
+            The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+                \begin{equation}
+                \label{dnel}
+                   (k+1 \text{ is prime}) \vee (k+1 \text{ is a product of primes})                
+                \end{equation}
+            
+            To do this, we will proceed by cases according the logical disjunction of the proposition (\ref{dnel}): \\
+            
+            \textit{Case 1: If $k+1$ is prime, then $P(k+1)$ is true} \\
+            
+            
+            \textit{Case 2: If $k+1$ is not a prime, then $k+1$ is the product of primes} \\
+            
+            We notice that if $k+1$ is not a prime number, then $k+1$ can be factored into a product of natural numbers withe each multiplicand being less than $K+1$. That is, there exists natural numbers $a$ and $b$ with $k+1 = a \m b$, where $1 < a \leqq < k$ and $1 < b \leqq < k$. \\
+            
+            Using the inductive assumption, this means that $P(a)$ and $P(b)$ are both true. Consequently, $a$ and $b$ are prime numbers or are product of prime numbers. Since $k+1 = a \m b$, we conclude that $k+1$ us a product of prime numbers. That is, we conclude that $P(k+1)$ is true. This establishes the inductive step. \\
+            
+        Hence, by the Second Principle of Mathematical Induction, we conclude that $P(n)$ is true for all $n \in \bb{N}$ with $n \geqq 2$, this means   
+
+            \begin{equation*}
+                (n \text{ is prime}) \vee (n \text{ is a product of primes})
+            \end{equation*}
+\end{proof}
+\end{example}
+
+
+
+
+
+\newpage
+\subsection{Proofs Repository: Strong Principle of Math. Induction}
+
+\newpage
+\begin{example}
+Sequence Conjecture and Proof
+
+To illustrate a proof which requires the extended first principle, Consider the \textbf{Lucas Sequence}:
+    \begin{equation*}
+        1, 3, 4, 7, 11, 18, 29, 47, 76, \cdots
+    \end{equation*}
+Except for the first two terms, each term of the sequence is the sum of the preceding two, so that the sequence may be defined inductively by:
+    \begin{equation}
+    \label{gde2}
+        \{a_i\}_{i=1}^{n}= 
+    \begin{cases}
+        a_1 = 1 \\
+        a_2 = 3 \\
+        a_i = a_{i-1}+a_{i-2} & {\forall i \geqq 3}
+    \end{cases}
+   \end{equation}
+
+We contend that the inequality $\{a_n\} < (\frac{7}{4})^n$ holds for every postive integer $n$. Now, let's formally prove this proposition: \\ 
+
+Prove that every element $n$ of the lucas sequence is always less than ${\frac{7}{4}}^n$. 
+\begin{tcolorbox}
+    \begin{theorem}
+        The \textbf{lucas sequence} $\{a_i\}_{n=1}^{n}$, inductively defined by equation (\ref{gde2}) is strictly less than $\frac{7}{4}^n$, for any natural number $n$
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+        We will use a proof by Strong Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+            \begin{equation*}
+                 \{a_i\}_{i=1}^{n}  < \frac{7}{4}^{n}
+            \end{equation*}
+        
+        \textbf{Basis Step:} \\
+            We first prove that $P(1)$,  $P(2)$, and $P(3)$ are true. For these cases, notice
+                \begin{itemize}
+                    \item If $\{a_i\}_{i=1}^{1} < {\frac{7}{4}}^1$, then $1 < \frac{7}{4}$
+                    \item If $\{a_i\}_{i=1}^{2} < {\frac{7}{4}}^2$, then $2 < \frac{49}{16}$
+                    \item If $\{a_i\}_{i=1}^{3} < {\frac{7}{4}}^3$, then $3 < \frac{343}{64}$
+                \end{itemize}
+            which proves $P(1)$,  $P(2)$, and $P(3)$ are true. This provides us the basis step for induction. \\ 
+        
+        \textbf{Inductive Step:} \\
+            For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 3$, if $P(k)$, then $P(k+1)$. So let $k$ be a integer and assume that $P(k)$ is true. That is, we assume that 
+                \begin{equation*}
+                   \{a_i\}_{i=1}^{k}  <  \frac{7}{4}^{k}
+                \end{equation*}
+            
+            The goal is to prove that $P(k+1)$ is true. That is, it must be proved that  
+                \begin{equation}
+                \label{dneg6}
+                     \{a_i\}_{i=1}^{k-1} + \{a_i\}_{i=1}^{k-2} < \frac{7}{4}^{k}
+                \end{equation}
+            
+            To do this, will add the $k-1$ and $k-2$ elements on both sides of the equation (\ref{dneg6}) and algebraically rewrite the right hand side of the resulting equation. Since $\{a_i\}_{i=1}^{k} = \{a_i\}_{i=1}^{k-1} + \{a_i\}_{i=1}^{k-2}$, this gives
+                \begin{align*}
+                    \{a_i\}_{i=1}^{k} & < \frac{7}{4}^{k-1} + \frac{7}{4}^{k-2} \\
+                        & < \frac{{\frac{7}{4}}^4}{\frac{7}{4}} + \frac{{\frac{7}{4}}^4}{{\frac{7}{4}}^2} \\
+                        & < \frac{{\frac{7}{4}}^{2k} + {\frac{7}{4}}^k}{{\frac{7}{4}}^2} \\
+                        & < \frac{{\frac{7}{4}}^{3k}}{{\frac{7}{4}}^k} \\
+                        & < {\frac{7}{4}}^k \\
+                \end{align*}
+            
+            Hence, the inductive step has been established. \\
+            
+        By the Second Principle of Mathematical Induction, we have proven that the inequality holds true for $n=k$ whenever it is true for then natural numbers, we conclude that the \textbf{lucas sequence} $\{a_i\}_{n=1}^{n}$, inductively defined by equation (\ref{gde2}) is strictly less than $\frac{7}{4}^n$, for any natural number $n$
+\end{proof}
+\end{example}
+
+
+\newpage
+\begin{example}
+Source: \cite[C.10]{Hammack} \\ 
+
+Prove if $n \in \bb{N}$, then $12 | (n^4 - n^2)$
+\begin{tcolorbox}
+    \begin{theorem}
+        For every natural number $n$,
+        \begin{equation*}
+            12 | (n^4 - n^2)            
+        \end{equation*}
+    \end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+    We will use a proof by the Second (Strong) Principle of Mathematical Induction. For each natural number $n$, we let $P(n)$ be
+        \begin{equation*}
+            12 | (n^4 - n^2)
+        \end{equation*}
+    We first prove that $P(1) \cdots P(6)$ are true. For these cases, notice
+        \begin{itemize}
+            \item If $n=1$, $12 | (n^4 - n^2 = 1^4 - 1^2 =0$
+            \item If $n=1$, $12 | (n^4 - n^2 = 2^4 - 2^2 =12$
+            \item If $n=1$, $12 | (n^4 - n^2 = 3^4 - 3^2 =72$
+            \item If $n=1$, $12 | (n^4 - n^2 = 4^4 - 4^2 =240$
+            \item If $n=1$, $12 | (n^4 - n^2 = 5^4 - 5^2 =600$
+            \item If $n=1$, $12 | (n^4 - n^2 = 6^4 - 6^2 =1260$
+        \end{itemize}
+
+    which proves that $P(1) \cdots P(6)$ are true. This provides us the basis step for induction. \\ 
+    
+    For the inductive step, we prove that for all $k \in \bb{Z}$ with $k \geqq 6$, if $P(k)$, then $P(k+1)$. So let $k$ be a non-negative integer and assume that $P(k)$ is true. That is, we assume that 
+        \begin{equation*}
+            12 | [(k+1)^4 - (k+1)^2]
+        \end{equation*}
+    
+    By congruence of integers, there exists an integer $x$ such that
+        \begin{equation}
+        \label{dsf1} 
+            (k+1)^4 - (k+1)^2 = 12x
+        \end{equation}
+    
+    Moreover, in order to prove that $P(k+6)$ is true. That is, we must show that $12 | [(k+6)^4 - (k+6)^2] $. Observe that: 
+        \begin{align*}
+            (k+6)^4 - (k+6)^2 & = 1296 + 864k + 216k^2 + 24k^3 + k^4 - (k^2 + 12 k + 36) \\
+                & = 1260 + 852k + 215k^2 + 24k^3 + k^4
+        \end{align*}
+    
+Stuck, do i need a special trick to complete the proof?  
+    
+    
+ 
+\end{proof}
+\end{example}
+
+
+
+
+
+
+
+\newpage
+\subsection{Induction and Recursion}
+
+\begin{definition}
+Recurrence Relations \\
+
+
+We now consider a class of problems where the Second Principle of Mathematical Induction is commonly the appropriate proof technique. \\
+
+Suppose that we are considering a sequence $a_1, a_2, a_3, \cdots $ of numbers. One way to define a sequence $\{ a_n \}$ is to specify explicitly the nth term $a_n$ (as a function of the sequence can also be \textbf{defined recursively}). In a \textbf{recursively defined sequence} $\{ a_n \}$, only the first term or perhaps the first few terms are defined specifically, say $a_1, a_2, \cdots, a_k$ for some fixed natural number $k \in \bb{N}$. These are called the \textbf{intial values}. Then $a_{k+1}$ is expressed in terms of $a_1, a_2, a_3, \cdots a_k$, and more generally, for $n > k$, $a_n$ is expressed in terms of $a_1, a_2, \cdots, a_{a-1}$. This is called the \textbf{recurrence relation}. \\
+
+
+A specific example of this is the sequence $\{ a_n \}$ defined by $a_1 = 1, a_2=3$ and $a_n = 2a_{n-1}- a_{a-2}$ or $n \geqq 3$. In this case, there are two intial values, namely $a_1 = 1$ and $a_2 = 3$. The recurrence relation here is 
+    \begin{equation*}
+        a_n = 2a_{a-1}-a_{n-2}, \text{ for } n \geqq 3 
+    \end{equation*}
+
+Letting 
+    \begin{enumerate}
+        \item $n=3$, we find that $a_3 = 2a_1 - a_1 = 5$
+        \item $n=4$, we find that $a_4 = 2a_3 - a_2 = 7$
+        \item $n=5$, we find that $a_5 = 2a_4 - a_3 = 9$
+    \end{enumerate}
+It appear that $a_n = 2n-1$ for each natural number $n$. Using the Strong Principle of Mathematical Induction, we can prove this conjecture.
+\end{definition}
+
+\begin{definition}
+Inductive Definition \\
+
+An inductive definition consists of two parts: 
+    \begin{enumerate}
+        \item A condition $C_1, C_2, \cdots, C_k$ such that $C_1$ determines a unique object $O_1$, $C_2$ determines a unique object $O_2, \cdots, C_k$ determines a unique object $O_k$
+        \item A condition $K$, which for any natural number $n \geqq k$, determines a unique object $O_{n+1}$ in terms of $O_1, O_2, \cdots, O_n$
+    \end{enumerate}
+    
+    \begin{example}
+        For instance, let $x$ be a real number. Then, the nth power of $x$ is defined for all $n$ as the product of $x$ with itself $n$ times. However, a more precise definition of $x_n$ is formulated inductively by the means of the following two conditions:
+            \begin{enumerate}
+                \item $x^1 = x$
+                \item $x^{n+1} = (x^n) \m x$
+            \end{enumerate}
+        In this case $O_n$ is the number $x^n$ which is obtained by taking the nth power of $x$. In this example, $k=1$, and the condition $C_1$ is the equality $x^1 = x$. The condition $K$ is the equality $x^{n+1} = (x^n) \m x$. \\
+    \end{example}
+\bigskip
+    \begin{example}
+        Many important sequences are defined recursively. Consider the Fibonacci Sequence $$ 1, 1, 2, 3, 5, 8, 13 $$
+        This ssequence is defined by the following two inductive conditions
+            \begin{enumerate}
+                \item $u_1 = u_2 = 1$
+                \item $u_{n+1} = u_n + u_{n-1}$ for $n \geqq 2$
+            \end{enumerate}
+        In this case, $O_n$ is the nth term of the Fibonacci sequence. Here $k=2$, $C_1$ is the condition $u_1 = 1$, $C_2$ is the condition $u_2 =1$, and $K$ is the condition $$ u_{n+1} = u_n + u_{n-1} \text{ for } n \geqq 2 $$
+    \end{example}
+It is important to show that inductive defintions give uniquely determined objects $O_n$ for every natural number $n$. That is, we would like to know that there exists a sequence $O_1, O_2, \cdots, O_n, \cdots$ of objects such that $O_n$ satisfies $C_n$ for every $n \leqq k$ and $O_n$ satisfy $K$ for $n > k$, 
+and that if $O_1^I, O_2^I, \cdots, O_n^I, \cdots$ is a sequence of objects such that $O_n^I$ satisfies $C_n$ for $n \leqq k$, and $O_n^I$ satifies $K$ for for $n > k$, then $O_1^I=O_1, O_2^I=O_2, \cdots, O_n^I=O_n, \cdots$ This can be proved using the inductive principle for the natural numbers. 
+
+\begin{theorem}
+Inductive Sequences\\  
+
+    \begin{tcolorbox}
+        Suppose that $C_1, C_2, \cdots, C_k$ and $K$ are conditions having the properties:
+            \begin{enumerate}
+                \item A condition $C_1, C_2, \cdots, C_k$ such that $C_1$ determines a unique object $O_1$, $C_2$ determines a unique object $O_2, \cdots, C_k$ determines a unique object $O_k$
+                \item A condition $K$, which for any natural number $n \geqq k$, determines a unique object $O_{n+1}$ in terms of $O_1, O_2, \cdots, O_n$
+            \end{enumerate}
+        Then, there is a unique sequence $O_1, O_2, \cdots, O_n, \cdots$ of objects such that $O_n$ satisfies $C_n$ for $n \leqq k$, and $O_n$ satisfies $K$ for $n > k$
+    \end{tcolorbox}
+
+    \begin{proof}
+    Proof on Ross Pg 80.
+    \end{proof}
+\end{theorem}
+
+\end{definition}
+
+
+
+
+
+
+\newpage
+\section{Divisibility Theory in the Integers}
+\subsection{Division Algorithm I}
+\begin{definition}
+Division Algorithm - Case of Divisor $> 0$
+
+Given integers $a$ and $b$, with $b>0$, there exists unique integers $q$ and $r$ satisfying 
+\begin{tcolorbox}
+	\begin{theorem}
+		$a = qb + r$ such that $0 \leqq r < b$
+	\end{theorem}
+\end{tcolorbox}
+The integers $q$ and $r$ are called, respectively, the {\bf quotient} and {\bf remainder} n the division of $a$ and $b$. More simplistically, 
+	\begin{center}
+		dividend {\bf a} = [quotient {\bf q} $\times$ divisor {\bf b}] + remainder {\bf r}	
+	\end{center}
+PROOF REQUIRED
+\end{definition} 
+
+
+
+\subsection{Division Algorithm II}
+\begin{definition}
+Division Algorithm - Case of Divisor $ \neq 0$
+
+A More general version of the Division Algorithm is obtained on replacing the restriction that the divisor $b$ be positive by the simple requirement that $b \neq 0$. 
+
+Given integers $a$ and $b$, with $b \neq 0$, there exists unique integers $q$ and $r$ satisfying 
+\begin{tcolorbox}
+	\begin{theorem}
+		$a = qb + r$ such that $0 \leqq r < |b|$
+	\end{theorem} 
+\end{tcolorbox}
+PROOF REQUIRED
+
+
+To illustrate the Division Algorithm, when $b < 0$, let us take $b=-7$. Then, for the following choices of the dividend $a$: $1,-2,61,$ and $-59$, one gets the expressions:
+	\begin{eqnarray*}
+		a & = & bq + r \nonumber \\		
+		1 & = & q(-7) + r \text{, where }q=0 \text{ and } r=1  \nonumber \\	
+		-2 & = & q(-7) + r \text{, where }q=1 \text{ and } r=5  \nonumber \\	
+		61 & = & q(-7) + r \text{, where }q=-8 \text{ and } r=5  \nonumber \\	
+		-59 & = & q(-7) + r \text{, where }q=9 \text{ and } r=4  \nonumber \\	
+	\end{eqnarray*}
+\end{definition} 
+
+
+
+
+\newpage
+\subsection{Divisibility of Integers}
+
+\begin{definition}
+Definition of Divides, Divisor, Multiple \\
+
+Of special significance is the case in which the remainder of the Division Algorthm turns out to be zero. Let examine this situation: 
+
+
+
+\begin{tcolorbox}
+A nonzero integer $a$ {\bf divides} an integer $b$ provided that there is an integer $q$ such that $b = a \m q$, written as the quantified statement: 
+	\begin{center}
+		If $(\forall a, b \in \bb{Z})(\exists a > 0)(a | b)$ then  $(\exists q \in \bb{Z})(b = aq)$
+	\end{center}
+\end{tcolorbox}
+
+Hence, if $n$ is an even integer, then $2 | n$; moreover, if 2 divides some integer $n$, then $n$ is even. That is, an integer $n$ is even if and only if $2 | n$ \\
+1. $m$ is a {\bf divisor} and {\bf factor} of $n$ \\
+2. $n$ is a {\bf multiple} of $m$ \\
+The integer $0$ is not a divisor of any integer. If $m$ and $n$ are integers and $m \neq 0$, we frequently use the notation $m | n$ as a shorthand for $m$ divides $n$. \\
+
+On the other hand,if a nonzero integer $m$ {\bf does not divides} an integer $n$ provided that there is an integer $q$ such that $n \neq m \m q$. In other words, $(\exists q \in \bb{Z})(n \neq m \m q)$, we frequently use the notation $a \nmid b$ as a shorthand for $m$ does not divides $n$. \\
+
+For example $4|48$ since $48 = 4 \m 12$ and $-3|57$ since $57 = (-3) \m (-19)$. On the other hand, $4|66$ as there is no integer $c$ such that $66 = 4c$ 
+
+\end{definition} 
+
+
+\newpage
+\subsection{Properties of Divisibility} 
+
+\begin{theorem}
+Properties of Divisibility \\
+
+The following properties are the immediate consequences of the definition of divisibility:
+
+	\begin{tcolorbox}	
+		Let $a$, $b$, and $c$ arbitrary integers. Then the following properties of divisibility holds:
+		\begin{enumerate}
+		    \item $a | 0$
+		    
+		    \item $1 | a$
+		    
+		    \item $a | a$ \textit{Reflexive Property of Divisibility} 
+		    
+		    \item  $a | 1$ $\leftrightarrow$ $a = \pm 1$
+		    
+		    \item If $a | b$ and $c | d$, then $ac | bd$
+		    
+		    \item If $a | b$ and $b | c$, then $a | c$ \textit{Transitive Property of Divisibility}
+		    
+		    \item $a | b$ and $b | a$ $\leftrightarrow$ $a = \pm b$ \textit{Antisymmetric Property of Divisibility}
+		    
+		    \item If $a | b$ and $b \neq 0$, then $|a| \leqq |b|$
+		    
+		    \item If $a | b$ and $a | c$, then $a | (bx + cy)$, for some arbitrary integers $x$ and $y$
+		\end{enumerate}
+    \end{tcolorbox}
+\end{theorem}
+
+
+
+
+\begin{theorem}
+Property 5: \\
+    \begin{tcolorbox}
+        Let $a$, $b$, $c$ and $d$ be integers with $a \neq 0$ and $c \neq 0$. 
+        \begin{center}
+            If $a | b$ and $c | d$, then $ac | bd$
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{proof}
+        Assume that $a | b$ and $c | d$. We will show via a direct proof that $ac | bd$. Since $a | b$ and $c | d$, there exists integers $b = ax$ and $d = cy$, where $x$ and $y$ are integers. Multiplying these equations, we obtain: 
+            \begin{align*}
+            	bd & = (ax)(cy) \\	
+            	& = ac(xy) \\
+            \end{align*}
+
+        Since $xy$ is an integer because integers are closed under multiplication, we know that $x$ and $y$ are integers. Therefore, we conclude that $ab | bd$
+    \end{proof}
+\end{theorem}
+
+\newpage
+\begin{theorem}
+Property 6: Transitive Property of Divisibility \\ 
+    \begin{tcolorbox}
+        Let $a$, $b$, $c$ and $d$ be integers with $a \neq 0$ and $b \neq 0$. 
+        \begin{center}
+            If $a | b$ and $b | c$, then $a | c$
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{proof}
+        Assume that $a | b$ and $b | c$. We will show via a direct proof that $a | c$. Since $a | b$ and $b | c$, there exists integers $b = ax$ and $c = by$, where $x, y \in \bb{Z}$. Substituting these expressions into $c$ yields:
+
+            \begin{align*}	
+            	c & = (ax)y \\
+            	    & = a(xy) \\
+            \end{align*}
+
+        Since $xy$ is an integer because integers are closed under multiplication, we know that $x \m y \in \bb{Z}$. Therefore, we conclude that $a | c$ 
+    \end{proof}
+
+\bigskip
+\begin{corollary}
+It follows from the transitive property of divisibility that, 
+    \begin{tcolorbox}
+        Let $a$, $b$, $c$ and $d$ be integers with $d \neq 0$. 
+        \begin{center}
+            If $d | a$ and $d | b$, then $a | (a + b)$
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{proof}
+        Assume that $d | a$ and $d | b$. We will show via a direct proof that $d | (a + b)$. Since $d | a$ and $d | b$, there exists integers $a = dx$ and $b = dy$, where $x, y \in \bb{Z}$. Adding these equations yields:
+
+            \begin{align*}	
+            	a + b & = dx + dy \\
+            	    & = d(x + y) \\
+            \end{align*}
+
+        Since $x + y$ is an integer because integers are closed under addition, we know that $x + y \in \bb{Z}$. Therefore, we conclude that $d | (a + b)$ 
+    \end{proof}
+\end{corollary}
+    
+\bigskip
+\begin{corollary}
+It also follows that, 
+    \begin{tcolorbox}
+        Let $a$, $b$, $c$ and $d$ be integers with $d \neq 0$. 
+        \begin{center}
+            If $d | a$, then $d | ac$
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{proof}
+        Assume that $d | a$, we will show via a direct proof that $d | ac$. Since $d | a$, there exists integers $a = dx$, where $x \in \bb{Z}$. Now, multiplying this equation by some integer $c$ yields: 
+
+            \begin{align*}	
+            	ac & = dcx \\
+            	    & = d(cx) \\
+            \end{align*}
+
+        Since $cx$ is an integer because integers are closed under multiplication, we know that $x \in \bb{Z}$. Therefore, we conclude that $d | ac$ 
+    \end{proof}
+\end{corollary}
+
+\bigskip
+\begin{corollary}
+It also follows that, 
+    \begin{tcolorbox}
+        Let $a_1, a_2, a_3, \cdots a_n$, and  $d$ be integers with $d \neq 0$. 
+        \begin{center}
+            If $d|a_1, d|a_2, \cdots d|a_n$, then $d|a_1c_1 + d|a_2c_2 + \dots d|a_nc_n$
+        \end{center}
+    \end{tcolorbox}
+
+    PROOF REQUIRED
+\end{corollary}
+
+\end{theorem}
+
+
+\newpage
+\begin{theorem}
+Property 9: \\ 
+    \begin{tcolorbox}
+        Let $a$, $b$, $c$, $d$, $x$, and $y$ be integers with $a \neq 0$. If $a | b$ and $a | c$, then $a | (bx + cy)$
+        \begin{center}
+            If $a | b$ and $a | c$, then $a |(bx + cy)$
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{proof}
+        We assume $a$, $b$, $c$, $x$, and $y$ be integers with $a \neq 0$. We further assume that $a | b$ and $a | c$. We will show via a direct proof that $a | (bx + cy)$. Since $a | b$ and $a | c$, there exists integers $b = aq$ and $c = ar$, where $q$ and $r$ are integers. Substituting these equation into the expression $bx + cy$ yields:
+
+            \begin{align*}
+            	bx + cy & = (aq)x + (ar)y \\	
+            	    & = a(qx + ry) \\	
+            \end{align*}
+
+        Since $qx + ry$ is an integer because integers are closed under addition  and multiplication, we know that $x$, $y$, $q$, and $r$ are integers. Therefore, we conclude that $a | (bx + cy)$
+    \end{proof}
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\subsection{The Greatest Common Divisor}
+\subsection{The Least Common Divisor}
+\subsection{The Euclidean Algorithm}
+\subsection{The Unique Factorization Theorem}
+\subsection{The Greatest Integer Function}
+\subsection{Number Bases}
+
+
+\newpage
+\subsection*{Proof Repository: Divisibility Theory in the Integers}
+
+\begin{example}
+Let $x$ be an integer. If $2 | (x^2 - 1)$, then $4 | (x^2 - 1)$ \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $2 | (x^2 - 1)$, then $4 | (x^2 - 1)$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume $x$ be an integer and $2 | (x^2 - 1)$. We will show via a direct proof that $4 | (x^2 - 1)$. Since $2 | (x^2 - 1)$, there exist an odd integer $x^2 = 2y + 1$, where $q$ and $r$ are integers. By the known theorem: 
+	\begin{theorem}
+	\label{oddsquaretheory}		
+		For all integers $x$, $x^2$ is odd if and only if $x$ is odd
+	\end{theorem}
+we know that $x$ is too is an odd integer. Hence, $x = 2z + 1$ for some integer $z$. Substituting this equation into the expression $x^2 - 1$ yields:
+\begin{eqnarray*}
+	x^2 - 1 & = & (2z + 1)^2 - 1 \nonumber \\	
+	& = & 4z^2 + 4z \nonumber \\	
+	& = & 4(z^2 + z) \nonumber \\	
+\end{eqnarray*}
+Since $z^2 + z$ is an integer because integers are closed under addition  and multiplication, we know that $z$ is an integer. Therefore, we conclude that $4 | (x^2 - 1)$ \\
+\end{proof}
+\end{example}
+
+
+
+\newpage
+\section{Primes and Their Distribution}
+\subsection{Fundamental Theorem of Arithmetic}
+\subsection{The Sieve of Eratosthenes}
+\subsection{The Goldbach Conjecture}
+
+\newpage
+\section{Linear Diophantine Equations}
+\subsection{The Linear Diophantine Equation $ax + by = c$}
+\subsection{The Method of Euler}
+
+
+\newpage
+\section{The Theory of Congruence}
+\subsection{Definition of Congruence}
+
+\begin{definition}
+Definition of Congruence
+
+\begin{tcolorbox}
+For Integers $a$, $b$, and $n \geqq 2$, we say that $a$ is {\bf congruent to} $b$ {\bf modulo} $n$, written as the quantified statement: 
+	\begin{center}
+		If $(\forall a,b,n \in \bb{Z})(\exists n \geqq 2)(n | a-b)$ then  $a \equiv b(\text{mod n})$
+	\end{center}
+Notice that  we can use the definition of divisibility to say that $n | (a-b)$ if an only if these exists an integer $k$ such that $a-b = nk$. So we can quantified statement
+	\begin{center}
+		If $(\forall a,b,n \in \bb{Z})(\exists n \geqq 2)(n | a-b)$ then  $(\exists k \in \bb{Z})(a-b = nk)$
+	\end{center}
+or
+	\begin{center}
+		If $(\forall a,b,n \in \bb{Z})(\exists n \geqq 2)(n | a-b)$ then  $(\exists k \in \bb{Z})(a= b + nk)$
+	\end{center}
+
+\end{tcolorbox}
+This mean that in order to find integers that are congruent to $b(\text{mod n})$, we only need to add multiples of $n$ to $b$. For instance, to find integers that are congruent to $2(\text{mod 5})$, we add multiples of $5$ to $2$ i.e. $a = 2 + 5k$, for some integer $k$. Hence, $\{ a \in \bb{Z} | 2(\text{mod 5})\} = \{ \cdots -13, -8, -3, 2, 7, 12, 17, \cdots \}$ \\
+
+For example, $15 \equiv 7 (\text{mod 4})$ since $4 | (15-7)$, and $3 \equiv -15 (\text{mod 9})$ since $9 | (3--15)$. On the other hand, $14$ is not congruent to $4$ modulo $6$, written $14 \nmid 4 (\text{mod 6})$ since $ 6 \nmid (14 -4)$.
+
+Since we know that every integer $a$ can be expressed as even integer $a = 2q$ or as a odd integer $a = 2q + 1$, for some integer $q$, it follows that either $2 | (a -0)$ or $2 | (a - 1)$; that is, $x \equiv 0 (\text{mod 2})$ and $x \equiv 1 (\text{mod 2})$. Also, since each integer $x$ can be expressed $x = 3q$, $x = 3q + 1$, or $x = 3q + 2$, for some integer $q$, it logically follows $3 | (x - 0)$, $3 | (x-1)$ or $3 | (x - 2)$, respectively. 
+
+Moreover, for every integer $x$, exactly one of $x \equiv 0(\text{mod 4})$, $x \equiv 1(\text{mod 4})$, $x \equiv 2(\text{mod 4})$, or $x \equiv 3(\text{mod 4})$ holds, according to whether the remainder is $0$, $1$, $2$ or $3$ respectively. when $x$ is divided by $4$. Similar statements can be made when $x$ is divided by $n$ for each integer $n \geqq 5$. 
+
+\end{definition}
+
+
+
+
+
+
+
+\newpage
+\subsection{Arithmetic Properties of Congruence}
+\begin{definition}
+Properties of Congruence
+
+Congruence may be viewed as a generalized form of equality, in the sense that its behavior with resoect to addition and multiplication is reminiscent of ordinary equality. Some of the elementary proerties of equality carry over to congruence. 
+
+\begin{tcolorbox}
+	\begin{theorem}
+		Let $n$ be a natural number and $a$, $b$, and $c$ arbitrary integers. Then the following proerties of congruence holds: \\
+		1. Reflexive Property: $a \equiv a (\text{mod n})$ \\
+		2. Symmetric Property: If $a \equiv b (\text{mod n})$, then $b \equiv a (\text{mod n})$ \\
+		3. Transitive Property: If $a \equiv b (\text{mod n})$ and $b \equiv c (\text{mod n})$ then $a \equiv c (\text{mod n})$ \\
+		4. If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $(a + c) \equiv (b + d) (\text{mod n})$ and $ac \equiv bd (\text{mod n})$ \\
+		5. If $a \equiv b (\text{mod n})$, then $(a + c) \equiv (b + c) (\text{mod n})$ and $ac \equiv bc (\text{mod n})$ \\
+		6. If $a \equiv b (\text{mod n})$, then $a^k \equiv b^k (\text{mod n})$, for any integer $k$ \\
+		
+	\end{theorem}
+\end{tcolorbox}
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Reflexive Property Proof \\
+Let $n$ be a natural number. For every integer $a$, $a \equiv a (\text{mod n})$. This is the {\bf reflexive  property} of the congruence modulo $n$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		$a \equiv a (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+We assume that $n$ is a natural number and that $a$ is an integer. We will proceed via a direct proof to show that $a \equiv a (\text{mod n})$. Since $a$ is an integer $a-a = 0$ and $n | 0$, then $n|(a-a)$; we conclude that $a \equiv a (\text{mod n})$.
+
+
+
+
+
+
+2. Symmetric Property Proof \\
+Let $n$ be a natural number. For every integer $a$ and $b$, if $a \equiv b (\text{mod n})$, then $b \equiv a (\text{mod n})$ . This is the {\bf symmetric  property} of the congruence modulo $n$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$, then $b \equiv a (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+We assume that $n$ is a natural number and that $a$ is an integer. We also assume that $a \equiv b (\text{mod n})$. We will show via a direct proof that $b \equiv a (\text{mod n})$. Because $a \equiv b (\text{mod n})$, it follows from the definition of congruence that $n|(a-b)$; such that, $a-b = nq$, for some integers $q$. Multiplying both sides of this equation by the integer $-1$ yields: 
+	\begin{equation}
+		b-a = n(-q) \nonumber \\
+	\end{equation}
+Since (-q) is an integer and integers are closed under scalar multiplication, $n | (b-a)$; we conclude that $b \equiv a (\text{mod n})$. 
+\end{proof}
+
+
+
+3. Transitive Property Proof \\ 
+Let $n$ be a natural number. For every integer $a$, $b$, and $c$, if $a \equiv b (\text{mod n})$ and $b \equiv c (\text{mod n})$ then $a \equiv c (\text{mod n})$. This is the {\bf transitive property} of the congruence modulo $n$
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$ and $b \equiv c (\text{mod n})$ then $a \equiv c (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+
+We assume that $n$ is a natural number and that $a$ and $b$ are integers. We also assume that $a \equiv b (\text{mod n})$ and $b \equiv c (\text{mod n})$. We will show via a direct proof that $a \equiv c (\text{mod n})$. Because $a \equiv b (\text{mod n})$ and $b \equiv c (\text{mod n})$, it follows from the definition of congruence that $n|(a-b)$ and $n|(b-c)$; such that, $a-b = nq$ and $b-c = nr$, for some integers $q$ and $r$. Moreover, we can write these equations in the forms 
+	\begin{equation}
+	\label{11Beq1}	
+		a = nq + b
+	\end{equation}
+and 
+	\begin{equation}
+	\label{11Beq2}
+		b = nr + c
+	\end{equation}
+Substituting the equation (\ref{11Beq2}) in equation (\ref{11Beq1}) yields
+	\begin{eqnarray}
+		a & = & nq + (nr + c) \nonumber \\
+		& = & c + n(q+r) \nonumber \\
+		(a-c)& = & n(q+r) \nonumber
+	\end{eqnarray}
+Since $q+r$ is an integer and integers are closed under addition, $n | (a-c)$; we conclude that $a \equiv c (\text{mod n})$
+
+\end{proof}
+\end{definition}
+
+
+
+4. Congruence Property Proof \\ 
+Let $n$ be a natural number and let $a$, $b$, $c$, and $d$ be integers. If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $(a + c) \equiv (b + d) (\text{mod n})$ and $ac \equiv bd (\text{mod n})$ \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $(a + c) \equiv (b + d) (\text{mod n})$ and $ac \equiv bd (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+\begin{proof}
+
+
+We will proceed to prove this theorem by proving the following two assertions separately: \\
+1. If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $(a + c) \equiv (b + d) (\text{mod n})$\\
+2. If $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, then $ac \equiv bd (\text{mod n})$ \\
+We assume that $n$ is a natural number and $a$, $b$, $c$ and $d$ are integers. We also assume that $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$. We will show via direct proof that $(a + c) \equiv (b + d) (\text{mod n})$ and $ac \equiv bd (\text{mod n})$. Because $a \equiv b (\text{mod n})$ and $c \equiv d (\text{mod n})$, it follows from the definition of congruence that $n|(a-b)$ and $n|(c-d)$; such that, $a-b = nq$ and $c-d = nr$, for some integers $q$ and $r$. We can write these equations in the forms:
+	\begin{equation}
+	\label{CongP1}
+		a = nq + b
+	\end{equation}
+and 
+	\begin{equation}
+	\label{CongP2}
+		c = nr + d	
+	\end{equation}
+With regards to the first assertion, adding these equations ($\ref{CongP1}$) and ($\ref{CongP2}$) yields: 
+	\begin{eqnarray}
+		a + c & = & (nq + b) + (nr + d) \nonumber \\
+		& = & (b+d) + n(q + r) \nonumber \\
+		(a + c) - (b + d) & = & n(q + r) \nonumber \\
+	\end{eqnarray}	 
+Since $q + r$ is an integer and integers are closed under addition, it follows that $n | (a + c) - (b + d)$. This completes the proof of the first assertion. 
+Regarding the second assertion, multiplying equations ($\ref{CongP1}$) and ($\ref{CongP2}$), we get: 
+	\begin{eqnarray}
+		ac & = & (nq + b) \m (nr + d) \nonumber \\
+		& = & bd + n(nqr + qd + nr) \nonumber \\
+		ac - bd & = & n(nqr + qd + nr) \nonumber \\
+	\end{eqnarray}	 
+Since $nqr + qd + nr$ is an integer and integers are closed under addition and multiplication, it follows that $n | ac - bd$. This completes the proof of the second assertion. Given our assumptions, since $n | (a + c) - (b + d)$ and $n | (ac - bd)$, we conclude that $(a + c) \equiv (b + d) (\text{mod n})$ and $ac \equiv bd (\text{mod n})$
+
+\end{proof}
+
+
+
+5. Congruence Property Proof \\
+Let $n$ be a natural number and let $a$, $b$, $c$, and $d$ be integers. If $a \equiv b (\text{mod n})$, then $(a + c) \equiv (b + c) (\text{mod n})$ and $ac \equiv bc (\text{mod n})$ \\
+
+\begin{tcolorbox}
+	\begin{theorem}
+		If $a \equiv b (\text{mod n})$, then $(a + c) \equiv (b + c) (\text{mod n})$ and $ac \equiv bc (\text{mod n})$
+	\end{theorem}
+\end{tcolorbox}
+
+PROOF NEEDED
+
+
+\newpage
+\subsection{Special Divisibility Tests}
+\subsection{Linear Congruence $ax \equiv b (\text{mod }m)$}
+\subsection{Residue Classes}
+\subsection{System of Linear Congruence}
+\subsection{Higher Order Congruence}
+
+\newpage
+\section{Fibonacci Numbers and Continued Fractions}
+\subsection{The Fibonacci Sequence}
+\subsection{Certain Identities Involving Fibonacci Numbers}
+\subsection{Finite Continued Fractions}
+
+
+
+
+
+\newpage
+\chapter{Bibiography}
+\printbibliography
+
+
+
+
+\end{document}
