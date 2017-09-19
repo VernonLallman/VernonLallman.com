@@ -26,8 +26,10 @@
 
 % Packages to Draw Images
     \usepackage{float}
+    \usepackage{pgf}
     \usepackage{tikz}
-    \usetikzlibrary{shapes,backgrounds}
+    \usepackage{xcolor}
+    \usetikzlibrary{shapes,snakes,automata,backgrounds,petri}
     \usetikzlibrary{positioning}
 
 
@@ -77,27 +79,53 @@
 
 \begin{document}
 
-\begin{comment}
 
-\tikz 
-    \draw (100pt,100pt) --(20pt, 6pt);
+\chapter{Introduction}
+    \tikz 
+        \draw (100pt,100pt) --(20pt, 6pt);
+        
+    \tikz
+        \fill[orange] (2ex,2ex) 
+        circle (2ex);
     
-\tikz
-    \fill[orange] (2ex,2ex) 
-    circle (2ex);
+    \tikz
+        \draw (0,0) -- (1,0) -- (1,1) -- cycle;
+    
+    \newpage    
+    \tikz
+        \draw [thick,rounded, corners=8p]
+        (0,0) -- (0,2) -- (1,3.25) -- (2,2) -- (2,0) -- (0,2) -- (2,2) -- (0,0) -- (2,0);
 
-\tikz
-    \draw (0,0) -- (1,0) -- (1,1) -- cycle;
+\section{Structure of PGF System}
+    The PGF system consists of diffrent layers
+        \begin{itemize}
+            \item Basic Layer
+                the basic layer consits of a \textbf{core}, which consists of several independent packages that can only be loaded \textbf{en bloc} and additional \textbf{modules} that extend the core by special commands like node management or a plotting interface
+            \item frontend layer
+                a frontend is a set of commands or special syntax that makes using the basic layer easier. With the \textbf{tikz} frontend all this boils down to a single simple \textbf{METAFONT-like command}. For instance, to draw a simple triangle: 
+        \end{itemize}
 
-\newpage    
-\tikz
-    \draw [thick,rounded, corners=8p]
-    (0,0) -- (0,2) -- (1,3.25) -- (2,2) -- (2,0) -- (0,2) -- (2,2) -- (0,0) -- (2,0);
+\section{Utility Packages}
+    The utility packages are: 
+        \begin{itemize}
+            \item \textbf{pgfkeys package} defines a powerful key management system
+            \item \textbf{pgffor package} defines a \textbf{\ foreach} statements
+            \item \textbf{pgfcalendar package} defines macros for creating calenders
+            \item \textbf{pgfpages package} used to assemble several pages into a single page
+        \end{itemize}
 
-\end{comment}
+\chapter{Tutorial: A Picture for Karl's Students}
+
+    firstly, 
+    \begin{tikzpicture}
+        \draw (-1.5,0 -- (1.5,0);
+        \draw (0,-1.5) -- (0,1.5);
+    \end{tikzpicture}
 
 
 
+
+\newpage
 
 \begin{tikzpicture}
     \draw (-1.5,0) -- (1.5,0);

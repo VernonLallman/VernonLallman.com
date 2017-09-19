@@ -153,43 +153,44 @@
 % \binomialb macro from https://tex.stackexchange.com/a/161863/4686
 % expandably computes binomial coefficients with \numexpr
 
-% START OF CODE
-    \catcode`_ 11
-    
-    \def\binomialb #1#2{\romannumeral0\expandafter
-        \binomialb_a\the\numexpr #1\expandafter.\the\numexpr #2.}
-    
-    \def\binomialb_a #1.#2.{\expandafter\binomialb_b\the\numexpr #1-#2.#2.}
-    
-    \def\binomialb_b #1.#2.{\ifnum #1<#2 \expandafter\binomialb_ca
-                                \else   \expandafter\binomialb_cb
-                                \fi {#1}{#2}}
-    
-    \def\binomialb_ca #1{\ifnum#1=0 \expandafter \binomialb_one\else 
-                        \expandafter \binomialb_d\fi {#1}}
-    
-    \def\binomialb_cb #1#2{\ifnum #2=0 \expandafter\binomialb_one\else
-                          \expandafter\binomialb_d\fi {#2}{#1}}
-    
-    \def\binomialb_one #1#2{ 1}
-    
-    \def\binomialb_d #1#2{\expandafter\binomialb_e \the\numexpr #2+1.#1!}
-    
-    % n-k+1.k! -> u=n-k+2.v=2.w=n-k+1.k!
-    \def\binomialb_e #1.{\expandafter\binomialb_f \the\numexpr #1+1.2.#1.}
-    
-    % u.v.w.k!
-    \def\binomialb_f #1.#2.#3.#4!%
-    {\ifnum #2>#4 \binomialb_end\fi
-     \expandafter\binomialb_f
-     \the\numexpr #1+1\expandafter.%
-     \the\numexpr #2+1\expandafter.%
-     \the\numexpr #1*#3/#2.#4!}
-    
-    \def\binomialb_end #1*#2/#3!{\fi\space #2}
-    \catcode`_ 8
-% END OR \binomialb code
-
+\begin{comment}    
+    % START OF CODE
+        \catcode`_ 11
+        
+        \def\binomialb #1#2{\romannumeral0\expandafter
+            \binomialb_a\the\numexpr #1\expandafter.\the\numexpr #2.}
+        
+        \def\binomialb_a #1.#2.{\expandafter\binomialb_b\the\numexpr #1-#2.#2.}
+        
+        \def\binomialb_b #1.#2.{\ifnum #1<#2 \expandafter\binomialb_ca
+                                    \else   \expandafter\binomialb_cb
+                                    \fi {#1}{#2}}
+        
+        \def\binomialb_ca #1{\ifnum#1=0 \expandafter \binomialb_one\else 
+                            \expandafter \binomialb_d\fi {#1}}
+        
+        \def\binomialb_cb #1#2{\ifnum #2=0 \expandafter\binomialb_one\else
+                              \expandafter\binomialb_d\fi {#2}{#1}}
+        
+        \def\binomialb_one #1#2{ 1}
+        
+        \def\binomialb_d #1#2{\expandafter\binomialb_e \the\numexpr #2+1.#1!}
+        
+        % n-k+1.k! -> u=n-k+2.v=2.w=n-k+1.k!
+        \def\binomialb_e #1.{\expandafter\binomialb_f \the\numexpr #1+1.2.#1.}
+        
+        % u.v.w.k!
+        \def\binomialb_f #1.#2.#3.#4!%
+        {\ifnum #2>#4 \binomialb_end\fi
+         \expandafter\binomialb_f
+         \the\numexpr #1+1\expandafter.%
+         \the\numexpr #2+1\expandafter.%
+         \the\numexpr #1*#3/#2.#4!}
+        
+        \def\binomialb_end #1*#2/#3!{\fi\space #2}
+        \catcode`_ 8
+    % END OR \binomialb code
+\end{comment}
 
 
 
@@ -202,7 +203,7 @@
         \textbf{MATHEMATICAL PROOF STRUCTURES}
         
         \vspace{0.5cm}
-        Module 2: Number Theory
+        Module 4: Derivatives Pricing Theory
         
         \vspace{1.5cm}
         
@@ -229,18 +230,18 @@
 
 \newpage
 \chapter{TOPICS IN PRICING THEORY}
-\newpage
 
 \section{INSURANCE HEDGING AND SIMIPLE STRATEGES}
 \subsection{Introduction to Futures and Options}
 \subsubsection{Derivative Markets and Instruments}
     \begin{definition}{\textbf{Derivatives}}
-    These are financial instruments whose returns are derived from those of other financial instruments. Derivatives serves a valuable purpose in providing a means of managing financial risk. By using derivatives, counterparties can transfer, for a price, any undesired risk to other partiesn who either have risks that offset ir want to assume that risk
+    These are financial instruments whose returns are derived from those of other financial instruments. Derivatives serves a valuable purpose in providing a means of managing financial risk. By using derivatives, counterparties can transfer, for a price, any undesired risk to other parties who either have risks that offset ir want to assume that risk
     \end{definition}
     
     The main types of derivative contracts are: Options, Forward Contracts, Futures Contracts, and Swaps and hybrid derivatives
     
     \begin{definition} {\textbf{Options Contracts}}
+        
         An Option is a contract between two parties - a buyer and a seller - that gives the buyer the right, but not the obligation, to purchase or sell something at a later date at a price agreeded upon today. 
         
         The Option buyer pays the seller a sum of money called the \textbf{premium}. The option seller stands ready to sell or buy according to the contract terms if and when the buyer so desired. An option to buy some thing is called a \textbf{call}; an option to sell something is called a \textbf{put}.
@@ -251,7 +252,8 @@
     \end{definition}
     
     \begin{definition} {\textbf{Futures Contracts}}
-        A \textbf{futures contract} is also a contract between two parties - a buyer and a seller - to but or sell something at a future date at a price agreed upon today. Futures contracts eveoled out of forwards contracts and posses many of the same characteristics. Unlike forward contracts, futures contracts trade on organized exchanges.  
+        
+        A futures contract is also a contract between two parties - a buyer and a seller - to but or sell something at a future date at a price agreed upon today. Futures contracts evolved out of forwards contracts and posses many of the same characteristics. Unlike forward contracts, futures contracts trade on organized exchanges.  
         
         The buyer of a futures contract, who has the obligation to buy the good at a later date, can sell the contract in the futures market, which relieves her of the obligation to purchase the good. Otherwise the seller of a contract, who is obligated to sell the good at the later date, can buy the contract back in the futures market, relieving him of the obligation to sell the good.  
         
@@ -260,18 +262,52 @@
     \end{definition}
     
     \begin{definition}{\textbf{Swaps and hybrid Derivatives}}
-        A \textbf{swap} is a contract thich two parties agree to exchange cash flows. For example, one party is currently receiving cash from one investment but would pefer antoher type of investment in whcih the cash flows are different. The party contact a swap dealer, a firm operating in the over-the-counter market, who takes the opposite side of the trransaction. The firm and the dealer, in effect, swap cash flow streams. Depending on what happens to prices or interest rates , one party might elect to tie the payments it makes on the swap contract to the price of a commodity, called a \textbf{swaption}.
+        
+        A swap is a contract which two parties agree to exchange cash flows. For example, one party is currently receiving cash from one investment but would prefer another type of investment in whcih the cash flows are different. The party contact a swap dealer, a firm operating in the over-the-counter market, who takes the opposite side of the transaction. The firm and the dealer, in effect, swap cash flow streams. Depending on what happens to prices or interest rates , one party might elect to tie the payments it makes on the swap contract to the price of a commodity, called a \textbf{swaption}.
         
         Some of these types of contracts are referred to as \textbf{hybrid derivatives} because they combine the elements of several other types of contracts. 
     \end{definition}
 
 \subsubsection{Important Concepts in Financial and Derivative Markets}
-    \begin{definition}{Market Efficiency and Theoretical Fair Value}
+    
+    \begin{definition}{\textbf{Market Efficiency and Theoretical Fair Value}}
         
-        \textbf{Market Efficiency} is a characteristic of a market in which the prices of the instruments trading therein reflect their true economic value to investors. In an efficent marketplace, prices fluctuate famdonmly and investors cannot consistently earn returns above those that would compensate them for the level of risk they assume.
+        Market Efficiency is a characteristic of a market in which the prices of the instruments trading therein reflect their true economic value to investors. In an efficient marketplace, prices fluctuate randomly and investors cannot consistently earn returns above those that would compensate them for the level of risk they assume.
         
-        An efficient market is one in which the price of an asset equals its true economic value, whihc is called the \textbf{theoretical fair value}. Spot and derivative markets are normally quite efficient. 
+        An efficient market is one in which the price of an asset equals its true economic value, which is called the \textbf{theoretical fair value}. Spot and derivative markets are normally quite efficient. 
     \end{definition}
+    
+    \begin{definition}{\textbf{Repurchase Agreements}}
+        
+        A repurchase agreement (known as \textbf{repos} is a legal contract between a buyer and a seller; the seller agree to sell currently a specific asset to the buyer - as well as buy it back (usually) at a specified time in the future ar an agreeed upon price. 
+        
+        Derivatives traders often need to be able to borrow and lend money in the most effective manner possible. Repos are often very low-cost way of borrowing money, 
+    \end{definition}
+    
+    \begin{definition}{\textbf{Return \& Risk}}
+    
+        Return is the numerical measure of investment performance. They are two main meassure of return:
+            \begin{itemize}
+                \item \textbf{Dollar Return} measures investment performance as total dollar profit or loss
+                
+                \item \textbf{Percentage Return} measures investment performance per dollar invested
+            \end{itemize}
+        
+        Risk is uncertainty about future returns.
+        
+        The return investors expects is composed of the risk-free rate and a risk premium. This relationship is illustrated in Figure \ref{1.RiskReturn}, where $E(r_s)$ is the expected return on the spot asset, $\r$ is the risk-free rate, and $\E(\phi)$ is the risk premium - the excess of expected return over the risk-free rate.
+            \begin{figure}
+                \centering
+                \label{1.RiskReturn}
+                    \includegraphics[scale=0.125]{images/Test.png}
+                \caption{Red Circle}
+            \end{figure}
+        
+        
+    \end{definition}
+    
+    
+    
     
     \begin{definition}{Risk and Return and Arbitrage}
         
