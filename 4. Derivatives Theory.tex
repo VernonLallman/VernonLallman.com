@@ -26,13 +26,22 @@
 
 
 % Packages for Tables Management
-    \usepackage{booktabs} 
+    \usepackage{booktabs}
+    \usepackage{multirow}
+    \usepackage{multicol}
+    \usepackage{array}
+    
+% New Commands for text alignment within Tables    
+    \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 % Packages to Draw Images
     \usepackage{float}
     \usepackage{tikz}
     \usetikzlibrary{shapes,backgrounds}
     \usetikzlibrary{positioning}
+
 
 
 % Custom Section Labels   
@@ -485,6 +494,24 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
                     \bottomrule
                 \end{tabular}     
             \end{table}
+            
+        And the prevailing risk-free rates 
+        
+        The May options expire on May 21, the June options expire on June 18, and the July options expire on July 16. Table \ref{tab:DCRBRiskTime} illustrates the prevailing risk-free rates and calculated time to expiration. 
+        
+                \begin{table}[h]
+                        \centering
+                        \caption{The Prevailing Risk-Free Rates and Time to Expiration of DCRB Options}
+                        \label{tab:DCRBRiskTime}
+                        \begin{tabular}[h]{L{1.5cm} L{1cm} L{1cm} L{1cm} }
+                        \toprule
+                            & May & June & July  \\
+                         \midrule
+                            4.57\%  & 4.56\%    & 4.65\% \\
+                            0.0192  & 0.0959    & 0.1726 \\
+                        \bottomrule
+                        \end{tabular}
+                \end{table}          
     
     \newpage
     \subsection{Principles of Call Option Pricing}
@@ -527,22 +554,23 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
             Now look at all of DCRB calls. Those with an exercise price of $\$120.00$ have a minimum value of $Max(0, \$125.94 - \$120.00) = \$5.94 $. All three calls with an exercise price of $\$120.00$ have a minimum have prices no less than $\$5.94$. The calls with an exercise price of $\$125.00$ have a minimum value of $max(0, \$125.94 -\$125.00) = \$0.94$ and are priced at no less than $\$0.94$. The calls with an exercise price of $\$130.00$ have minimum values of $Max(0, \$125.94 - \$130.00) = 0$. All those options with strike prices below $\$125.94$ obviously have nonnegative values. Thus, all the DCRB call options conform quite closely to the rule. 
             
             The price of an American call normally exceeds its intrinsic value. The difference between the call price and its intrinsic value is called the \textbf{Time Value} or \textbf{Speculative Value} of the call, which is defined as $C_a(S_0, T, X) - Max(0, S_0 -X)$. Time value reflects what tradres are willing to pay for the uncertainty of the underlying stock.
-            
+                
                 \begin{table}[h]
                     \centering
                     \caption{Intrinsic Value and Time Values of DCRB Calls}
                     \label{tab:callTime}
-                    \begin{tabular}[h]{lllll}
+                    \begin{tabular}[h]{L{1.5cm} L{1.5cm} | L{1cm} L{1cm} | L{1cm} L{1cm} | L{1cm} L{1cm} }
                     \toprule
-                        & & Time Value & Time Value & Time Value \\
-                        Exercise Price & Intrinsic Value & May & June & July \\
+                        \multicolumn{2}{c}{} & \multicolumn{2}{c}{May} & \multicolumn{2}{c}{June} & \multicolumn{2}{c}{July} \\\cline{3-8}
+                        Exercise Price & Intrinsic Value  & Time Value & Call Price & Time Value & Call Price & Time Value & Call Price \\
                     \midrule
-                        \$120.00 & \$5.94 & \$2.81 & \$9.46 & \$14.96 \\
-                        \$125.00 & \$0.94 & \$4.81 & \$12.56 & \$17.66 \\
-                        \$130.00 & \$5.94 & \$3.60 & \$11.35 & \$16.40 \\
+                        120.00 & 5.94 & 2.81 & 8.75 & 9.46 & 15.40 & 14.96 & 20.90 \\
+                        125.00 & 0.94 & 4.81 & 5.75 & 12.56 & 13.50 & 17.66 & 18.60 \\    
+                        130.00 & 0.00 & 3.60 & 3.60 & 11.35 & 11.35 & 16.40 & 16.40 \\
                     \bottomrule
                     \end{tabular}
-                \end{table}
+                \end{table}                
+                
             Table $\ref{tab:callTime}$ presents the intrinsic values and time values of DCRB Calls. note that the time value increases with the time to expiration.
             
                 \begin{figure}[H]
@@ -684,7 +712,26 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
             The difference in the prices of two American calls the differ only by exercise price cannot exceed the difference in their exerrcise price
         \end{tcolorbox}                  
                 
+                Table \ref{tab:callExPrice} presents the approximate calculations for examining these properties on the DCRB Calls. Consider the May 120 and 125 calls. Using Table \ref{tab:callTime} and Table \ref{tab:DCRBRiskTime} we can see that that their difference in premiums is $8.75 - 5.75 = 3.00$. The present value of the difference in exercise  prices is $PV_{120, 125} = 5(1 + \frac{4.57}{100})^-0.0192 = 4.9957$. The remaining combinations are calcualted similarly using the appropirate risk-free rate and time to expiration for those options, referenced in Table \ref{tab:DCRBRiskTime}. Becuase these are American calls, the difference in their prices must be no greater than the difference in their exercise prices. As Table \ref{tab:callTime} shows, all the calls conforms to this condition. In addition, all the differences in the call prices are less than the present value of the difference between the exercise prices. Remember that this result need not hold for American calls because they can be exercised early. 
+
+                \begin{table}[h]
+                    \centering
+                    \caption{The Relationship between Exercise Price \& Call Price for DCRB Puts}
+                    \label{tab:callExPrice}
+                    \begin{tabular}[h]{L{1.5cm} L{1.5cm} | L{1cm} L{1cm} | L{1cm} L{1cm} | L{1cm} L{1cm} }
+                    \toprule
+                        \multicolumn{2}{c}{} & \multicolumn{2}{c}{May} & \multicolumn{2}{c}{June} & \multicolumn{2}{c}{July} \\\cline{3-8}
+                        Exercise Price & Spread Future Value & Spread Present Value & Call Spread & Spread Present Value & Call Spread & Spread Present Value & Call Spread \\
+                     \midrule
+                        120, 125 & 5    & 4.9957    & 3.00  & 4.9787    & 1.90  & 4.9611    & 2.30 \\
+                        120, 130 & 10   & 9.9914    & 5.15  & 9.9573    & 4.05  & 9.9222    & 4.50 \\
+                        125, 130 & 5    & 4.9957    & 2.15  & 4.9787    & 2.15  & 4.9611    & 2.20 \\
+                    \bottomrule
+                    \end{tabular}
+                \end{table}              
+            
             \end{definition}
+            
             
         \subsubsection{Lower Bound of a European Call}
         
@@ -838,17 +885,17 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
                     \centering
                     \caption{Intrinsic Value and Time Values of DCRB Puts}
                     \label{tab:PutTime}
-                    \begin{tabular}[h]{lllll}
+                    \begin{tabular}[h]{L{1.5cm} L{1.5cm} | L{1cm} L{1cm} | L{1cm} L{1cm} | L{1cm} L{1cm} }
                     \toprule
-                        & & Time Value & Time Value & Time Value \\
-                        Exercise Price & Intrinsic Value & May & June & July \\
+                        \multicolumn{2}{c}{} & \multicolumn{2}{c}{May} & \multicolumn{2}{c}{June} & \multicolumn{2}{c}{July} \\\cline{3-8}
+                        Exercise Price & Intrinsic Value  & Time Value & Put Price & Time Value & Put Price & Time Value & Put Price \\
                     \midrule
-                        \$120.00 & \$0.00 & \$2.75 & \$9.25 & \$13.65 \\
-                        \$125.00 & \$0.00 & \$4.60 & \$11.50 & \$16.60 \\
-                        \$130.00 & \$4.06 & \$3.29 & \$10.19 & \$15.59 \\
+                        120.00 & 0.00 & 2.75 & 2.75 & 9.25 & 9.25 & 13.65 & 13.65 \\
+                        125.00 & 0.00 & 4.60 & 4.60 & 11.50 & 11.50 & 16.60 & 16.60 \\    
+                        130.00 & 4.06 & 3.29 & 7.35 & 11.19 & 14.25 & 15.59 & 19.65 \\
                     \bottomrule
-        oin            \end{tabular}
-                \end{table}            
+                    \end{tabular}
+                \end{table}    
     
             Table \ref{tab:PutTime} presents the intrinsic value and time values of DCRB puts. Note how the values increase with time to expiration. 
             
@@ -918,7 +965,7 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
                 
             Note that the two puts could be worth the same; however, this would occur only if both puts were very deeply-in or deeply-out of the money. Even then, the longer-livef put would likely be worth a little more than the shorter-lived put. The longer-lived put can do everything the shorter-lived put can do and has an additional period of time in which to increase in value. 
                 
-            The prinicples that underlie the time value of a put are the same as those that underlie the time value of a call. The time value is the largest when the stock price is near the exercise price and smallest when the stock price is very high or very low relative to the exercise price. With these points in mind, we can now see that the American put price looks live Figure (\ref{fig:APutExp}. As expiration approaches, the put price curve approaches the intrinsic value, which is due to the time value decay. At expiration the put price equals the intrinsic value, as in Figure \ref{fig:PutExp}. 
+            The prinicples that underlie the time value of a put are the same as those that underlie the time value of a call. The time value is the largest when the stock price is near the exercise price and smallest when the stock price is very high or very low relative to the exercise price. With these points in mind, we can now see that the American put price looks live Figure (\ref{fig:APutExp}. As expiration approaches, the put price curve approaches the intrinsic value, which is due to the time value decay. At expiration the put price equals the intrinsic value, as in Figure \ref{fig:APutExp}. 
 
                 \begin{figure}[h]
                     \centering
@@ -930,17 +977,142 @@ In this chapter, we do not derive the exact price of an option, rather, we confi
             The relationship between time to expiration and put price is more complex for European puts. Think of buying a put as deferring the sale of stock at the exercise price, $X$. The further into the future the expiration date, the longer the put holder must wait sell to sell the stock and receive X dollars. This can make the longer-lived European put less valiuable than the shorter-lived one. This does not hold for American puts, becuase the holder can always exercise it and receive $X$ dollars today. 
             ,km m
             For a European put, the longer time tp expiration is both an advantage - the greater time value - the long wait time to receive the exercise price. The time value effect tends to dominate, however, and in most cases longer-lived puts will be more valuable than shorter-lived puts. Because DCRB puts are American options, the longer-term put should be expected to show higher prices. A check of their premiums, shown in Table, confirms this point.
+        
         \subsubsection{Effect of Exercise Price}
             
             \begin{definition}{\textbf{The Effect on Option Value}}
-                Consider two European puts identical in all respectss except exercise price. One put has an exercise price of $X_1$ and a premium of $P_e(S_0, T, X_1)$; the other has an exercise price of $X_2$ and a premium of $P_e(S_0, T, X_2)$. As before $X_2 > X_1$. Which put option will be more valuable?     
+                
+                Consider two European puts identical in all respectss except exercise price. One put has an exercise price of $X_1$ and a premium of $P_e(S_0, T, X_1)$; the other has an exercise price of $X_2$ and a premium of $P_e(S_0, T, X_2)$. As before $X_2 > X_1$. Which put option will be more valuable?
+                
+        \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black, title=Sticky Note]
+            The price of a European put must b at least as high as the price of an otherwise identical European put with a lower exerise price.
+        \end{tcolorbox} 
+                
+                Consider the two portfolios. Portfolio A consists of a long position in the put priced at $P_e(S_0, T, X_2$ and a short position in the put priced at $P_e(S_0, T, X_1)$. Portfolio B consists of a long position in risk-free bonds with a face value $X_2 - X_1$ and a present value of $(X_2 - X_1)(1 + r)^{-T}$. Table \ref{tab:PutPayoff} presents these portfolios payoff at expiration. 
+
+                \begin{table}[h]
+                    \centering
+                    \caption{The Effect of Exercise Price on Put Value: Payoffs at Expiration of Portfolio A \&  B}
+                    \label{tab:PutPayoff}
+                        \begin{tabular}{llccc}
+                             \toprule
+                                & &\multicolumn{3}{c}{Payoffs from Portfolio Given Stock Price at Expiration} \\
+                             Portfolio & Current Value & $S_T < X_1$ & $X_1 \leqq S_T < X_2$ & $X_1 < X_2 \leqq S_T$ \\\hline
+                                \multirow{3}*{A} & $-P_e(S_0,T,X_1)$ & $-X_1 + S_T$ & $0$ & $0$ \\
+                                & $+P_e(S_0,T,X_2)$ & \underline{$X_2 - S_T$} & \underline{$X_2 - S_T$} & \underline{$0$} \\
+                                & & \emph{$x_2 - x_1 > 0$} & \emph{$x_2 - x_1 > 0$} & $0$ \\\midrule
+                                B & $(x_2 - x_1)(1 + r)^{-T}$ & $x_2 - x_1 > 0$ & $x_2 - x_1 > 0$ & $x_2 - x_1 > 0$ \\\bottomrule                  
+                        \end{tabular}
+                \end{table}                 
+
+                For portfolio A, all outcomes are nonnegative. Because this portfolio cannot produce a cash outflow for the holder, the price of the put purchased must be no less than the price of the put sold; that is 
+                
+                    \begin{equation}
+                        P_e(S_0,T,X_2) \geqq P_e(S_0,T,X_1)
+                    \end{equation} 
+                    
+                To understand why this is so, consider what would happen if it were not. Suppose that the price of the put sold were greater than the price of the put purchased. Then, an investor would receive more for the put sold than would be paid for the put purchased. That would produce a net positive cash flow up front, and, from Table \ref{tab:PutPayoff}, there would be no possibility of having to pay out any cash at expiration. This would be like a loan you don't have to payback. 
+                    
+                The intuition behind  why a put with a higer a higher exercise price is worth more than one with a lowwer exercise price is quite simple. A put is an option to sell stock at a fixed price. The higher the price at which the put holder  can sell the stock, the more attractive the put. 
+                
+        \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black, title=Sticky Note]
+            The price of an American put must be at least as high as the price of an otherwise identical American put with a lower exercise price.
+        \end{tcolorbox}            
+                
+                Suppose that they were American puts. In that case, the put with the lower exercise price could be exercised early. For example, let the stock price at time $t$ prior to expiration be $S_t$, where $S_t < X_1$. Let the option with exerise price $X_1$ be exercised. Then the investor simply exercise the option with the exerise price $X_2$. The cash flow from these two transactions is $$-(X_1 - S_t)+(X_2 - S_t) = X_2 - X_1$$ which is positive. Early exercise will not generate a negative cash flow. Thus, our result holds for American puts as well A European puts.
             \end{definition}
-            
             
             \begin{definition}{\textbf{Limits on the Difference in Premiums}}
             
+                Now let us consider the outcomes of portfolio A and B. We see that portfolio B's outcome are never less than portfolio A's. Therefore, no one would pay more for portfolio A than for portfolio B. That is
+                    \begin{equation}
+                        (X_2 - X_1)(1 + r)^{-T} \geqq P_e(S_0,T,X_2) - P_e(S_0,T,X_1)
+                    \end{equation}
+                This result does not, however, hold for American  puts. If the puts were American and both were exercised, the investor would receive $X_2 - X_1$ dollars. This amounnt would be invested in risk-free bonds and would earn invesr over the option's remaining lives. At expiration, the inbestor would have more than $X_2 - X_1$, the payoff from portfolio B.
+                
+                Since the difference in exercise prices is greater than the present value of the difference in exercise prices, we can state that for European puts, 
+                    \begin{equation}
+                        (X_2  - X_1 ) \geqq P_e(S_0,T,X_2) - P_e(S_0, T, X_1)
+                    \end{equation}
+                This mean that the difference in puts premiums cannot exceed the difference in exercise fprices. This result holds for American as well as European puts. To see this, let portfolio B's bonds have a face value of $(X_2 - X_1)(1 + r)^T$ and a present value of $(X_2 - X_1)$. If early exercise occurred at time $t$, the most the holder of portfolio A would have at expiration is $$(X_2 - X_1)(1 + r)^{T- t}$$ The holder of portfolio B would have a larger amount, $(X_2 - X_1)(1 + r)^T$. So again portfolio A would never pay more at expiration than portfolio B. Therefore, the current value of portfolio A, $P_a(S_0,T,X_2) - P_a(S_0,T,X_1)$, could not exceed the current value of portfolio B, $X_2 - X_1$. 
+                
+        \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black, title=Sticky Note]
+            The difference in the prices of two American puts that differ only by exercise price cannot exceed the difference in their exercise prices.
+        \end{tcolorbox}                  
+                
+                Thus, 
+                    \begin{equation}
+                        X_2 - X_1 \geqq P_a(S_0, T, X_2) - P_a(S_0, T, X_1)
+                    \end{equation}
+                    
+                Table \ref{tab:PutExPrice} \footnotemark shows the difference between the put premiums and exercise price for the DCRB puts. Since these are American puts, we would expect only the difference in ther put premiums will not exceed the present values of the diffrence in their exercise prices - which indeed is the case. In addition, the difference in premiums do not exceed the present values of the difference in exercise prices. 
+                
+                \footnotetext{ Note: we use Table \ref{tab:DCRBRiskTime} to calculate the present value of the exercise price spreads. For example, the present value of the May 120, 125 Put spread is $$PV_{120, 125} = 5(1 + \frac{4.57}{100})^-0.0192$$ }
+                
+                \begin{table}[h]
+                    \centering
+                    \caption{The Relationship between Exercise Price \& Put Price for DCRB Puts}
+                    \label{tab:PutExPrice}
+                    \begin{tabular}[h]{L{1.5cm} L{1.5cm} | L{1cm} L{1cm} | L{1cm} L{1cm} | L{1cm} L{1cm} }
+                    \toprule
+                        \multicolumn{2}{c}{} & \multicolumn{2}{c}{May} & \multicolumn{2}{c}{June} & \multicolumn{2}{c}{July} \\\cline{3-8}
+                        Exercise Price & Spread Future Value & Spread Present Value & Put Spread & Spread Present Value & Put Spreadd & Spread Present Value & Put Spread \\
+                     \midrule
+                        120, 125 & 5    & 4.9957    & 1.85  & 4.9787    & 2.25  & 4.9611    & 2.95 \\
+                        120, 130 & 10   & 9.9914    & 4.60  & 9.9573    & 5.00  & 9.9222    & 6.00 \\
+                        125, 130 & 5    & 4.9957    & 2.75  & 4.9787    & 2.75  & 4.9611    & 3.05 \\
+                    \bottomrule
+                    \end{tabular}
+                \end{table}                  
+                
             \end{definition}
+            
         \subsubsection{Lower Bound of a European Put}
+        
+            The fact that the minimum value of an American put is $Max(), X - S_0)$, does not hold for a European put because it cannot be exercised early. However, it is possible to derive the lower bound of an European put. 
+            
+            Consider two portfolios A and B. Portolifo A consisting of a single share of stock. Portfolio B consists of a short position in a European put priced at $P_e(S_0,T,X)$ and a long position in risk-free bonds with a face value of $X$ and a present value of $X(1+r)^{-T}$. The payoffs at expiration from these portfolios are shown in Table \ref{tab:EuroPutLB}. 
+            
+                \begin{table}[h]
+                    \centering
+                    \caption{Lower Bound of a European Put: Payoffs at Expiration of Profilios A \& B}
+                    \label{tab:EuroPutLB}
+                    \begin{tabular}[h]{L{1cm} L{5cm} L{5cm} L{3cm}}
+                    \toprule
+                        \multicolumn{2}{c}{} & \multicolumn{2}{c}{Payoffs from Portfolio Given Stock Price at Expiration} \\\cline{3-4}
+                        Portfolio & Current Value & $S_T < X$ & $S_T \geqq X$ \\
+                     \midrule
+                        A   & $S_0$                             & $S_T$                 & $S_T$ \\
+                        B   & $X(1+6r)^{-T} - P_e(S_0, T, X)$   & $X - (X - S_T) = S_T$ & $X$ \\
+                    \bottomrule
+                    \end{tabular}
+                \end{table}             
+                
+            Portfolio A's outcome is always at leasst as favorable as portfolio B's. Therefore, no one would be willing to pay more for portfolio B than portfolio A. Portfolio A's current value must be less than portfolio B's; that is, 
+                \begin{equation}
+                    S_0 \geqq X(1+r)^{-T} - P_e(S_0, T, X)
+                \end{equation}
+                
+            Rearranging this statement gives
+            
+                \begin{equation}
+                    P_e(S_0,T,X) \geqq X(1 + r)^{-T} - S_0
+                \end{equation}
+                
+            If the present value of the exercise price is less than the stock price, this lower bound will be negative. Since we know that a put cannot be worth less than  zero, we can say that
+            
+                \begin{equation}
+                    P_e(S_0,T,X) \geqq Max \left[ 0, X(1+r)^{-T} - S_0 \right]
+                \end{equation}
+
+                \begin{figure}[h]
+                    \centering
+                        \includegraphics[scale=0.45]{images/fig:APutExp.eps}
+                    \caption{The Price curve for American Puts}
+                    \label{fig:APutExp}                
+                \end{figure}
+                
+            
         \subsubsection{American Put vs. European Put}
         \subsubsection{Early Exerise of American Puts}
         \subsubsection{Put-Call Parity}
